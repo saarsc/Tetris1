@@ -1,34 +1,12 @@
 package com.tetris.saar.tetris;
 
 /**
- * Created by user on 15/08/2017.
+ * Created by user on 29/08/2017.
  */
 
-public class LineAndUpRight extends Blocks{
-    public LineAndUpRight(int i, int j){
-        super(true,false,true,false,true,false,false,false,2,i,j);
-    }
-    public int getRotation() {
-        return rotation;
-    }
-    @Override
-    public void changeRot() {
-        if(getRotation() ==3 ){
-            this.rotation =0;
-        }else{
-            this.rotation = getRotation() +1;
-        }
-        switch (rotation){
-            case 0: setRightUp(true);setRight(true);setLeft(true); setUp(false);setDownRight(false);setDownLeft(false); setDown(false); setLeftUp(false);
-                break;
-            case 1: setUp(true); setDown(true); setDownRight(true); setLeft(false); setRight(false); setRightUp(false); setLeftUp(false); setDownLeft(false);
-                break;
-            case 2: setDownLeft(true);setLeft(true);setRight(true); setDown(false);setDownRight(false); setLeftUp(false); setUp(false); setRightUp(false);
-                break;
-            case 3: setUp(true); setLeftUp(true); setDown(true); setLeft(false); setDownLeft(false); setDownRight(false); setRight(false); setRightUp(false);
-                break;
-
-        }
+public class Line extends Blocks{
+    public Line(int i, int j){
+        super(true,false,true,false,false,false,false,false,4,i,j);
     }
     public int getId() {
         return id;
@@ -37,7 +15,30 @@ public class LineAndUpRight extends Blocks{
     public void setId(int id) {
         this.id = id;
     }
+    public int getRotation() {
+        return rotation;
+    }
 
+    @Override
+    public void changeRot(){
+        if(getRotation() ==3 ){
+            this.rotation =0;
+        }else{
+            this.rotation = getRotation() +1;
+        }
+
+        switch (rotation){
+            case 0: setLeft(true); setUp(false); setRight(true); setDown(false);
+                break;
+            case 1: setLeft(false); setUp(true); setRight(false); setDown(true);
+                break;
+            case 2: setLeft(true); setUp(false); setRight(true); setDown(false);
+                break;
+            case 3: setLeft(false); setUp(true); setRight(false); setDown(true);
+                break;
+        }
+
+    }
     public int[] getPlace() {
         return place;
     }
@@ -117,3 +118,5 @@ public class LineAndUpRight extends Blocks{
         this.downRight = downRight;
     }
 }
+
+

@@ -13,14 +13,16 @@ public class GameManger{
     GameActivity gameActivity ;
     public static final int startI = 5;
     public static final int startJ = 1;
-
-    static int dropSpeed = 50;
+    android.os.Handler uiHandler;
+    static int dropSpeed = 100;
     public int getDropSpeed;
 
     public GameManger(GameActivity contex){
         this.board = new int [10][24];
         this.gameActivity = contex;
+        uiHandler = new android.os.Handler();
         init();
+
     }
 
     public void init(){
@@ -80,13 +82,23 @@ public class GameManger{
                     if(this.board[place[0]-1][place[1]+1] != 0){
                         empty =false;
                     }
+                }else if(currentBlock.isLeftUp()){
+                    if(this.board[place[0]-1][place[1]]!=0){
+                        empty =false;
+                    }
                 }
                 //Checking under right
                 if(currentBlock.isRight()){
                     if(this.board[place[0]+1][place[1]+1] != 0){
                         empty =false;
                     }
+
+                }else
+                //Checking under the top right
+                if( currentBlock.isRightUp() && this.board[place[0]+1][place[1]] !=0){
+                    empty =false;
                 }
+
             }
         }
         if((currentBlock.isDown() || currentBlock.isDownLeft() || currentBlock.isDownRight()) && place[1] == 22){
@@ -143,10 +155,12 @@ public class GameManger{
                 this.board[place[0]-1][place[1]] = 0;
             }
             //Moving right
-            this.board[place[0]+1][place[1]+1] = this.board[place[0]+1][place[1]];
-            if(!currentBlock.isRightUp()){
-                this.board[place[0]+1][place[1]] = 0;
+        if(currentBlock.isRight()) {
+            this.board[place[0] + 1][place[1] + 1] = this.board[place[0] + 1][place[1]];
+            if (!currentBlock.isRightUp()) {
+                this.board[place[0] + 1][place[1]] = 0;
             }
+        }
             //Moving up
             this.board[place[0]][place[1]] = this.board[place[0]][place[1] - 1];
             this.board[place[0]][place[1] - 1] = 0;
@@ -165,7 +179,7 @@ public class GameManger{
     //Generate a new block based on a random number
     public Blocks pickBlock(){
         Random rnd = new Random();
-        int pick = rnd.nextInt(5)+1;
+        int pick = rnd.nextInt(7)+1;
         Blocks newBlock = null;
         if(pick ==1){
              newBlock =new Squre(startI,startJ);
@@ -177,12 +191,17 @@ public class GameManger{
             newBlock = new LineAndUpLeft(startI,startJ);
         }
         if(pick==4){
-            //Add straight line
+            newBlock = new Line(startI,startJ);
         }
         if(pick==5){
             newBlock = new ZShaped(startI,startJ);
         }
-
+        if(pick==6){
+            newBlock = new LineAndMiddle(startI,startJ);
+        }
+        if(pick==7){
+            newBlock = new SShaped(startI,startJ);
+        }
 
         insertBlock(newBlock);
         return newBlock;
@@ -218,14 +237,55 @@ public class GameManger{
             this.board[currentPlace[0]+1][currentPlace[1]+1]= id;
         }
         /* Special case for straight line */
-        if(id == 4){
+     /*   if(id == 4){
             if(newBlock.isLeft()){
                 this.board[currentPlace[0]-2][currentPlace[1]]= id;
             }
             if(newBlock.isDown()){
                 this.board[currentPlace[0]][currentPlace[1]+2]= id;
             }
+        }*/
+    }
+    public void removeBlock(Blocks block){
+        int[] place = block.getPlace();
+        if(block.isLeft()){
+            this.board[place[0]-1][place[1]] =0;
         }
+        if(block.isUp()){
+            this.board[place[0]][place[1]-1] = 0;
+        }
+        if(block.isRight()){
+            this.board[place[0]+1][place[1]] = 0;
+        }
+        if(block.isLeftUp()){
+            this.board[place[0]-1][place[1]-1] = 0;
+        }
+        if(block.isRightUp()){
+            this.board[place[0]+1][place[1]-1] = 0;
+        }
+        if(block.isDown()){
+            this.board[place[0]][place[1]+1] = 0;
+        }
+        if(block.isDownLeft()){
+            this.board[place[0]-1][place[1]+1] = 0;
+        }
+        if(block.isDownRight()){
+            this.board[place[0]+1][place[1]+1] = 0;
+        }
+    }
+    public void change(final Blocks currentBlock){
+       final Blocks temp = currentBlock;
+        removeBlock(currentBlock);
+        currentBlock.changeRot();
+        insertBlock(currentBlock);
+       uiHandler.post(new Runnable() {
+           @Override
+           public void run() {
+               if (currentBlock.isDown()) {
+                   gameActivity.changeText(temp.getRotation() + "");
+               }
+           }
+       });
     }
     //Return the board so you can display it
     public int[][] getDisplay(){
@@ -233,7 +293,7 @@ public class GameManger{
     }
 }
 /*TODO
-* Add special cases for id==4(line)
+* Add special cases for id==4(line, move all around , insert block, remove )
 * Update the speed to 1000
 * Reason for win / lose
 * move right and left (and all the checks)

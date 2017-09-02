@@ -17,7 +17,11 @@ public class Blocks {
     protected int id;
     protected int[] place;
     protected boolean isMoving;
-    public Blocks(boolean left, boolean up, boolean right, boolean leftUp, boolean rightUp, boolean down, boolean downLeft,boolean downRight, int id, int i, int j){
+    protected int rotation;
+
+
+
+    public Blocks(boolean left, boolean up, boolean right, boolean leftUp, boolean rightUp, boolean down, boolean downLeft, boolean downRight, int id, int i, int j){
         this.left = left;
         this.up = up;
         this.right = right;
@@ -31,7 +35,15 @@ public class Blocks {
         this.place =new int[2];
         this.place[0] = i;
         this.place[1]=j;
+        this.rotation=0;
 
+    }
+    public int getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(int rotation) {
+        this.rotation = rotation;
     }
     public int getId() {
         return id;
@@ -94,6 +106,9 @@ public class Blocks {
 
     public void setRightUp(boolean rightUp) {
         this.rightUp = rightUp;
+    }
+    public void changeRot() {
+
     }
 
     public boolean isDown() {

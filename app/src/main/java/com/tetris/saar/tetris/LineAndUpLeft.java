@@ -9,6 +9,27 @@ public class LineAndUpLeft extends Blocks{
         super(true, false,true, true,false,false, false, false,3,i,j);
     }
     //Get + Set
+    public int getRotation() {
+        return rotation;
+    }
+    @Override
+    public void changeRot() {
+        if(getRotation() ==3 ){
+            this.rotation =0;
+        }else{
+            this.rotation = getRotation() +1;
+        }
+        switch(rotation){
+            case 0: setLeftUp(true); setLeft(true); setRight(true); setUp(false); setRightUp(false); setDown(false); setDownRight(false); setDownLeft(false);
+                break;
+            case 1: setUp(true);setRightUp(true); setDown(true); setLeftUp(false); setLeft(false); setRight(false); setDownLeft(false); setDownRight(false);
+                break;
+            case 2: setLeft(true); setRight(true); setDownRight(true); setUp(false); setRightUp(false); setLeftUp(false); setDown(false); setDownLeft(false);
+                break;
+            case 3: setDownLeft(true); setDown(true); setUp(true);  setLeft(false);setRight(false);setRightUp(false);setLeftUp(false); setDownRight(false);
+                break;
+        }
+    }
     public int getId() {
         return id;
     }

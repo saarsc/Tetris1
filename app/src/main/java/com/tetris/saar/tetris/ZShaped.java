@@ -25,6 +25,27 @@ public class ZShaped extends Blocks{
         this.place[0] =i;
         this.place[1] =j;
     }
+    public int getRotation() {
+        return rotation;
+    }
+    @Override
+    public void changeRot() {
+        if(getRotation() ==3 ){
+            this.rotation =0;
+        }else{
+            this.rotation = getRotation() +1;
+        }
+        switch (rotation){
+            case 0: setUp(true); setRight(true); setLeftUp(true); setLeft(false); setDownLeft(false);
+                break;
+            case 1: setUp(true); setLeft(true); setDownLeft(true); setRight(false); setLeftUp(false);
+                break;
+            case 2:setUp(true); setRight(true); setLeftUp(true); setLeft(false); setDownLeft(false);
+                break;
+            case 3: setUp(true); setLeft(true); setDownLeft(true); setRight(false); setLeftUp(false);
+                break;
+        }
+    }
     public boolean isMoving() {
         return isMoving;
     }

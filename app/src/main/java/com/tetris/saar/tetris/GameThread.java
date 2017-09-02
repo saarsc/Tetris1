@@ -9,14 +9,17 @@ import android.os.Handler;
 public class GameThread extends Thread {
     GameManger gm;
     Handler uiHandle;
+  static   boolean change =false;
+
     public GameThread(GameManger gm){
         this.gm = gm;
         uiHandle = new Handler();
     }
+
     @Override
     public void run(){
         int i=0;
-        while(i< 2) {
+        while(i< 10) {
             Blocks currentBlock = gm.pickBlock();
             gm.insertBlock(currentBlock);
 
@@ -37,12 +40,27 @@ public class GameThread extends Thread {
                 if (gm.isEmptyDown(currentBlock)) {
                     gm.moveDown(currentBlock);
                 }
+                if(change){
+                    gm.change(currentBlock);
 
+                    uiHandle.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            gm.gameActivity.toDisplay();
+                        }
+                    });
+                    this.change = false;
+                }
             }
             i++;
         }
-    }
 
+    }
+    public void needToChange(){
+
+        this.change = true;
+
+    }
 
 
 }

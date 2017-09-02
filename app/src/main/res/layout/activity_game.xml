@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.tetris.saar.tetris.GameActivity"
-    android:layoutDirection="ltr">
+    android:layoutDirection="ltr"
+    >
 
     <LinearLayout
         android:id="@+id/mainLayout"
@@ -19,5 +20,13 @@
 
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="0dp" />
 
 </android.support.constraint.ConstraintLayout>

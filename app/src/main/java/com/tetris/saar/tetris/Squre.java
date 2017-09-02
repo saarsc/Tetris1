@@ -7,9 +7,7 @@ package com.tetris.saar.tetris;
 public class Squre extends Blocks{
 
     public Squre(int i, int j){
-       //super(false, true,true, false,true,false, false, false,1,i,j);
        super(false, true,true, false,true,false, false, false,1,i,j);
-
     }
 
     //Get + Set
@@ -20,7 +18,12 @@ public class Squre extends Blocks{
     public void setId(int id) {
         this.id = id;
     }
+    public int getRotation() {
+        return rotation;
+    }
 
+    public void changeRot(){
+    }
     public int[] getPlace() {
        return place;
    }
@@ -32,6 +35,7 @@ public class Squre extends Blocks{
     public boolean isMoving() {
         return isMoving;
     }
+
 
     public void setMoving(boolean moving) {
         isMoving = moving;
