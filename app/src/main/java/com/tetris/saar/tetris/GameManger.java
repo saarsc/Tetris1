@@ -287,6 +287,45 @@ public class GameManger{
            }
        });
     }
+    public boolean emptyRot(Blocks currentBlock){
+        int[] place = currentBlock.getPlace();
+        if(currentBlock.isLeftUp()){
+            if(this.board[place[0]+1][place[1]-1] != 0){
+                return false;
+            }
+        }
+        if(currentBlock.isUp()){
+            if(this.board[place[0] +1][place[1]] != 0){
+                return false;
+            }
+        }
+        if(currentBlock.isRightUp()){
+            if(this.board[place[0]+1][place[1] +1] != 0){
+                return false;
+            }
+        }
+        if(currentBlock.isRight()){
+            if(this.board[place[0]][place[1]+1] != 0){
+                return false;
+            }
+        }
+        if(currentBlock.isDownRight()){
+            if(this.board[place[0]-1][place[1]+1] != 0){
+                return false;
+            }
+        }
+        if(currentBlock.isDown()){
+            if(this.board[place[0]-1][place[1]]!=0){
+                return false;
+            }
+        }
+        if(currentBlock.isDownRight()){
+            if(this.board[place[0]-1][place[1]-1]!= 0){
+                return false;
+            }
+        }
+     return true;
+    }
     //Return the board so you can display it
     public int[][] getDisplay(){
         return this.board;
