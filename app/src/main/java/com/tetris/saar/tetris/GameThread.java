@@ -52,6 +52,7 @@ public class GameThread extends Thread {
                     this.change = false;
                 }
             }
+            gm.bugFixEmptyRow(currentBlock);
             i++;
         }
 
