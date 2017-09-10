@@ -14,7 +14,7 @@ public class GameManger{
     public static final int startI = 5;
     public static final int startJ = 1;
     android.os.Handler uiHandler;
-    static int dropSpeed = 100;
+    static int dropSpeed = 500;
     public int getDropSpeed;
 
     public GameManger(GameActivity contex){
@@ -277,30 +277,40 @@ public class GameManger{
     }
     public void removeBlock(Blocks block){
         int[] place = block.getPlace();
-        if(block.isLeft()){
-            this.board[place[0]-1][place[1]] =0;
+
+        if(place[0] != 0){
+            if(block.isLeft()){
+                this.board[place[0]-1][place[1]] =0;
+            }
+            if(block.isLeftUp()){
+                this.board[place[0]-1][place[1]-1] = 0;
+            }
+            if(block.isDownLeft()){
+                this.board[place[0]-1][place[1]+1] = 0;
+            }
         }
         if(block.isUp()){
             this.board[place[0]][place[1]-1] = 0;
         }
-        if(block.isRight()){
-            this.board[place[0]+1][place[1]] = 0;
+        if(place[0] != 9){
+            if(block.isRight()){
+                this.board[place[0]+1][place[1]] = 0;
+            }
+            if(block.isRightUp()){
+                this.board[place[0]+1][place[1]-1] = 0;
+            }
+            if(block.isDownRight()){
+                this.board[place[0]+1][place[1]+1] = 0;
+            }
         }
-        if(block.isLeftUp()){
-            this.board[place[0]-1][place[1]-1] = 0;
-        }
-        if(block.isRightUp()){
-            this.board[place[0]+1][place[1]-1] = 0;
-        }
+
+
+
         if(block.isDown()){
             this.board[place[0]][place[1]+1] = 0;
         }
-        if(block.isDownLeft()){
-            this.board[place[0]-1][place[1]+1] = 0;
-        }
-        if(block.isDownRight()){
-            this.board[place[0]+1][place[1]+1] = 0;
-        }
+
+
     }
     public void change(final Blocks currentBlock){
        final Blocks temp = currentBlock;
@@ -309,22 +319,17 @@ public class GameManger{
             currentBlock.changeRot();
             insertBlock(currentBlock);
         }
-
-       uiHandler.post(new Runnable() {
-           @Override
-           public void run() {
-               if (currentBlock.isDown()) {
-                   gameActivity.changeText(temp.getRotation() + "");
-               }
-           }
-       });
     }
-    public void moveRight(Blocks currentBlock){
+    public void moveRight(Blocks currentBlock)  {
         int[] place = currentBlock.getPlace();
         int id = currentBlock.getId();
+
         if(emptyRight(currentBlock)){
             removeBlock(currentBlock);
-            //Top line
+            currentBlock.setPlace(place[0]+1,place[1]);
+            this.board[place[0]-1][place[1]] =0;
+            insertBlock(currentBlock);
+           /* //Top line
             if(currentBlock.isRightUp()){
                 this.board[place[0]+2][place[1]-1] = id;
             }
@@ -352,21 +357,27 @@ public class GameManger{
             if(currentBlock.isDownLeft()){
                 this.board[place[0]][place[1]+1] = id;
             }
+*/
         }
     }
     public boolean emptyRight(Blocks currentBlock){
         int[] place = currentBlock.getPlace();
+
         if(currentBlock.isRightUp() || currentBlock.isRight() || currentBlock.isDownRight()){
             if(place[0]>=8){
+
                 return false;
             }else {
                 if (currentBlock.isRight() && this.board[place[0] +2][place[1]] != 0){
+
                     return false;
                 }
                 if(currentBlock.isRightUp() && this.board[place[0]+2][place[1]-1] !=0){
+
                     return false;
                 }
                 if(currentBlock.isDownLeft() && this.board[place[0]+2][place[1] +1] !=0){
+
                     return false;
                 }
             }
@@ -374,13 +385,13 @@ public class GameManger{
         if(place[0]==9){
             return false;
         }else {
-            if (currentBlock.isUp() &&this.board[place[0]+1][place[1]-1] !=0){
+            if (currentBlock.isUp() && !currentBlock.isRightUp()&&this.board[place[0]+1][place[1]-1] !=0){
                 return false;
             }
-            if(this.board[place[0]+1][place[1]] !=0){
+            if(this.board[place[0]+1][place[1]] !=0 && !currentBlock.isRight()){
                 return false;
             }
-            if(currentBlock.isDownRight()&&this.board[place[0]+1][place[1]+1]!=0){
+            if(currentBlock.isDownRight()&&this.board[place[0]+1][place[1]+1]!=0 && !currentBlock.isDownRight()){
                 return false;
             }
         }
@@ -389,7 +400,14 @@ public class GameManger{
     public void bugFixEmptyRow(Blocks currentBlock){
         int[] place = currentBlock.getPlace();
         if(place[1] < 23){
-            if(this.board[place[0]-1][place[1]+1] ==0&&this.board[place[0]][place[1]+1] == 0 &&this.board[place[0]+1][place[1]+1] ==0){
+            if(this.board[place[0]-1][place[1]+1] ==0&&this.board[place[0]][place[1]+1] == 0){
+                if(place[0] !=9){
+                    if(this.board[place[0]+1][place[1]+1] ==0){
+                        if(isEmptyDown(currentBlock)){
+                            moveDown(currentBlock);
+                        }
+                    }
+                }else
                 if(isEmptyDown(currentBlock)){
                     moveDown(currentBlock);
                 }

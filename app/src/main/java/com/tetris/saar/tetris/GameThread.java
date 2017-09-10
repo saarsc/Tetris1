@@ -45,6 +45,7 @@ public class GameThread extends Thread {
                     gm.moveRight(currentBlock);
                     update();
                     right = false;
+
                 }
             }
             gm.bugFixEmptyRow(currentBlock);
@@ -64,8 +65,12 @@ public class GameThread extends Thread {
         this.change = true;
     }
     public void moveRight(){
-        right = true;
-    }
 
+        right = true;
+
+    }
+    public void changeText(){
+
+    }
 
 }
