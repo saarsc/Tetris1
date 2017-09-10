@@ -319,6 +319,73 @@ public class GameManger{
            }
        });
     }
+    public void moveRight(Blocks currentBlock){
+        int[] place = currentBlock.getPlace();
+        int id = currentBlock.getId();
+        if(emptyRight(currentBlock)){
+            removeBlock(currentBlock);
+            //Top line
+            if(currentBlock.isRightUp()){
+                this.board[place[0]+2][place[1]-1] = id;
+            }
+            if(currentBlock.isUp()){
+                this.board[place[0]+1][place[1] - 1] = id;
+            }
+            if(currentBlock.isLeftUp()){
+                this.board[place[0]][place[1]-1] =id;
+            }
+            //Middle line
+            if(currentBlock.isRight()){
+                this.board[place[0]+2][place[1]] =id;
+            }
+            this.board[place[0] +1 ][place[1]] =id;
+            if(currentBlock.isLeft()){
+                this.board[place[0]][place[1]] = id;
+            }
+            //Bottom line
+            if(currentBlock.isDownRight()){
+                this.board[place[0] +2][place[1]+1] = id;
+            }
+            if(currentBlock.isDown()){
+                this.board[place[0]+1][place[1]+1] = id;
+            }
+            if(currentBlock.isDownLeft()){
+                this.board[place[0]][place[1]+1] = id;
+            }
+        }
+    }
+    public boolean emptyRight(Blocks currentBlock){
+        int[] place = currentBlock.getPlace();
+        if(currentBlock.isRightUp() || currentBlock.isRight() || currentBlock.isDownRight()){
+            if(place[0]>=8){
+                return false;
+            }else {
+                if (currentBlock.isRight() && this.board[place[0] +2][place[1]] != 0){
+                    return false;
+                }
+                if(currentBlock.isRightUp() && this.board[place[0]+2][place[1]-1] !=0){
+                    return false;
+                }
+                if(currentBlock.isDownLeft() && this.board[place[0]+2][place[1] +1] !=0){
+                    return false;
+                }
+            }
+        }
+        if(place[0]==9){
+            return false;
+        }else {
+            if (currentBlock.isUp() &&this.board[place[0]+1][place[1]-1] !=0){
+                return false;
+            }
+            if(this.board[place[0]+1][place[1]] !=0){
+                return false;
+            }
+            if(currentBlock.isDownRight()&&this.board[place[0]+1][place[1]+1]!=0){
+                return false;
+            }
+        }
+        return true;
+    }
     public void bugFixEmptyRow(Blocks currentBlock){
         int[] place = currentBlock.getPlace();
         if(place[1] < 23){

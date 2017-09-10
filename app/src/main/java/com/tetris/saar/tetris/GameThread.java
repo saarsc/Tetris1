@@ -10,6 +10,7 @@ public class GameThread extends Thread {
     GameManger gm;
     Handler uiHandle;
   static   boolean change =false;
+    static boolean right = false;
 
     public GameThread(GameManger gm){
         this.gm = gm;
@@ -25,13 +26,7 @@ public class GameThread extends Thread {
 
             while (currentBlock.isMoving()) {
                 //Handle the UI update(can not be done in different Threads)
-                uiHandle.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        gm.gameActivity.toDisplay();
-                    }
-                });
-
+                update();
                 try {
                     Thread.sleep(gm.getDropSpeed());
                 } catch (InterruptedException e) {
@@ -43,13 +38,13 @@ public class GameThread extends Thread {
                 if(change){
                     gm.change(currentBlock);
 
-                    uiHandle.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            gm.gameActivity.toDisplay();
-                        }
-                    });
+                    update();;
                     this.change = false;
+                }
+                if(right){
+                    gm.moveRight(currentBlock);
+                    update();
+                    right = false;
                 }
             }
             gm.bugFixEmptyRow(currentBlock);
@@ -57,10 +52,19 @@ public class GameThread extends Thread {
         }
 
     }
+    public void update(){
+        uiHandle.post(new Runnable() {
+            @Override
+            public void run() {
+                gm.gameActivity.toDisplay();
+            }
+        });
+    }
     public void needToChange(){
-
         this.change = true;
-
+    }
+    public void moveRight(){
+        right = true;
     }
 
 
