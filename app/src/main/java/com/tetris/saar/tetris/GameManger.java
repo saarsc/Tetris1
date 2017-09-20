@@ -46,35 +46,6 @@ public class GameManger{
         boolean empty = true;
         //Checking if reached the bottom
         //----------------------------------------
-        //If there is low block
-   /*     if(place[1] == 22){
-           if(currentBlock.isDown()){
-               empty = false;
-           }
-           if(currentBlock.isDownLeft()){
-               empty = false;
-           }
-           if(currentBlock.isDownRight()){
-               empty = false;
-           }
-        }else{
-            if(currentBlock.isDown()){
-                if(this.board[place[0]][place[1]+2] != 0){
-                    empty =false;
-                }
-
-            }
-            if(currentBlock.isDownLeft()){
-                if(this.board[place[0]-1][place[1]+2] != 0){
-                    empty =false;
-                }
-            }
-            if(currentBlock.isDownRight()){
-                if(this.board[place[0]+1][place[1]+2] != 0){
-                    empty =false;
-                }
-            }
-        }*/
         if (currentBlock.isDown() || currentBlock.isDownLeft() || currentBlock.isDownRight()) {
             if (place[1] == 22) {
                 empty = false;
@@ -149,8 +120,6 @@ public class GameManger{
     public void moveDown(Blocks currentBlock) {
         int id = currentBlock.getId();
         int[] place = currentBlock.getPlace();
-
-
         if (place[1] <22){
             if(currentBlock.isDown()) {
                 //Moving down
@@ -179,10 +148,12 @@ public class GameManger{
                 this.board[place[0]][place[1]-1] = 0;
             }
             //Moving left
-            this.board[place[0]-1][place[1]+1] = this.board[place[0]-1][place[1]];
-            if(!currentBlock.isLeftUp()){
-                this.board[place[0]-1][place[1]] = 0;
+        if(currentBlock.isLeft()) {
+            this.board[place[0] - 1][place[1] + 1] = this.board[place[0] - 1][place[1]];
+            if (!currentBlock.isLeftUp()) {
+                this.board[place[0] - 1][place[1]] = 0;
             }
+        }
             //Moving right
         if(currentBlock.isRight()) {
             this.board[place[0] + 1][place[1] + 1] = this.board[place[0] + 1][place[1]];
@@ -194,12 +165,15 @@ public class GameManger{
             this.board[place[0]][place[1]] = this.board[place[0]][place[1] - 1];
             this.board[place[0]][place[1] - 1] = 0;
             //Moving the left up corner
-            this.board[place[0]-1][place[1]] = this.board[place[0]-1][place[1]-1];
-            this.board[place[0]-1][place[1]-1]=0;
+        if(currentBlock.isLeftUp()) {
+            this.board[place[0] - 1][place[1]] = this.board[place[0] - 1][place[1] - 1];
+            this.board[place[0] - 1][place[1] - 1] = 0;
+        }
             //Moving the right up corner
-            this.board[place[0]+1][place[1]] = this.board[place[0]+1][place[1]-1];
-            this.board[place[0]+1][place[1]-1]=0;
-
+        if(currentBlock.isRightUp()) {
+            this.board[place[0] + 1][place[1]] = this.board[place[0] + 1][place[1] - 1];
+            this.board[place[0] + 1][place[1] - 1] = 0;
+        }
             //Setting new spot
             currentBlock.setPlace(place[0],place[1]+1);
 
@@ -304,14 +278,13 @@ public class GameManger{
             }
         }
 
-
-
         if(block.isDown()){
             this.board[place[0]][place[1]+1] = 0;
         }
 
 
     }
+    //Rotation
     public void change(final Blocks currentBlock){
        final Blocks temp = currentBlock;
         if(emptyRot(currentBlock)) {
@@ -322,85 +295,55 @@ public class GameManger{
     }
     public void moveRight(Blocks currentBlock)  {
         int[] place = currentBlock.getPlace();
-        int id = currentBlock.getId();
-
         if(emptyRight(currentBlock)){
             removeBlock(currentBlock);
             currentBlock.setPlace(place[0]+1,place[1]);
             this.board[place[0]-1][place[1]] =0;
             insertBlock(currentBlock);
-           /* //Top line
-            if(currentBlock.isRightUp()){
-                this.board[place[0]+2][place[1]-1] = id;
-            }
-            if(currentBlock.isUp()){
-                this.board[place[0]+1][place[1] - 1] = id;
-            }
-            if(currentBlock.isLeftUp()){
-                this.board[place[0]][place[1]-1] =id;
-            }
-            //Middle line
-            if(currentBlock.isRight()){
-                this.board[place[0]+2][place[1]] =id;
-            }
-            this.board[place[0] +1 ][place[1]] =id;
-            if(currentBlock.isLeft()){
-                this.board[place[0]][place[1]] = id;
-            }
-            //Bottom line
-            if(currentBlock.isDownRight()){
-                this.board[place[0] +2][place[1]+1] = id;
-            }
-            if(currentBlock.isDown()){
-                this.board[place[0]+1][place[1]+1] = id;
-            }
-            if(currentBlock.isDownLeft()){
-                this.board[place[0]][place[1]+1] = id;
-            }
-*/
         }
     }
-    public boolean emptyRight(Blocks currentBlock){
+    public boolean emptyRight(Blocks currentBlock) {
         int[] place = currentBlock.getPlace();
 
-        if(currentBlock.isRightUp() || currentBlock.isRight() || currentBlock.isDownRight()){
-            if(place[0]>=8){
-
+        if (currentBlock.isRightUp() || currentBlock.isRight() || currentBlock.isDownRight()) {
+            if (place[0] >= 8) {
                 return false;
-            }else {
-                if (currentBlock.isRight() && this.board[place[0] +2][place[1]] != 0){
-
+            } else {
+                if (currentBlock.isRight() && this.board[place[0] + 2][place[1]] != 0) {
                     return false;
                 }
-                if(currentBlock.isRightUp() && this.board[place[0]+2][place[1]-1] !=0){
-
+                if (currentBlock.isRightUp() && this.board[place[0] + 2][place[1] - 1] != 0) {
                     return false;
                 }
-                if(currentBlock.isDownLeft() && this.board[place[0]+2][place[1] +1] !=0){
-
+                if (currentBlock.isDownRight() && this.board[place[0] + 2][place[1] + 1] != 0) {
                     return false;
                 }
             }
         }
-        if(place[0]==9){
+        if (place[0] == 9) {
             return false;
-        }else {
-            if (currentBlock.isUp() && !currentBlock.isRightUp()&&this.board[place[0]+1][place[1]-1] !=0){
+        } else {
+            //Up
+            if (currentBlock.isUp() && !currentBlock.isRightUp() && this.board[place[0] + 1][place[1] - 1] != 0) {
                 return false;
             }
-            if(this.board[place[0]+1][place[1]] !=0 && !currentBlock.isRight()){
+            //Center
+            if (this.board[place[0] + 1][place[1]] != 0 && !currentBlock.isRight()) {
                 return false;
             }
-            if(currentBlock.isDownRight()&&this.board[place[0]+1][place[1]+1]!=0 && !currentBlock.isDownRight()){
+            if (currentBlock.isDown() && this.board[place[0] + 1][place[1] + 1] != 0 && !currentBlock.isDownRight()) {
                 return false;
             }
+            return true;
         }
-        return true;
     }
+
+
     public void bugFixEmptyRow(Blocks currentBlock){
         int[] place = currentBlock.getPlace();
-        if(place[1] < 23){
-            if(this.board[place[0]-1][place[1]+1] ==0&&this.board[place[0]][place[1]+1] == 0){
+        boolean check= true;
+     /*   if(place[1] < 23){
+            if(this.board[place[0]][place[1]+1] == 0){
                 if(place[0] !=9){
                     if(this.board[place[0]+1][place[1]+1] ==0){
                         if(isEmptyDown(currentBlock)){
@@ -412,7 +355,33 @@ public class GameManger{
                     moveDown(currentBlock);
                 }
             }
+            if(place[0]!=0) {
+                if (this.board[place[0] - 1][place[1] + 1] == 0) {
+                    if()
+                }
+            }*/
+        if(place[1] < 23){
+            if(this.board[place[0]][place[1]+1] != 0){
+                check =false;
+            }
+            if(place[0]!= 9) {
+                if (this.board[place[0]+1][place[1]+1] != 0){
+                    check = false;
+                }
+            }
+            if(place[0] !=0) {
+                if (this.board[place[0] - 1][place[1] + 1] != 0) {
+                    check = false;
+                }
+            }
+            if(check){
+                if(isEmptyDown(currentBlock)){
+                    moveDown(currentBlock);
+                }
+            }
         }
+
+
     }
     public boolean emptyRot(Blocks currentBlock){
         int[] place = currentBlock.getPlace();
@@ -457,11 +426,80 @@ public class GameManger{
 
      return true;
     }
+    public boolean emptyLeft(Blocks currentBlock) {
+        int[] place = currentBlock.getPlace();
+        if (currentBlock.isLeftUp() || currentBlock.isLeft() || currentBlock.isDownLeft()) {
+            if (place[0] <= 1) {
+                return false;
+            } else {
+                if (currentBlock.isLeft() && this.board[place[0] - 2][place[1]] != 0) {
+                    return false;
+                }
+                if (currentBlock.isLeftUp() && this.board[place[0] - 2][place[1] - 1] != 0) {
+                    return false;
+                }
+                if (currentBlock.isDownLeft() && this.board[place[0] - 2][place[1] + 1] != 0) {
+                    return false;
+                }
+            }
+        }
+        if(place[0] == 0 ){
+            return false;
+        }else{
+            //Up
+            if (currentBlock.isUp() && !currentBlock.isLeftUp() && this.board[place[0] - 1][place[1] - 1] != 0) {
+                return false;
+            }
+            //Center
+            if (this.board[place[0] - 1][place[1]] != 0 && !currentBlock.isLeft()) {
+                return false;
+            }
+            if (currentBlock.isDown() && this.board[place[0] - 1][place[1] + 1] != 0 && !currentBlock.isDownLeft()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    public void moveLeft(Blocks currentBlock){
+        int[] place = currentBlock.getPlace();
+        if(emptyLeft(currentBlock)) {
+            removeBlock(currentBlock);
+            currentBlock.setPlace(place[0] - 1, place[1]);
+            this.board[place[0] + 1][place[1]] = 0;
+            insertBlock(currentBlock);
+        }
+    }
+    public void checkBoard(){
+        int rowId =0;
+        boolean moveDown = true;
+        for(int j= board[0].length -1; j>=2; j--){
+            for(int i = board.length -1; i>=0; i--){
+                if(j==0){
+                    rowId = board[i][j];
+                }
+                if(board[i][j] != rowId){
+                    moveDown = false;
+                }
+            }
+            if(moveDown){
+                pushDown(j);
+            }
+        }
+    }
+    public void pushDown(int j){
+        for(int i=0;i< this.board.length; i++){
+            for(int h=j;0<h;h--){
+                this.board[i][j] = this.board[i][j-1];
+            }
+        }
+    }
     //Return the board so you can display it
     public int[][] getDisplay(){
         return this.board;
     }
 }
+
 /*TODO
 * Add special cases for id==4(line, move all around , insert block, remove )
 * Update the speed to 1000

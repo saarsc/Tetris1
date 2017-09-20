@@ -11,6 +11,7 @@ public class GameThread extends Thread {
     Handler uiHandle;
   static   boolean change =false;
     static boolean right = false;
+    static  boolean left =false;
 
     public GameThread(GameManger gm){
         this.gm = gm;
@@ -20,10 +21,9 @@ public class GameThread extends Thread {
     @Override
     public void run(){
         int i=0;
-        while(i< 10) {
+        while(true) {
             Blocks currentBlock = gm.pickBlock();
             gm.insertBlock(currentBlock);
-
             while (currentBlock.isMoving()) {
                 //Handle the UI update(can not be done in different Threads)
                 update();
@@ -37,7 +37,6 @@ public class GameThread extends Thread {
                 }
                 if(change){
                     gm.change(currentBlock);
-
                     update();;
                     this.change = false;
                 }
@@ -45,10 +44,15 @@ public class GameThread extends Thread {
                     gm.moveRight(currentBlock);
                     update();
                     right = false;
-
+                }
+                if(left){
+                    gm.moveLeft(currentBlock);
+                    update();
+                    left= false;
                 }
             }
             gm.bugFixEmptyRow(currentBlock);
+            gm.checkBoard();
             i++;
         }
 
@@ -65,9 +69,10 @@ public class GameThread extends Thread {
         this.change = true;
     }
     public void moveRight(){
-
         right = true;
-
+    }
+    public void moveLeft(){
+        left=true;
     }
     public void changeText(){
 
