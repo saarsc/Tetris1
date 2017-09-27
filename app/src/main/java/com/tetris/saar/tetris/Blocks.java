@@ -5,7 +5,8 @@ package com.tetris.saar.tetris;
  */
 
 public class Blocks {
-    //Boolean vars that define the blocks around the main block + built for all directions(?)
+    //Main block class all the blocks extend this class
+    //Boolean vars that define the blocks around the main block + built for all directions
     protected  boolean left;
     protected boolean up;
     protected boolean right;
@@ -14,12 +15,11 @@ public class Blocks {
     protected boolean down;
     protected boolean downLeft;
     protected boolean downRight;
-    protected int id;
-    protected int[] place;
-    protected boolean isMoving;
-    protected int rotation;
 
-
+    protected int id; //Block id
+    protected int[] place; //Block place
+    protected boolean isMoving; //Is the block moving
+    protected int rotation; //Which rotation is right now
 
     public Blocks(boolean left, boolean up, boolean right, boolean leftUp, boolean rightUp, boolean down, boolean downLeft, boolean downRight, int id, int i, int j){
         this.left = left;
@@ -38,6 +38,7 @@ public class Blocks {
         this.rotation=0;
 
     }
+    //Getters and Setters
     public int getRotation() {
         return rotation;
     }
@@ -107,6 +108,7 @@ public class Blocks {
     public void setRightUp(boolean rightUp) {
         this.rightUp = rightUp;
     }
+    //Changing the rotation
     public void changeRot() {
 
     }
