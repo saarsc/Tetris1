@@ -572,10 +572,12 @@ public class GameManger{
 }
 
 /*TODO
-* Add special cases for id==4(line, move all around , insert block, remove )
-* Update the speed to 1000
-* move right and left (and all the checks)
-* do the layout
-* All the other bullshit I need for this project which doesn't envolve the game
+Need to finish layout of the main game
+
+Add the line condition
+
+Pause menu?
+
+End of game stuff
 * */
 
