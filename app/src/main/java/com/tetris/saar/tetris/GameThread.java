@@ -22,7 +22,7 @@ public class GameThread extends Thread {
     public void run(){
 
         //While the game is not over
-        while(true) {
+        do {
             Blocks currentBlock = gm.pickBlock(); //Creating a new block
             gm.insertBlock(currentBlock); //Inserting the new block
             while (currentBlock.isMoving()) {
@@ -41,19 +41,19 @@ public class GameThread extends Thread {
                 //Changing the rotations
                 if(change){
                     gm.change(currentBlock);
-                    update();;
+                    //update();;
                     this.change = false;
                 }
                 //Moving right
                 if(right){
                     gm.moveRight(currentBlock);
-                    update();
+                    //update();
                     right = false;
                 }
                 //Moving left
                 if(left){
                     gm.moveLeft(currentBlock);
-                    update();
+                    //update();
                     left= false;
                 }
             }
@@ -61,7 +61,7 @@ public class GameThread extends Thread {
             gm.addBlock(currentBlock); //Adding the block to the list
             gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
             gm.checkBoard(); //Checking for full rows
-        }
+        }while((!gm.endOfGame()));
 
     }
     //Updating the screen

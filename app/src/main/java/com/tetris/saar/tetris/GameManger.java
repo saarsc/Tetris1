@@ -15,6 +15,7 @@ public class GameManger{
     public static final int startJ = 1;
     static int dropSpeed = 250; //Control's the dop speed of the block / Game ticks
     int[][] board; //Main game board
+    int score; //The game score
     GameActivity gameActivity ; // Game activity control
     android.os.Handler uiHandler; //Handler to update the screen from the thread
     //public int getDropSpeed;
@@ -28,6 +29,7 @@ public class GameManger{
         init();
         this.poistionHistory = new ArrayList<>();
         this.blocksHistory =new ArrayList();
+        this.score =0;
     }
 
     //Returning the drop speed
@@ -137,20 +139,20 @@ public class GameManger{
     //Converting position into block
     public boolean fromPosToBlock(final int i, final int j){
        // return this.blocksHistory.get(this.poistionHistory.indexOf(new int[i][j]));
-            uiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    gameActivity.changeText("I " +i + "J" + j);
-                }
-            });
         return true;
     }
     //Move down the block
     public void moveDown(Blocks currentBlock) {
         int id = currentBlock.getId();
         int[] place = currentBlock.getPlace();
+        if(isEmptyDown(currentBlock)){
+            removeBlock(currentBlock);
+            currentBlock.setPlace(place[0],place[1]+1);
+            this.board[place[0]][place[1]-1] =0;
+            insertBlock(currentBlock);
+        }
         //Checking if you can check for the button row
-        if (place[1] <22){
+       /* if (place[1] <22){
             if(currentBlock.isDown()) {
                 //Moving down
                 this.board[place[0]][place[1] + 2] = this.board[place[0]][place[1] + 1];
@@ -207,7 +209,7 @@ public class GameManger{
             //Setting new spot
             currentBlock.setPlace(place[0],place[1]+1);
 
-
+*/
     }
     //Generate a new block based on a random number
     public Blocks pickBlock(){
@@ -513,9 +515,17 @@ public class GameManger{
             insertBlock(currentBlock); // Inserting the block at the new place
         }
     }
+    public boolean endOfGame(){
+     int[] lastPos=  poistionHistory.get(poistionHistory.size()-1);
+        if (lastPos[1] ==0 || lastPos[1] ==1){
+            return  true;
+        }
+        return false;
+    }
     //Checking if there are any full rows
     public void checkBoard(){
         boolean moveDown = true;
+        boolean checkAgain = false;
         for(int j= board[0].length -1; j>=2; j--){
             for(int i =0; i<board.length; i++){
                 if(board[i][j] == 0){
@@ -524,20 +534,34 @@ public class GameManger{
             }
             if(moveDown){
                 pushDown(j);
+                this.score += 100;
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        gameActivity.changeScore(score);
+                    }
+                });
+
+                checkAgain =true;
             }
+            moveDown = true;
+        }
+        if(checkAgain){
+            checkBoard();
         }
     }
     //Moving all the rows down and clearing the full row
     public void pushDown(int j){
         for(int i=0;i< this.board.length; i++){
             for(int h=j;1<=h;h--){
-                if(realBlock(i,j)){
-                    this.board[i][j] = this.board[i][j-1];
+             /*   if(realBlock(i,h)){
+
                 }else {
-                    if (fromPosToBlock(i, j)) {
-                        this.board[i][j - 1] = 0;
+                    if (fromPosToBlock(i, h)) {
+                        this.board[h][h - 1] = 0;
                     }
-                }
+                }*/
+                this.board[i][h] = this.board[i][h-1];
             }
         }
     }
@@ -550,10 +574,8 @@ public class GameManger{
 /*TODO
 * Add special cases for id==4(line, move all around , insert block, remove )
 * Update the speed to 1000
-* Reason for win / lose
 * move right and left (and all the checks)
 * do the layout
-* what needs to happen when a row is filled
 * All the other bullshit I need for this project which doesn't envolve the game
 * */
 

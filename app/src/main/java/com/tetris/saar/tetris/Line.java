@@ -26,7 +26,7 @@ public class Line extends Blocks{
         }else{
             this.rotation = getRotation() +1;
         }
-
+        //Setting all the new block shaped
         switch (rotation){
             case 0: setLeft(true); setUp(false); setRight(true); setDown(false);
                 break;
