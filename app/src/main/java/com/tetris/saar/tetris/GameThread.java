@@ -20,12 +20,11 @@ public class GameThread extends Thread {
     //The main game
     @Override
     public void run(){
-
+        //Blocks nextBlock= gm.pickBlock();
         //While the game is not over
         do {
-            Blocks nextBlock= gm.pickBlock();
-            Blocks currentBlock =nextBlock; //Creating a new block
-            nextBlock = gm.pickBlock();
+            Blocks currentBlock = gm.pickBlock(); //Creating a new block
+           // nextBlock =new Blocks(gm.pickBlock(),gm.startI,gm.startJ);
             gm.insertBlock(currentBlock); //Inserting the new block
             while (currentBlock.isMoving()) {
                 //Handle the UI update(can not be done in different Threads)
@@ -59,6 +58,7 @@ public class GameThread extends Thread {
                     left= false;
                 }
             }
+            gm.setDropSpeed(250);
             gm.addPoistion(currentBlock.getPlace()); //Adding the end position of the block to the list
             gm.addBlock(currentBlock); //Adding the block to the list
             gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
@@ -91,5 +91,8 @@ public class GameThread extends Thread {
     public void changeText(){
 
     }
+    public void changeSpeed(){
+            gm.setDropSpeed(10);
+        }
+    }
 
-}

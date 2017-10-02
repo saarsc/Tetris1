@@ -36,7 +36,22 @@ public class Blocks {
         this.place[0] = i;
         this.place[1]=j;
         this.rotation=0;
-
+    }
+    public Blocks(Blocks block,int i, int j){
+        this.left = block.isLeft();
+        this.up=block.isUp();
+        this.right = block.isRight();
+        this.leftUp = block.isLeftUp();
+        this.rightUp = block.isRightUp();
+        this.down = block.isDown();
+        this.downLeft = block.isDownLeft();
+        this.downRight= block.isDownRight();
+        this.id = block.getId();
+        this.isMoving = true;
+        this.place = new int[2];
+        this.place[0] =i;
+        this.place[1] = j;
+        this.rotation = block.getRotation();
     }
     //Getters and Setters
     public int getRotation() {
