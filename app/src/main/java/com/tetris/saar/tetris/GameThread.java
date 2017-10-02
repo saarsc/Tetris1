@@ -23,7 +23,9 @@ public class GameThread extends Thread {
 
         //While the game is not over
         do {
-            Blocks currentBlock = gm.pickBlock(); //Creating a new block
+            Blocks nextBlock= gm.pickBlock();
+            Blocks currentBlock =nextBlock; //Creating a new block
+            nextBlock = gm.pickBlock();
             gm.insertBlock(currentBlock); //Inserting the new block
             while (currentBlock.isMoving()) {
                 //Handle the UI update(can not be done in different Threads)
