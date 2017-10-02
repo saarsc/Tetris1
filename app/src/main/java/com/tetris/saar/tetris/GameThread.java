@@ -20,11 +20,12 @@ public class GameThread extends Thread {
     //The main game
     @Override
     public void run(){
-        //Blocks nextBlock= gm.pickBlock();
+
         //While the game is not over
         do {
-            Blocks currentBlock = gm.pickBlock(); //Creating a new block
-           // nextBlock =new Blocks(gm.pickBlock(),gm.startI,gm.startJ);
+           // Blocks nextBlock= gm.pickBlock();
+            Blocks currentBlock =gm.pickBlock(); //Creating a new block
+           // nextBlock = gm.pickBlock();
             gm.insertBlock(currentBlock); //Inserting the new block
             while (currentBlock.isMoving()) {
                 //Handle the UI update(can not be done in different Threads)
@@ -75,6 +76,10 @@ public class GameThread extends Thread {
             }
         });
     }
+    //Change Block drop speed
+    public void changeSpeed(){
+        gm.setDropSpeed(10);
+    }
     //Rotation button was pressed
     public void needToChange(){
         this.change = true;
@@ -91,8 +96,5 @@ public class GameThread extends Thread {
     public void changeText(){
 
     }
-    public void changeSpeed(){
-            gm.setDropSpeed(10);
-        }
-    }
 
+}
