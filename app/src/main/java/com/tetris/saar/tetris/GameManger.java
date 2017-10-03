@@ -436,6 +436,7 @@ public class GameManger{
                 }
             }
         }
+        //Checking for the right blocks
         if(currentBlock.isRight() || currentBlock.isDownRight()){
             if(place[1]==23){
                 rot = false;
@@ -452,6 +453,7 @@ public class GameManger{
                 }
             }
         }
+        //Checking for the down blocks
         if(currentBlock.isDown() || currentBlock.isDownLeft()){
             if(place[0] == 0){
                 rot = false;
@@ -468,6 +470,7 @@ public class GameManger{
                 }
             }
         }
+        //Checking for the left block
         if(currentBlock.isLeft()){
             if(place[1]==0){
                 rot = false;
