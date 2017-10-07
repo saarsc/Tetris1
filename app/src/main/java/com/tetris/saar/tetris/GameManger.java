@@ -65,18 +65,18 @@ public class GameManger{
             } else {
                 //Checking specific low row block
                 if (currentBlock.isDown()) {
-                    if (this.board[place[0]][place[1] + 2] != 0) {
+                    if (this.board[place[0]][place[1] + 2] > 0 && this.board[place[0]][place[1] + 2] < 8) {
                         empty = false;
                     }
 
                 }
                 if (currentBlock.isDownLeft()) {
-                    if (this.board[place[0] - 1][place[1] + 2] != 0) {
+                    if (this.board[place[0] - 1][place[1] + 2] > 0 && this.board[place[0] - 1][place[1] + 2] < 8) {
                         empty = false;
                     }
                 }
                 if (currentBlock.isDownRight()) {
-                    if (this.board[place[0] + 1][place[1] + 2] != 0) {
+                    if (this.board[place[0] + 1][place[1] + 2] > 0 && this.board[place[0] + 1][place[1] + 2] < 8) {
                         empty = false;
                     }
                 }
@@ -88,28 +88,28 @@ public class GameManger{
                 empty = false;
             } else {
                 //Under center
-                if (this.board[place[0]][place[1] + 1] != 0 && !currentBlock.isDown()) {
+                if (this.board[place[0]][place[1] + 1] > 0 && this.board[place[0]][place[1] + 1] < 8 && !currentBlock.isDown()) {
                     empty = false;
                 }
                 //Checking under left
                 if (currentBlock.isLeft() && !currentBlock.isDownLeft()) {
-                    if (this.board[place[0] - 1][place[1] + 1] != 0) {
+                    if (this.board[place[0] - 1][place[1] + 1] > 0 && this.board[place[0] - 1][place[1] + 1] < 8) {
                         empty = false;
                     }
                 } else if (currentBlock.isLeftUp()) {
-                    if (this.board[place[0] - 1][place[1]] != 0) {
+                    if (this.board[place[0] - 1][place[1]] > 0 && this.board[place[0] - 1][place[1]] < 8) {
                         empty = false;
                     }
                 }
                 //Checking under right
                 if (currentBlock.isRight() && !currentBlock.isDownRight()) {
-                    if (this.board[place[0] + 1][place[1] + 1] != 0) {
+                    if (this.board[place[0] + 1][place[1] + 1] > 0 && this.board[place[0] + 1][place[1] + 1] < 8) {
                         empty = false;
                     }
 
                 } else
                     //Checking under the top right
-                    if (currentBlock.isRightUp() && this.board[place[0] + 1][place[1]] != 0) {
+                    if (currentBlock.isRightUp() && this.board[place[0] + 1][place[1]] > 0 && this.board[place[0] + 1][place[1]] < 8) {
                         empty = false;
                     }
 
@@ -218,27 +218,34 @@ public class GameManger{
 
             if (pick == 1) {
                 newBlock = new Squre(startI, startJ);
+                newBlock.setNextBlock(new Squre((Squre) newBlock,5,startJ));
             }
             if (pick == 2) {
                 newBlock = new LineAndUpRight(startI, startJ);
+                newBlock.setNextBlock(new LineAndUpRight((LineAndUpRight) newBlock,5,startJ));
             }
             if (pick == 3) {
                 newBlock = new LineAndUpLeft(startI, startJ);
+                newBlock.setNextBlock(new LineAndUpLeft((LineAndUpLeft) newBlock,5,startJ));
             }
             if (pick == 4) {
                 newBlock = new Line(startI, startJ);
+                newBlock.setNextBlock(new Line((Line) newBlock,5,startJ));
             }
             if (pick == 5) {
                 newBlock = new ZShaped(startI, startJ);
+                newBlock.setNextBlock(new ZShaped((ZShaped) newBlock,5,startJ));
             }
             if (pick == 6) {
                 newBlock = new LineAndMiddle(startI, startJ);
+                newBlock.setNextBlock(new LineAndMiddle((LineAndMiddle) newBlock,5,startJ));
             }
             if (pick == 7) {
                 newBlock = new SShaped(startI, startJ);
-
+                newBlock.setNextBlock(new SShaped((SShaped) newBlock,5,startJ));
         }
-        insertBlock(newBlock);
+/*        insertBlock(newBlock.getNextBlock());
+        insertBlock(newBlock);*/
         return newBlock;
 
     }
@@ -314,8 +321,6 @@ public class GameManger{
         if(block.isDown()){
             this.board[place[0]][place[1]+1] = 0;
         }
-
-
     }
     //Rotation
     public void change(final Blocks currentBlock){
@@ -324,16 +329,28 @@ public class GameManger{
             removeBlock(currentBlock);
             currentBlock.changeRot();
             insertBlock(currentBlock);
+            //Land block handle
+            removeBlock(currentBlock.getNextBlock());
+            currentBlock.getNextBlock().changeRot();
+            setEmptySpaceBlockPos(currentBlock.getNextBlock());
+            insertBlock(currentBlock.getNextBlock());
         }
     }
     //Moving right
     public void moveRight(Blocks currentBlock)  {
         int[] place = currentBlock.getPlace();
+        int[] oldPlace = currentBlock.getNextBlock().getPlace();
         if(emptyRight(currentBlock)){
             removeBlock(currentBlock); //Removing the block from the old position
             currentBlock.setPlace(place[0]+1,place[1]); // Setting a new place for the main block
             this.board[place[0]-1][place[1]] =0; // Removing the main block
             insertBlock(currentBlock); //Inserting the new block
+            //Land block handle
+            removeBlock(currentBlock.getNextBlock());
+            currentBlock.getNextBlock().setPlace(currentBlock.getPlace()[0],currentBlock.getPlace()[1]);
+            this.board[oldPlace[0]][oldPlace[1]] =0;
+            setEmptySpaceBlockPos(currentBlock.getNextBlock());
+            insertBlock(currentBlock.getNextBlock());
         }
     }
     //Checking the block can move right
@@ -347,15 +364,15 @@ public class GameManger{
             } else {
                 //Checking for Specific empty block
                 //Right block
-                if (currentBlock.isRight() && this.board[place[0] + 2][place[1]] != 0) {
+                if (currentBlock.isRight() && this.board[place[0] + 2][place[1]] > 0 && this.board[place[0] + 2][place[1]] < 8) {
                     return false;
                 }
                 //Top right block
-                if (currentBlock.isRightUp() && this.board[place[0] + 2][place[1] - 1] != 0) {
+                if (currentBlock.isRightUp() && this.board[place[0] + 2][place[1] - 1] >0 && this.board[place[0] + 2][place[1] - 1] < 8) {
                     return false;
                 }
                 //Down right block
-                if (currentBlock.isDownRight() && this.board[place[0] + 2][place[1] + 1] != 0) {
+                if (currentBlock.isDownRight() && this.board[place[0] + 2][place[1] + 1] >0 && this.board[place[0] + 2][place[1] + 1] <8) {
                     return false;
                 }
             }
@@ -366,15 +383,15 @@ public class GameManger{
             return false;
         } else {
             //Up
-            if (currentBlock.isUp() && !currentBlock.isRightUp() && this.board[place[0] + 1][place[1] - 1] != 0) {
+            if (currentBlock.isUp() && !currentBlock.isRightUp() && this.board[place[0] + 1][place[1] - 1] > 0 && this.board[place[0] + 1][place[1] - 1] < 8) {
                 return false;
             }
             //Center
-            if (this.board[place[0] + 1][place[1]] != 0 && !currentBlock.isRight()) {
+            if (this.board[place[0] + 1][place[1]] >0 &&this.board[place[0] + 1][place[1]] <8 && !currentBlock.isRight()) {
                 return false;
             }
             //Down
-            if (currentBlock.isDown() && this.board[place[0] + 1][place[1] + 1] != 0 && !currentBlock.isDownRight()) {
+            if (currentBlock.isDown() && this.board[place[0] + 1][place[1] + 1] > 0 && currentBlock.isDown() && this.board[place[0] + 1][place[1] + 1] < 8&& !currentBlock.isDownRight()) {
                 return false;
             }
             return true;
@@ -388,18 +405,18 @@ public class GameManger{
         //If it's not at the bottom row
         if(place[1] < 23){
             //Checking for the empty block
-            if(this.board[place[0]][place[1]+1] != 0){
+            if(this.board[place[0]][place[1]+1] > 0 && this.board[place[0]][place[1]+1] < 8){
                 check =false;
             }
             //Checking if it's not on the right edge of the screen + empty down right
             if(place[0]!= 9) {
-                if (this.board[place[0]+1][place[1]+1] != 0){
+                if (this.board[place[0]+1][place[1]+1] > 0 && this.board[place[0]+1][place[1]+1] < 8){
                     check = false;
                 }
             }
             //Checking if it's not at the left side of the screen + empty down left
             if(place[0] !=0) {
-                if (this.board[place[0] - 1][place[1] + 1] != 0) {
+                if (this.board[place[0] - 1][place[1] + 1] > 0 &&this.board[place[0] - 1][place[1] + 1] < 8) {
                     check = false;
                 }
             }
@@ -421,17 +438,17 @@ public class GameManger{
                 rot = false;
             }else {
                 if (currentBlock.isLeftUp()) {
-                    if (this.board[place[0] + 1][place[1] - 1] != 0 && !currentBlock.isRightUp()) {
+                    if (this.board[place[0] + 1][place[1] - 1] > 0 &&this.board[place[0] + 1][place[1] - 1] < 8 && !currentBlock.isRightUp()) {
                         rot = false;
                     }
                 }
                 if (currentBlock.isUp()) {
-                    if (this.board[place[0] + 1][place[1]] != 0 && !currentBlock.isRight()) {
+                    if (this.board[place[0] + 1][place[1]] > 0 && this.board[place[0] + 1][place[1]] <8 && !currentBlock.isRight()) {
                         rot = false;
                     }
                 }
                 if (currentBlock.isRightUp()) {
-                    if (place[1] < 23 && this.board[place[0] + 1][place[1] + 1] != 0 && !currentBlock.isDownRight()) {
+                    if (place[1] < 23 && this.board[place[0] + 1][place[1] + 1] > 0 && place[1] < 23 && this.board[place[0] + 1][place[1] + 1] < 8 && !currentBlock.isDownRight()) {
                         rot = false;
                     }
                 }
@@ -443,12 +460,12 @@ public class GameManger{
                 rot = false;
             }else{
                 if(currentBlock.isRight()){
-                    if(this.board[place[0]][place[1]+1]!=0 && !currentBlock.isDown()){
+                    if(this.board[place[0]][place[1]+1]>0 && this.board[place[0]][place[1]+1] < 8 && !currentBlock.isDown()){
                         rot= false;
                     }
                 }
                 if(currentBlock.isDownRight()){
-                    if(place[0]> 0&&this.board[place[0]-1][place[1]+1] != 0 && !currentBlock.isDownLeft()){
+                    if(place[0]> 0&&this.board[place[0]-1][place[1]+1] > 0 && this.board[place[0]-1][place[1]+1] < 8 && !currentBlock.isDownLeft()){
                         rot = false;
                     }
                 }
@@ -460,12 +477,12 @@ public class GameManger{
                 rot = false;
             }else{
                 if(currentBlock.isDown()){
-                    if(this.board[place[0]-1][place[1]]!= 0 && !currentBlock.isLeft()){
+                    if(this.board[place[0]-1][place[1]]> 0 && this.board[place[0]-1][place[1]]< 8&& !currentBlock.isLeft()){
                         rot = false;
                     }
                 }
                 if(currentBlock.isDownLeft()){
-                    if(place[1] > 0&&this.board[place[0]-1][place[1]-1] != 0 && !currentBlock.isLeftUp()){
+                    if(place[1] > 0&&this.board[place[0]-1][place[1]-1] > 0 && place[1] > 0&&this.board[place[0]-1][place[1]-1] < 8 && !currentBlock.isLeftUp()){
                         rot = false;
                     }
                 }
@@ -476,57 +493,11 @@ public class GameManger{
             if(place[1]==0){
                 rot = false;
             }else{
-                if(this.board[place[0]][place[1]-1]!= 0 && !currentBlock.isUp()){
+                if(this.board[place[0]][place[1]-1]> 0 && this.board[place[0]][place[1]-1] < 8&& !currentBlock.isUp()){
                     rot = false;
                 }
             }
         }
-  /*      //Checking for the left up block
-        if(currentBlock.isLeftUp() &&place[0]< 9 && !currentBlock.isRightUp() && place[1] ==0){
-            if(this.board[place[0]+1][place[1]-1] != 0){
-                return false;
-            }
-        }
-        //Checking for the up block
-        if(currentBlock.isUp()&&place[0]< 9 &&!currentBlock.isRight()){
-            if(this.board[place[0] +1][place[1]] != 0){
-                return false;
-            }
-        }
-        //Checking for the right up block
-        if(currentBlock.isRightUp() &&place[0]< 9 && place[1] < 23  &&!currentBlock.isDownRight()){
-            if(this.board[place[0]+1][place[1] +1] != 0){
-                return false;
-            }
-        }
-        //Checking for the right block
-        if(currentBlock.isRight() && place[1] < 23 &&!currentBlock.isDown()){
-            if(this.board[place[0]][place[1]+1] != 0){
-                return false;
-            }
-        }
-        //Checking for the down right down block
-        if(currentBlock.isDownRight() && place[1] < 23 && place[0] > 0  &&!currentBlock.isDownLeft()){
-            if(this.board[place[0]-1][place[1]+1] != 0){
-                return false;
-            }
-        }
-        //Checking for the down block
-        if(currentBlock.isDown() & place[0] > 0  &&!currentBlock.isLeft()){
-            if(this.board[place[0]-1][place[1]]!=0){
-                return false;
-            }
-        }
-        //Checking for the down left block
-        if(currentBlock.isDownLeft() & place[0] > 0 && place[1] ==0 &&!currentBlock.isLeftUp()){
-            if(this.board[place[0]-1][place[1]-1]!= 0){
-                return false;
-            }
-        }
-        //Checking for the left block
-        if(currentBlock.isLeft() && place[1] ==0){
-            return false;
-        }*/
      return rot;
     }
     //Checking if can move left
@@ -540,15 +511,15 @@ public class GameManger{
             } else {
                 //Checking for a specific left block
                 //Left block
-                if (currentBlock.isLeft() && this.board[place[0] - 2][place[1]] != 0) {
+                if (currentBlock.isLeft() && this.board[place[0] - 2][place[1]] > 0 && this.board[place[0] - 2][place[1]] < 8) {
                     return false;
                 }
                 //Left up block
-                if (currentBlock.isLeftUp() && this.board[place[0] - 2][place[1] - 1] != 0) {
+                if (currentBlock.isLeftUp() && this.board[place[0] - 2][place[1] - 1] > 0 && this.board[place[0] - 2][place[1] - 1] < 8) {
                     return false;
                 }
                 //Down left block
-                if (currentBlock.isDownLeft() && this.board[place[0] - 2][place[1] + 1] != 0) {
+                if (currentBlock.isDownLeft() && this.board[place[0] - 2][place[1] + 1] > 0 && this.board[place[0] - 2][place[1] + 1] < 8) {
                     return false;
                 }
             }
@@ -558,15 +529,15 @@ public class GameManger{
             return false;
         }else{
             //Up
-            if (currentBlock.isUp() && !currentBlock.isLeftUp() && this.board[place[0] - 1][place[1] - 1] != 0) {
+            if (currentBlock.isUp() && !currentBlock.isLeftUp() && this.board[place[0] - 1][place[1] - 1] > 0 && this.board[place[0] - 1][place[1] - 1] < 8) {
                 return false;
             }
             //Center
-            if (this.board[place[0] - 1][place[1]] != 0 && !currentBlock.isLeft()) {
+            if (this.board[place[0] - 1][place[1]] > 0 && this.board[place[0] - 1][place[1]] < 8 && !currentBlock.isLeft()) {
                 return false;
             }
             //Down
-            if (currentBlock.isDown() && this.board[place[0] - 1][place[1] + 1] != 0 && !currentBlock.isDownLeft()) {
+            if (currentBlock.isDown() && this.board[place[0] - 1][place[1] + 1] > 0 && this.board[place[0] - 1][place[1] + 1] < 8 && !currentBlock.isDownLeft()) {
                 return false;
             }
         }
@@ -575,11 +546,18 @@ public class GameManger{
     //Move left
     public void moveLeft(Blocks currentBlock){
         int[] place = currentBlock.getPlace();
+        int[] oldPlace =currentBlock.getNextBlock().getPlace();
         if(emptyLeft(currentBlock)) {
             removeBlock(currentBlock); //Removing the block from the current place
             currentBlock.setPlace(place[0] - 1, place[1]); //Setting the place of the block at the new point
             this.board[place[0] + 1][place[1]] = 0; // Removing the old block from the old position
             insertBlock(currentBlock); // Inserting the block at the new place
+            //Land block handle
+            removeBlock(currentBlock.getNextBlock());
+            currentBlock.getNextBlock().setPlace(currentBlock.getPlace()[0],currentBlock.getPlace()[1]);
+            this.board[oldPlace[0]][oldPlace[1]] =0;
+            setEmptySpaceBlockPos(currentBlock.getNextBlock());
+            insertBlock(currentBlock.getNextBlock());
         }
     }
     /*public boolean endOfGame(){
@@ -628,7 +606,7 @@ public class GameManger{
         int atOnce =1;
         for(int j= board[0].length -1; j>=2; j--){
             for(int i =0; i<board.length; i++){
-                if(board[i][j] == 0){
+                if(board[i][j] == 0 || board[i][j] ==8){
                     moveDown = false;
                 }
             }
@@ -677,6 +655,18 @@ public class GameManger{
             }
         }
     }
+    public void setEmptySpaceBlockPos(Blocks emptySpot){
+     /*   int j=0;
+        int i=emptySpot.getPlace()[0];
+        while(this.board[i][j] == 0){
+            j++;
+        }
+        emptySpot.setPlace(i,j);*/
+     while(isEmptyDown(emptySpot)){
+         emptySpot.setPlace(emptySpot.getPlace()[0],emptySpot.getPlace()[1]+1);
+     }
+
+    }
     //Return the board so you can display it
     public int[][] getDisplay(){
         return this.board;
@@ -684,12 +674,9 @@ public class GameManger{
 }
 
 /*TODO
-Need to finish layout of the main game
+Game -- need to design this bullshit + recreate the alert dialog
+How to play - everything
 
-Add the line condition
-
-Pause menu?
-
-End of game stuff
+onBackPressed for EVERYTHING
 * */
 

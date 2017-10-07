@@ -49,6 +49,8 @@ public class GameThread extends Thread {
                 }
             });
             gm.insertBlock(currentBlock); //Inserting the new block
+            gm.setEmptySpaceBlockPos(currentBlock.getNextBlock());
+            gm.insertBlock(currentBlock.getNextBlock());
             gm.moveDown(currentBlock);
             while (currentBlock.isMoving()) {
                 //Handle the UI update(can not be done in different Threads)
@@ -99,8 +101,10 @@ public class GameThread extends Thread {
     }
     //Creating a list of blocks to use
     public void init(){
-        for(int i=0; i< 20; i++){
-            blockList.add(gm.pickBlock());
+        for(int i=0; i< 50; i++){
+            Blocks temp = gm.pickBlock();
+            temp.setNextBlock(new Blocks(temp,gm.startI,gm.startJ));
+            blockList.add(temp);
         }
     }
     //Updating the screen
