@@ -215,28 +215,29 @@ public class GameManger{
         Random rnd = new Random();
         int pick = rnd.nextInt(7)+1;
         Blocks newBlock = null;
-        if(pick ==1){
-             newBlock =new Squre(startI,startJ);
-        }
-        if(pick ==2 ){
-             newBlock = new LineAndUpRight(startI,startJ);
-        }
-        if(pick ==3){
-            newBlock = new LineAndUpLeft(startI,startJ);
-        }
-        if(pick==4){
-            newBlock = new Line(startI,startJ);
-        }
-        if(pick==5){
-            newBlock = new ZShaped(startI,startJ);
-        }
-        if(pick==6){
-            newBlock = new LineAndMiddle(startI,startJ);
-        }
-        if(pick==7){
-            newBlock = new SShaped(startI,startJ);
-        }
 
+            if (pick == 1) {
+                newBlock = new Squre(startI, startJ);
+            }
+            if (pick == 2) {
+                newBlock = new LineAndUpRight(startI, startJ);
+            }
+            if (pick == 3) {
+                newBlock = new LineAndUpLeft(startI, startJ);
+            }
+            if (pick == 4) {
+                newBlock = new Line(startI, startJ);
+            }
+            if (pick == 5) {
+                newBlock = new ZShaped(startI, startJ);
+            }
+            if (pick == 6) {
+                newBlock = new LineAndMiddle(startI, startJ);
+            }
+            if (pick == 7) {
+                newBlock = new SShaped(startI, startJ);
+
+        }
         insertBlock(newBlock);
         return newBlock;
 
@@ -475,7 +476,7 @@ public class GameManger{
             if(place[1]==0){
                 rot = false;
             }else{
-                if(this.board[place[0]][place[1]-1]!= 0 && currentBlock.isUp()){
+                if(this.board[place[0]][place[1]-1]!= 0 && !currentBlock.isUp()){
                     rot = false;
                 }
             }
@@ -581,10 +582,42 @@ public class GameManger{
             insertBlock(currentBlock); // Inserting the block at the new place
         }
     }
-    public boolean endOfGame(){
+    /*public boolean endOfGame(){
      int[] lastPos=  poistionHistory.get(poistionHistory.size()-1);
         if (lastPos[1] ==0 || lastPos[1] ==1){
+            uiHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    gameActivity.gameOver();
+                }
+            });
             return  true;
+        }
+        return false;
+    }*/
+    public boolean endOfGame(Blocks curenntBlock){
+        int[] lastPos=  blocksHistory.get(blocksHistory.size()-1).getPlace();
+        if(curenntBlock.isUp() || curenntBlock.isLeftUp() || curenntBlock.isRightUp()){
+            if (lastPos[1] == startJ +1&& !curenntBlock.isMoving()) {
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        gameActivity.gameOver();
+                    }
+                });
+                return true;
+            }
+        }
+        else {
+            if (lastPos[1] == startJ && !curenntBlock.isMoving()) {
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        gameActivity.gameOver();
+                    }
+                });
+                return true;
+            }
         }
         return false;
     }
@@ -592,6 +625,7 @@ public class GameManger{
     public void checkBoard(){
         boolean moveDown = true;
         boolean checkAgain = false;
+        int atOnce =1;
         for(int j= board[0].length -1; j>=2; j--){
             for(int i =0; i<board.length; i++){
                 if(board[i][j] == 0){
@@ -600,15 +634,27 @@ public class GameManger{
             }
             if(moveDown){
                 pushDown(j);
-                this.score += 100;
+                if(atOnce ==1 ){
+                    this.score += 40 * ((23-j)+1);
+                }
+                if(atOnce == 2){
+                    this.score += 100 * ((23-j)+1);
+                }
+                if(atOnce == 3){
+                    this.score += 300 * ((23-j)+1);
+                }
+                if(atOnce >= 4){
+                    this.score += 1200 * ((23-j)+1);
+                }
+                //this.score += 100;
                 uiHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         gameActivity.changeScore(score);
                     }
                 });
-
                 checkAgain =true;
+                atOnce++;
             }
             moveDown = true;
         }

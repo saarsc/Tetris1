@@ -21,6 +21,7 @@ public class Blocks {
     protected boolean isMoving; //Is the block moving
     protected int rotation; //Which rotation is right now
 
+    protected Blocks nextBlock; //Holds the next block
     public Blocks(boolean left, boolean up, boolean right, boolean leftUp, boolean rightUp, boolean down, boolean downLeft, boolean downRight, int id, int i, int j){
         this.left = left;
         this.up = up;
@@ -36,6 +37,16 @@ public class Blocks {
         this.place[0] = i;
         this.place[1]=j;
         this.rotation=0;
+
+    }
+    public Blocks getNextBlock(){
+        return this.nextBlock;
+    }
+    public boolean hasNextBlock(){
+        return this.nextBlock != null;
+    }
+    protected void setNextBlock(Blocks nextBlock){
+        this.nextBlock= nextBlock;
     }
     public Blocks(Blocks block,int i, int j){
         this.left = block.isLeft();
