@@ -45,6 +45,7 @@ public class Blocks {
     public boolean hasNextBlock(){
         return this.nextBlock != null;
     }
+    //Where the block is going to land
     protected void setNextBlock(Blocks nextBlock){
         this.nextBlock= nextBlock;
     }
@@ -57,7 +58,7 @@ public class Blocks {
         this.down = block.isDown();
         this.downLeft = block.isDownLeft();
         this.downRight= block.isDownRight();
-        this.id = block.getId();
+        this.id = 8;
         this.isMoving = true;
         this.place = new int[2];
         this.place[0] =i;
@@ -162,4 +163,6 @@ public class Blocks {
     public void setDownRight(boolean downRight) {
         this.downRight = downRight;
     }
+
+
 }

@@ -8,6 +8,9 @@ public class SShaped extends Blocks {
     public SShaped(int i, int j){
         super(true,true,false,false,true,false,false,false,7,i,j);
     }
+    public SShaped(SShaped line , int i, int j){
+        super(line,i,j);
+    }
     public int getId() {
         return id;
     }
@@ -20,28 +23,60 @@ public class SShaped extends Blocks {
     }
     @Override
     public void changeRot() {
-        if(getRotation() ==3){
-            this.rotation = 0;
-        }
-        else{
-            this.rotation = getRotation() +1;
-        }
-        switch(rotation){
-            case 0: setLeft(true); setRight(false); setRightUp(true); setUp(true); setDownRight(false);
-                break;
-            case 1:  setLeft(false); setRight(true); setRightUp(false);setUp(true); setDownRight(true);
-                break;
-            case 2: setLeft(true); setRight(false); setRightUp(true); setUp(true); setDownRight(false);
-                break;
-            case 3:
-                setLeft(false); setRight(true); setRightUp(false);setUp(true); setDownRight(true);
-                break;
+        if(this.id==8 && this.getPlace()[1] ==23){
+            this.setPlace(this.getPlace()[0],this.getPlace()[1]-1);
+            changeRot();
+        }else {
+            if (getRotation() == 3) {
+                this.rotation = 0;
+            } else {
+                this.rotation = getRotation() + 1;
+            }
+            switch (rotation) {
+                case 0:
+                    setLeft(true);
+                    setRight(false);
+                    setRightUp(true);
+                    setUp(true);
+                    setDownRight(false);
+                    break;
+                case 1:
+                    setLeft(false);
+                    setRight(true);
+                    setRightUp(false);
+                    setUp(true);
+                    setDownRight(true);
+                    break;
+                case 2:
+                    setLeft(true);
+                    setRight(false);
+                    setRightUp(true);
+                    setUp(true);
+                    setDownRight(false);
+                    break;
+                case 3:
+                    setLeft(false);
+                    setRight(true);
+                    setRightUp(false);
+                    setUp(true);
+                    setDownRight(true);
+                    break;
+            }
         }
     }
     public int[] getPlace() {
         return place;
     }
-
+    public Blocks getNextBlock(){
+        return this.nextBlock;
+    }
+    public boolean hasNextBlock(){
+        return this.nextBlock != null;
+    }
+    //Where the block is going to land
+    protected void setNextBlock(Blocks nextBlock){
+        this.nextBlock= nextBlock;
+    }
     public void setPlace(int i, int j) {
         this.place[0] =i;
         this.place[1] =j;

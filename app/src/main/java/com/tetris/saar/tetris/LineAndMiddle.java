@@ -8,6 +8,9 @@ public class LineAndMiddle extends Blocks {
     public LineAndMiddle(int i , int j){
         super(true,true,true,false,false,false,false,false,6,i,j);
     }
+    public LineAndMiddle(LineAndMiddle line , int i, int j){
+        super(line,i,j);
+    }
     public int getId() {
         return id;
     }
@@ -20,21 +23,52 @@ public class LineAndMiddle extends Blocks {
     }
 @Override
     public void changeRot() {
-        if(getRotation() ==3 ){
-            this.rotation =0;
-        }else{
-            this.rotation = getRotation() +1;
+    if(this.id==8 && this.getPlace()[1] ==23){
+        this.setPlace(this.getPlace()[0],this.getPlace()[1]-1);
+        changeRot();
+    }else {
+        if (getRotation() == 3) {
+            this.rotation = 0;
+        } else {
+            this.rotation = getRotation() + 1;
         }
-        switch(rotation){
-            case 0: setUp(true); setLeft(true); setRight(true); setDown(false);
+        switch (rotation) {
+            case 0:
+                setUp(true);
+                setLeft(true);
+                setRight(true);
+                setDown(false);
                 break;
-            case 1: setUp(true); setRight(true); setDown(true); setLeft(false);
+            case 1:
+                setUp(true);
+                setRight(true);
+                setDown(true);
+                setLeft(false);
                 break;
-            case 2: setLeft(true); setRight(true); setDown(true); setUp(false);
+            case 2:
+                setLeft(true);
+                setRight(true);
+                setDown(true);
+                setUp(false);
                 break;
-            case 3: setUp(true); setLeft(true);setDown(true); setRight(false);
+            case 3:
+                setUp(true);
+                setLeft(true);
+                setDown(true);
+                setRight(false);
                 break;
         }
+    }
+    }
+    public Blocks getNextBlock(){
+        return this.nextBlock;
+    }
+    public boolean hasNextBlock(){
+        return this.nextBlock != null;
+    }
+    //Where the block is going to land
+    protected void setNextBlock(Blocks nextBlock){
+        this.nextBlock= nextBlock;
     }
     public int[] getPlace() {
         return place;

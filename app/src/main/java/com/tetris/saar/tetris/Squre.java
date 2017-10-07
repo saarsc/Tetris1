@@ -9,7 +9,9 @@ public class Squre extends Blocks{
     public Squre(int i, int j){
        super(false, true,true, false,true,false, false, false,1,i,j);
     }
-
+    public Squre(Squre line , int i, int j){
+        super(line,i,j);
+    }
     //Get + Set
     public int getId() {
         return id;
@@ -36,7 +38,16 @@ public class Squre extends Blocks{
         return isMoving;
     }
 
-
+    public Blocks getNextBlock(){
+        return this.nextBlock;
+    }
+    public boolean hasNextBlock(){
+        return this.nextBlock != null;
+    }
+    //Where the block is going to land
+    protected void setNextBlock(Blocks nextBlock){
+        this.nextBlock= nextBlock;
+    }
     public void setMoving(boolean moving) {
         isMoving = moving;
     }

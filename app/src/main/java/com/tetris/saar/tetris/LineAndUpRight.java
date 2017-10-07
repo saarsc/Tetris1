@@ -8,27 +8,77 @@ public class LineAndUpRight extends Blocks{
     public LineAndUpRight(int i, int j){
         super(true,false,true,false,true,false,false,false,2,i,j);
     }
+    public LineAndUpRight(LineAndUpRight line , int i, int j){
+        super(line,i,j);
+    }
     public int getRotation() {
         return rotation;
     }
     @Override
     public void changeRot() {
-        if(getRotation() ==3 ){
-            this.rotation =0;
-        }else{
-            this.rotation = getRotation() +1;
-        }
-        switch (rotation){
-            case 0: setRightUp(true);setRight(true);setLeft(true); setUp(false);setDownRight(false);setDownLeft(false); setDown(false); setLeftUp(false);
-                break;
-            case 1: setUp(true); setDown(true); setDownRight(true); setLeft(false); setRight(false); setRightUp(false); setLeftUp(false); setDownLeft(false);
-                break;
-            case 2: setDownLeft(true);setLeft(true);setRight(true); setDown(false);setDownRight(false); setLeftUp(false); setUp(false); setRightUp(false);
-                break;
-            case 3: setUp(true); setLeftUp(true); setDown(true); setLeft(false); setDownLeft(false); setDownRight(false); setRight(false); setRightUp(false);
-                break;
+        if(this.id==8 && this.getPlace()[1] ==23){
+            this.setPlace(this.getPlace()[0],this.getPlace()[1]-1);
+            changeRot();
+        }else {
+            if (getRotation() == 3) {
+                this.rotation = 0;
+            } else {
+                this.rotation = getRotation() + 1;
+            }
+            switch (rotation) {
+                case 0:
+                    setRightUp(true);
+                    setRight(true);
+                    setLeft(true);
+                    setUp(false);
+                    setDownRight(false);
+                    setDownLeft(false);
+                    setDown(false);
+                    setLeftUp(false);
+                    break;
+                case 1:
+                    setUp(true);
+                    setDown(true);
+                    setDownRight(true);
+                    setLeft(false);
+                    setRight(false);
+                    setRightUp(false);
+                    setLeftUp(false);
+                    setDownLeft(false);
+                    break;
+                case 2:
+                    setDownLeft(true);
+                    setLeft(true);
+                    setRight(true);
+                    setDown(false);
+                    setDownRight(false);
+                    setLeftUp(false);
+                    setUp(false);
+                    setRightUp(false);
+                    break;
+                case 3:
+                    setUp(true);
+                    setLeftUp(true);
+                    setDown(true);
+                    setLeft(false);
+                    setDownLeft(false);
+                    setDownRight(false);
+                    setRight(false);
+                    setRightUp(false);
+                    break;
 
+            }
         }
+    }
+    public Blocks getNextBlock(){
+        return this.nextBlock;
+    }
+    public boolean hasNextBlock(){
+        return this.nextBlock != null;
+    }
+    //Where the block is going to land
+    protected void setNextBlock(Blocks nextBlock){
+        this.nextBlock= nextBlock;
     }
     public int getId() {
         return id;

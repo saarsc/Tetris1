@@ -8,6 +8,9 @@ public class ZShaped extends Blocks{
     public ZShaped(int i, int j){
         super(false,true,true,true,false,false,false,false,5,i,j);
     }
+    public ZShaped(ZShaped line , int i, int j){
+        super(line,i,j);
+    }
     //Get + Set
     public int getId() {
         return id;
@@ -25,25 +28,60 @@ public class ZShaped extends Blocks{
         this.place[0] =i;
         this.place[1] =j;
     }
+    public Blocks getNextBlock(){
+        return this.nextBlock;
+    }
+    public boolean hasNextBlock(){
+        return this.nextBlock != null;
+    }
+    //Where the block is going to land
+    protected void setNextBlock(Blocks nextBlock){
+        this.nextBlock= nextBlock;
+    }
     public int getRotation() {
         return rotation;
     }
     @Override
     public void changeRot() {
-        if(getRotation() ==3 ){
-            this.rotation =0;
-        }else{
-            this.rotation = getRotation() +1;
-        }
-        switch (rotation){
-            case 0: setUp(true); setRight(true); setLeftUp(true); setLeft(false); setDownLeft(false);
-                break;
-            case 1: setUp(true); setLeft(true); setDownLeft(true); setRight(false); setLeftUp(false);
-                break;
-            case 2:setUp(true); setRight(true); setLeftUp(true); setLeft(false); setDownLeft(false);
-                break;
-            case 3: setUp(true); setLeft(true); setDownLeft(true); setRight(false); setLeftUp(false);
-                break;
+        if(this.id==8 && this.getPlace()[1] ==23){
+            this.setPlace(this.getPlace()[0],this.getPlace()[1]-1);
+            changeRot();
+        }else {
+            if (getRotation() == 3) {
+                this.rotation = 0;
+            } else {
+                this.rotation = getRotation() + 1;
+            }
+            switch (rotation) {
+                case 0:
+                    setUp(true);
+                    setRight(true);
+                    setLeftUp(true);
+                    setLeft(false);
+                    setDownLeft(false);
+                    break;
+                case 1:
+                    setUp(true);
+                    setLeft(true);
+                    setDownLeft(true);
+                    setRight(false);
+                    setLeftUp(false);
+                    break;
+                case 2:
+                    setUp(true);
+                    setRight(true);
+                    setLeftUp(true);
+                    setLeft(false);
+                    setDownLeft(false);
+                    break;
+                case 3:
+                    setUp(true);
+                    setLeft(true);
+                    setDownLeft(true);
+                    setRight(false);
+                    setLeftUp(false);
+                    break;
+            }
         }
     }
     public boolean isMoving() {
