@@ -88,6 +88,7 @@ public class GameThread extends Thread {
             gm.addPoistion(currentBlock.getPlace()); //Adding the end position of the block to the list
             gm.addBlock(currentBlock); //Adding the block to the list
             gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
+            gm.landBlockBugFix();
             gm.checkBoard(); //Checking for full rows
 
             //currentBlock.setNextBlock(gm.pickBlock());
