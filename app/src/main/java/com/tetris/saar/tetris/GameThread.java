@@ -14,7 +14,7 @@ public class GameThread extends Thread {
   static   boolean change =false; //For changing the rotation
     static boolean right = false; //For moving right
     static  boolean left =false; //For moving left
-    static boolean gameOver = false;
+    static boolean pause = false; //
     int newNextBlock = 0;
 
     ArrayList<Blocks> blockList = new ArrayList<>();
@@ -32,73 +32,79 @@ public class GameThread extends Thread {
         //gm.moveDown(currentBlock);
         //While the game is not over
         do {
-
-            currentBlock = blockList.get(0);
-            blockList.remove(0);
-            //Blocks nextBlock= gm.pickBlock();
-            //Creating a new block
-            // nextBlock = gm.pickBlock();
-            if(blockList.isEmpty()){
-                init();
-            }
-            final Blocks finalNextBlock = blockList.get(0);
-            uiHandle.post(new Runnable() {
-                @Override
-                public void run() {
-                    gm.gameActivity.displayNextBlock(finalNextBlock);
+            if(!pause) {
+                currentBlock = blockList.get(0);
+                blockList.remove(0);
+                //Blocks nextBlock= gm.pickBlock();
+                //Creating a new block
+                // nextBlock = gm.pickBlock();
+                if (blockList.isEmpty()) {
+                    init();
                 }
-            });
-            gm.insertBlock(currentBlock); //Inserting the new block
-            gm.setEmptySpaceBlockPos(currentBlock.getNextBlock());
-            gm.insertBlock(currentBlock.getNextBlock());
-            gm.moveDown(currentBlock);
-            while (currentBlock.isMoving()) {
-                //Handle the UI update(can not be done in different Threads)
+                final Blocks finalNextBlock = blockList.get(0);
+                uiHandle.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        gm.gameActivity.displayNextBlock(finalNextBlock);
+                    }
+                });
+                gm.insertBlock(currentBlock); //Inserting the new block
+                gm.setEmptySpaceBlockPos(currentBlock.getNextBlock());
+                gm.insertBlock(currentBlock.getNextBlock());
+                gm.moveDown(currentBlock);
+                while (currentBlock.isMoving()) {
+                    //Handle the UI update(can not be done in different Threads)
+                    update();
+                    //Game ticks
+                    try {
+                        Thread.sleep(gm.getDropSpeed());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    //Moving down
+                    if (!pause) {
+                        gm.moveDown(currentBlock);
+                        update();
+                    }
+                    //Changing the rotations
+                    if (change) {
+                        gm.change(currentBlock);
+                        //update();;
+                        this.change = false;
+                        update();
+                    }
+                    //Moving right
+                    if (right) {
+                        gm.moveRight(currentBlock);
+                        //update();
+                        right = false;
+                        update();
+                    }
+                    //Moving left
+                    if (left) {
+                        gm.moveLeft(currentBlock);
+                        //update();
+                        left = false;
+                        update();
+                    }
+                }
                 update();
-                //Game ticks
-                try {
-                    Thread.sleep(gm.getDropSpeed());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //Moving down
-                if (gm.isEmptyDown(currentBlock)) {
-                    gm.moveDown(currentBlock);
-                }
-                //Changing the rotations
-                if (change) {
-                    gm.change(currentBlock);
-                    //update();;
-                    this.change = false;
-                }
-                //Moving right
-                if (right) {
-                    gm.moveRight(currentBlock);
-                    //update();
-                    right = false;
-                }
-                //Moving left
-                if (left) {
-                    gm.moveLeft(currentBlock);
-                    //update();
-                    left = false;
-                }
-            }
-            gm.setDropSpeed(250);
-            gm.addPoistion(currentBlock.getPlace()); //Adding the end position of the block to the list
-            gm.addBlock(currentBlock); //Adding the block to the list
-            gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
-            gm.landBlockBugFix();
-            gm.checkBoard(); //Checking for full rows
+                gm.setDropSpeed(250);
+                gm.addPoistion(currentBlock.getPlace()); //Adding the end position of the block to the list
+                gm.addBlock(currentBlock); //Adding the block to the list
+                gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
+                //gm.landBlockBugFix();
+                gm.checkBoard(); //Checking for full rows
 
-            //currentBlock.setNextBlock(gm.pickBlock());
+                //currentBlock.setNextBlock(gm.pickBlock());
       /*      try {
                 Thread.sleep(5);
             }catch (InterruptedException e){
 
             }*/
 
-        } while ((!gm.endOfGame(currentBlock)));
+            }
+        } while (!pause &&(!gm.endOfGame(currentBlock)));
     }
     //Creating a list of blocks to use
     public void init(){
@@ -134,11 +140,14 @@ public class GameThread extends Thread {
         left=true;
     }
 
-    public void changeText(){
+    public void pauseUnPause(){
+       if(pause){
+           pause =false;
+       }
+       else{
+           pause = true;
+       }
+    }
 
-    }
-    public void setGameOver(){
-        gameOver = true;
-    }
 
 }
