@@ -1,13 +1,8 @@
 package com.tetris.saar.tetris;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
-import java.util.logging.Handler;
 
-/**
- * Created by user on 09/08/2017.
- */
 
 public class GameManger {
     //Blocks starting position
@@ -52,7 +47,7 @@ public class GameManger {
     }
 
     //Creating all the slots in the array
-    public void init() {
+    private void init() {
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
                 this.board[i][j] = 0;
@@ -62,8 +57,7 @@ public class GameManger {
     }
 
     //Checking if a block can go down
-    public boolean isEmptyDown(Blocks currentBlock) {
-        int id = currentBlock.getId();
+    private boolean isEmptyDown(Blocks currentBlock) {
         int[] place = currentBlock.getPlace();
         boolean empty = true;
         //If the block as any low row blocks
@@ -135,31 +129,20 @@ public class GameManger {
     public void addPoistion(int[] temp) {
         poistionHistory.add(temp);
     }
-
-    //Checking if the position holds the block
-    public boolean realBlock(int i, int j) {
-        if (poistionHistory.contains(new int[i][j])) {
-            return true;
-        }
-        return false;
-    }
-
     //Adding new block
     public void addBlock(Blocks block) {
         this.blocksHistory.add(block);
     }
 
     //Converting position into block
-    public Blocks fromPosToBlock(final int i, final int j) {
+    private Blocks fromPosToBlock(final int i, final int j) {
         if (this.poistionHistory.contains(new int[i][j])) {
             return this.blocksHistory.get(this.poistionHistory.indexOf(new int[i][j]));
         }
         return null;
     }
-
     //Move down the block
     public void moveDown(Blocks currentBlock) {
-        int id = currentBlock.getId();
         int[] place = currentBlock.getPlace();
         if (isEmptyDown(currentBlock)) {
             removeBlock(currentBlock);
@@ -167,63 +150,6 @@ public class GameManger {
             this.board[place[0]][place[1] - 1] = 0;
             insertBlock(currentBlock);
         }
-  /*      //Checking if you can check for the button row
-        if (place[1] <22){
-            if(currentBlock.isDown()) {
-                //Moving down
-                this.board[place[0]][place[1] + 2] = this.board[place[0]][place[1] + 1];
-            }
-            if(currentBlock.isDownLeft()) {
-                //Moving the left down corner
-                this.board[place[0] - 1][place[1] + 2] = this.board[place[0] - 1][place[1] + 1];
-                if (!currentBlock.isLeft()) {
-                    this.board[place[0] - 1][place[1] + 1] = 0;
-                }
-            }
-
-        //Moving the right down corner
-            if(currentBlock.isDownRight()){
-                this.board[place[0] + 1][place[1] + 2] = this.board[place[0] + 1][place[1] + 1];
-                if (!currentBlock.isRight()) {
-                    this.board[place[0] + 1][place[1] + 1] = 0;
-                }
-            }
-
-    }
-            //Moving center
-            this.board[place[0]][place[1]+1] = this.board[place[0]][place[1]];
-            if(!currentBlock.isUp()){
-                this.board[place[0]][place[1]-1] = 0;
-            }
-            //Moving left
-        if(currentBlock.isLeft()) {
-            this.board[place[0] - 1][place[1] + 1] = this.board[place[0] - 1][place[1]];
-            if (!currentBlock.isLeftUp()) {
-                this.board[place[0] - 1][place[1]] = 0;
-            }
-        }
-            //Moving right
-        if(currentBlock.isRight()) {
-            this.board[place[0] + 1][place[1] + 1] = this.board[place[0] + 1][place[1]];
-            if (!currentBlock.isRightUp()) {
-                this.board[place[0] + 1][place[1]] = 0;
-            }
-        }
-            //Moving up
-            this.board[place[0]][place[1]] = this.board[place[0]][place[1] - 1];
-            this.board[place[0]][place[1] - 1] = 0;
-            //Moving the left up corner
-        if(currentBlock.isLeftUp()) {
-            this.board[place[0] - 1][place[1]] = this.board[place[0] - 1][place[1] - 1];
-            this.board[place[0] - 1][place[1] - 1] = 0;
-        }
-            //Moving the right up corner
-        if(currentBlock.isRightUp()) {
-            this.board[place[0] + 1][place[1]] = this.board[place[0] + 1][place[1] - 1];
-            this.board[place[0] + 1][place[1] - 1] = 0;
-        }
-            //Setting new spot
-            currentBlock.setPlace(place[0],place[1]+1);*/
 
     }
 
@@ -261,8 +187,6 @@ public class GameManger {
             newBlock = new SShaped(startI, startJ);
             newBlock.setNextBlock(new SShaped((SShaped) newBlock, 5, startJ));
         }
-/*        insertBlock(newBlock.getNextBlock());
-        insertBlock(newBlock);*/
         return newBlock;
 
     }
@@ -296,22 +220,11 @@ public class GameManger {
         if (newBlock.isDownRight()) {
             this.board[currentPlace[0] + 1][currentPlace[1] + 1] = id;
         }
-        /* Special case for straight line */
-     /*   if(id == 4){
-            if(newBlock.isLeft()){
-                this.board[currentPlace[0]-2][currentPlace[1]]= id;
-            }
-            if(newBlock.isDown()){
-                this.board[currentPlace[0]][currentPlace[1]+2]= id;
-            }
-        }*/
-        //setEmptySpaceBlockPos(newBlock.getNextBlock());
     }
 
     //Removing a given block from the board
-    public void removeBlock(Blocks block) {
+    private void removeBlock(Blocks block) {
         int[] place = block.getPlace();
-
         if (place[0] != 0) {
             if (block.isLeft()) {
                 this.board[place[0] - 1][place[1]] = 0;
@@ -347,24 +260,14 @@ public class GameManger {
     public void change(Blocks currentBlock) {
         int[] oldPlace = currentBlock.getNextBlock().getPlace();
         if (emptyRot(currentBlock)) {
-
-            removeBlock(currentBlock.getNextBlock());
-            this.board[oldPlace[0]][oldPlace[1]] = 0;
-            insertBlock(lb.change(currentBlock,this.board));
-
+            //Regular block
             removeBlock(currentBlock);
             currentBlock.changeRot();
             insertBlock(currentBlock);
             //Land block handle
-            //currentBlock.getNextBlock().setId(currentBlock.getId());
-
-         /*   currentBlock.getNextBlock().setPlace(currentBlock.getPlace()[0], currentBlock.getPlace()[1]);
-            currentBlock.getNextBlock().changeRot();
-            setEmptySpaceBlockPos(currentBlock.getNextBlock());
-            //currentBlock.getNextBlock().setId(8);
-            insertBlock(currentBlock.getNextBlock());*/
-
-
+            removeBlock(currentBlock.getNextBlock());
+            this.board[oldPlace[0]][oldPlace[1]] = 0;
+            insertBlock(lb.change(currentBlock,this.board));
         }
     }
 
@@ -373,27 +276,19 @@ public class GameManger {
         int[] place = currentBlock.getPlace();
         int[] oldPlace = currentBlock.getNextBlock().getPlace();
         if (emptyRight(currentBlock)) {
-            removeBlock(currentBlock.getNextBlock());
-            this.board[oldPlace[0]][oldPlace[1]] = 0;
-            insertBlock(lb.moveRight(currentBlock,this.board));
-
+            //Regular
             removeBlock(currentBlock); //Removing the block from the old position
             currentBlock.setPlace(place[0] + 1, place[1]); // Setting a new place for the main block
             this.board[place[0] - 1][place[1]] = 0; // Removing the main block
             insertBlock(currentBlock); //Inserting the new block
-            //Land block handle
-
-       /*     // currentBlock.getNextBlock().setId(currentBlock.getId());
-            currentBlock.getNextBlock().setPlace(currentBlock.getPlace()[0], currentBlock.getPlace()[1]);
-            setEmptySpaceBlockPos(currentBlock.getNextBlock());
-            // currentBlock.getNextBlock().setId(8);
-            insertBlock(currentBlock.getNextBlock());
-            //clearLandBlockTrace(oldPlace[1]);*/
+            //Land Block handle
+            removeBlock(currentBlock.getNextBlock());
+            this.board[oldPlace[0]][oldPlace[1]] = 0;
+            insertBlock(lb.moveRight(currentBlock,this.board));
         }
     }
-
     //Checking the block can move right
-    public boolean emptyRight(Blocks currentBlock) {
+    private boolean emptyRight(Blocks currentBlock) {
         int[] place = currentBlock.getPlace();
         //If any block on the right column
         if (currentBlock.isRightUp() || currentBlock.isRight() || currentBlock.isDownRight()) {
@@ -430,10 +325,7 @@ public class GameManger {
                 return false;
             }
             //Down
-            if (currentBlock.isDown() && this.board[place[0] + 1][place[1] + 1] > 0 && currentBlock.isDown() && this.board[place[0] + 1][place[1] + 1] < 8 && !currentBlock.isDownRight()) {
-                return false;
-            }
-            return true;
+            return !(currentBlock.isDown() && this.board[place[0] + 1][place[1] + 1] > 0 && currentBlock.isDown() && this.board[place[0] + 1][place[1] + 1] < 8 && !currentBlock.isDownRight());
         }
     }
 
@@ -469,7 +361,7 @@ public class GameManger {
     }
 
     //Checking if the block can rotate
-    public boolean emptyRot(Blocks currentBlock) {
+    private boolean emptyRot(Blocks currentBlock) {
         int[] place = currentBlock.getPlace();
         boolean rot = true;
         //Checking for the up blocks
@@ -542,7 +434,7 @@ public class GameManger {
     }
 
     //Checking if can move left
-    public boolean emptyLeft(Blocks currentBlock) {
+    private boolean emptyLeft(Blocks currentBlock) {
         int[] place = currentBlock.getPlace();
         //If any left column
         if (currentBlock.isLeftUp() || currentBlock.isLeft() || currentBlock.isDownLeft()) {
@@ -591,56 +483,18 @@ public class GameManger {
         int[] place = currentBlock.getPlace();
         int[] oldPlace = currentBlock.getNextBlock().getPlace();
         if (emptyLeft(currentBlock)) {
-
-            //Land block handle
-            // currentBlock.getNextBlock().setId(currentBlock.getId());
-            removeBlock(currentBlock.getNextBlock());
-            this.board[oldPlace[0]][oldPlace[1]] = 0;
-            insertBlock(lb.moveLeft(currentBlock,board));
-
+            //Regular Block
             removeBlock(currentBlock); //Removing the block from the current place
             currentBlock.setPlace(place[0] - 1, place[1]); //Setting the place of the block at the new point
             this.board[place[0] + 1][place[1]] = 0; // Removing the old block from the old position
             insertBlock(currentBlock); // Inserting the block at the new place
-          /*  Thread t = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    int[] oldPlace = finalBlock.getNextBlock().getPlace();
-                    //Land block handle
-                    // currentBlock.getNextBlock().setId(currentBlock.getId());
-                    removeBlock(finalBlock.getNextBlock());
-                    board[oldPlace[0]][oldPlace[1]] = 0;
-                    finalBlock.getNextBlock().setPlace(finalBlock.getPlace()[0], finalBlock.getPlace()[1]);
-                    setEmptySpaceBlockPos(finalBlock.getNextBlock());
-                    // currentBlock.getNextBlock().setId(8);
-                    insertBlock(finalBlock.getNextBlock());
-                    // clearLandBlockTrace(oldPlace[1]);
-                }
-            }
-            );
-            t.start();*/
-
-          /*  currentBlock.getNextBlock().setPlace(currentBlock.getPlace()[0], currentBlock.getPlace()[1]);
-            setEmptySpaceBlockPos(currentBlock.getNextBlock());
-            // currentBlock.getNextBlock().setId(8);
-            insertBlock(currentBlock.getNextBlock());
-            // clearLandBlockTrace(oldPlace[1]);*/
+            //Land block handle
+            removeBlock(currentBlock.getNextBlock());
+            this.board[oldPlace[0]][oldPlace[1]] = 0;
+            insertBlock(lb.moveLeft(currentBlock,board));
         }
     }
-
-    /*public boolean endOfGame(){
-     int[] lastPos=  poistionHistory.get(poistionHistory.size()-1);
-        if (lastPos[1] ==0 || lastPos[1] ==1){
-            uiHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    gameActivity.gameOver();
-                }
-            });
-            return  true;
-        }
-        return false;
-    }*/
+    //If the game has ended
     public boolean endOfGame(Blocks curenntBlock) {
         int[] lastPos = blocksHistory.get(blocksHistory.size() - 1).getPlace();
         if (curenntBlock.isUp() || curenntBlock.isLeftUp() || curenntBlock.isRightUp()) {
@@ -666,7 +520,6 @@ public class GameManger {
         }
         return false;
     }
-
     //Checking if there are any full rows
     public void checkBoard() {
         boolean moveDown = true;
@@ -677,9 +530,9 @@ public class GameManger {
                 if (board[i][j] == 0 || board[i][j] ==8) {
                     moveDown = false;
                 }
-                if (board[i][j] == 8) {
+             /*   if (board[i][j] == 8) {
                     board[i][j] = 0;
-                }
+                }*/
             }
             if (moveDown) {
                 pushDown(j);
@@ -714,7 +567,7 @@ public class GameManger {
 
 
     //Moving all the rows down and clearing the full row
-    public void pushDown(int j){
+    private void pushDown(int j){
         for(int i=0;i< board.length; i++){
             for(int h=j;1<=h;h--){
              /*   if(realBlock(i,h)){
@@ -731,7 +584,21 @@ public class GameManger {
     public void setEmptySpaceBlockPos(final Blocks emptySpot){
         lb.setEmptySpaceBlockPos(emptySpot,board);
     }
-
+    public void landBlockBugFix(){
+      /*  int[] lastPost = poistionHistory.get(poistionHistory.size()-1);
+        if(this.board[lastPost[0]][lastPost[1]] == 8) {
+            if (fromPosToBlock(lastPost[0], lastPost[1]) != null) {
+                insertBlock(fromPosToBlock(lastPost[0], lastPost[1]));
+            }
+        }*/
+      for(int i=0; i< this.board.length;i++){
+          for(int j=0; j< this.board[i].length; j++){
+              if(this.board[i][j] ==8){
+                  this.board[i][j] =0;
+              }
+          }
+      }
+    }
     //Return the board so you can display it
     public int[][] getDisplay(){
         return this.board;

@@ -16,13 +16,13 @@ public class LandBLockThread extends Thread {
     }
     public Blocks moveRight(Blocks block,int[][] board){
         Blocks temp = block.getNextBlock();
-        temp.setPlace(block.getPlace()[0]+1,block.getPlace()[1]);
+        temp.setPlace(block.getPlace()[0],block.getPlace()[1]);
         setEmptySpaceBlockPos(temp,board);
         return temp;
     }
     public Blocks moveLeft(Blocks block,int[][] board){
         Blocks temp = block.getNextBlock();
-        temp.setPlace(block.getPlace()[0]-1,block.getPlace()[1]);
+        temp.setPlace(block.getPlace()[0],block.getPlace()[1]);
         setEmptySpaceBlockPos(temp,board);
         return temp;
     }
@@ -41,7 +41,6 @@ public class LandBLockThread extends Thread {
     return  block;
 }
     public boolean isEmptyDown(Blocks currentBlock,int[][] board) {
-        int id = currentBlock.getId();
         int[] place = currentBlock.getPlace();
         boolean empty = true;
         //If the block as any low row blocks

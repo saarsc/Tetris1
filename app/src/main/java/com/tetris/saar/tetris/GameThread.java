@@ -33,6 +33,7 @@ public class GameThread extends Thread {
         //While the game is not over
         do {
             if(!pause) {
+                gm.landBlockBugFix();
                 currentBlock = blockList.get(0);
                 blockList.remove(0);
                 //Blocks nextBlock= gm.pickBlock();
@@ -57,43 +58,39 @@ public class GameThread extends Thread {
                     update();
                     //Game ticks
                     try {
-                        Thread.sleep(gm.getDropSpeed());
+                        Thread.sleep(GameManger.getDropSpeed());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     //Moving down
                     if (!pause) {
                         gm.moveDown(currentBlock);
-                        update();
                     }
                     //Changing the rotations
-                    if (change) {
+                    if (currentBlock.isMoving() && change) {
                         gm.change(currentBlock);
                         //update();;
-                        this.change = false;
-                        update();
+                        change = false;
                     }
                     //Moving right
-                    if (right) {
+                    if (currentBlock.isMoving() && right) {
                         gm.moveRight(currentBlock);
                         //update();
                         right = false;
-                        update();
                     }
                     //Moving left
-                    if (left) {
+                    if (currentBlock.isMoving() && left) {
                         gm.moveLeft(currentBlock);
                         //update();
                         left = false;
-                        update();
                     }
                 }
+                gm.insertBlock(currentBlock);
                 update();
-                gm.setDropSpeed(250);
+                GameManger.setDropSpeed(250);
                 gm.addPoistion(currentBlock.getPlace()); //Adding the end position of the block to the list
                 gm.addBlock(currentBlock); //Adding the block to the list
                 gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
-                //gm.landBlockBugFix();
                 gm.checkBoard(); //Checking for full rows
 
                 //currentBlock.setNextBlock(gm.pickBlock());
@@ -125,11 +122,11 @@ public class GameThread extends Thread {
     }
     //Change Block drop speed
     public void changeSpeed(){
-        gm.setDropSpeed(10);
+        GameManger.setDropSpeed(10);
     }
     //Rotation button was pressed
     public void needToChange(){
-        this.change = true;
+        change = true;
     }
     //Move right was pressed
     public void moveRight(){
@@ -141,12 +138,7 @@ public class GameThread extends Thread {
     }
 
     public void pauseUnPause(){
-       if(pause){
-           pause =false;
-       }
-       else{
-           pause = true;
-       }
+        pause = !pause;
     }
 
 
