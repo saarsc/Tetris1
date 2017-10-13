@@ -35,7 +35,6 @@ public class GameManger {
         lb = new LandBLockThread(this);
     }
 
-
     //Returning the drop speed
     public static int getDropSpeed() {
         return dropSpeed;

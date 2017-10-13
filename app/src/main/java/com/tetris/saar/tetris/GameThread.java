@@ -92,14 +92,6 @@ public class GameThread extends Thread {
                 gm.addBlock(currentBlock); //Adding the block to the list
                 gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
                 gm.checkBoard(); //Checking for full rows
-
-                //currentBlock.setNextBlock(gm.pickBlock());
-      /*      try {
-                Thread.sleep(5);
-            }catch (InterruptedException e){
-
-            }*/
-
             }
         } while (!pause &&(!gm.endOfGame(currentBlock)));
     }

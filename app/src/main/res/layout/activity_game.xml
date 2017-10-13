@@ -35,44 +35,12 @@
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
 
-
-        <!--   <Button
-               android:id="@+id/btnLeft"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="0dp"
-               android:layout_marginTop="550dp"
-               android:layout_weight="1"
-               android:text="←" />
-
-           <Button
-               android:id="@+id/btnRot"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginLeft="5dp"
-               android:layout_marginTop="500dp"
-               android:layout_weight="1"
-               android:text="↻"
-               tools:layout_editor_absoluteX="8dp"
-               tools:layout_editor_absoluteY="0dp"
-               tools:text="↻" />
-
-           <Button
-               android:id="@+id/btnRight"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_marginTop="550dp"
-               android:layout_weight="1"
-               android:text="→"
-               tools:layout_editor_absoluteX="100dp"
-               tools:layout_editor_absoluteY="0dp"
-               tools:text="→" />
-   -->
         <ImageButton
             android:id="@+id/ibPause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="290dp"
+            android:layout_marginLeft="300dp"
+            android:layout_marginTop="10dp"
             android:layout_weight="0"
             android:background="@null"
             app:srcCompat="@drawable/pausemenu" />
@@ -89,18 +57,23 @@
             android:id="@+id/tvScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_weight="1"
-            android:text="Score:\n0" />
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="70dp"
+            android:layout_weight="0"
+            android:text="Score:\n0"
+            android:textColor="#3f51b5"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvNextBlock"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="250dp"
-            android:layout_marginTop="30dp"
-            android:layout_weight="1"
-            android:text="Next Block:" />
+            android:layout_marginLeft="240dp"
+            android:layout_marginTop="70dp"
+            android:layout_weight="0"
+            android:text="Next Block:"
+            android:textColor="#3f51b5"
+            android:textSize="18sp" />
 
     </LinearLayout>
 
