@@ -1,6 +1,7 @@
 package com.tetris.saar.tetris;
 
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,16 +13,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class MainMenu extends AppCompatActivity implements View.OnClickListener{
     TextView tvHeader;
     Button btnGame;
     Button btnScoreboard;
     Button btnHowTo;
     Intent intent;
+
+    MusicThread musicThread;
+
+    Intent musicService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+        //Music handle
+        int resID=getResources().getIdentifier("tetrismusic.mp3", "raw", getPackageName());
+
+
+        musicService = new Intent(this,MusicThread.class);
+        musicService.putExtra("src",resID);
+        //bindService(musicService);
+        startService(musicService);
         //Syncing GUI with code
         tvHeader = (TextView)findViewById(R.id.tvHeader);
         btnGame = (Button) findViewById(R.id.btnGame);

@@ -9,22 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
+        <service android:name=".MusicThread"/>
+
         <activity android:name=".GameActivity" />
         <activity android:name=".MainMenu">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".Scoreboard" />
-        <activity android:name=".HowToPlay" />
-        <activity android:name=".SplashScreen">
- <!--             <intent-filter>
+         <!--   <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>-->
+        </activity>
+        <activity android:name=".Scoreboard" />
+        <activity android:name=".HowToPlay" />
+        <activity android:name=".SplashScreen">
+              <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
