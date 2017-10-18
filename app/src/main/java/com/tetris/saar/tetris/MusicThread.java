@@ -3,11 +3,15 @@ package com.tetris.saar.tetris;
 import android.app.Service;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
@@ -15,20 +19,8 @@ import java.io.IOException;
  */
 
 public class MusicThread extends Service implements MediaPlayer.OnCompletionListener {
-    int musicSrc;
+    String musicSrc;
     MediaPlayer player;
-
-    /*public MusicThread(int src) {
-        musicSrc = src;
-       *//* player = new MediaPlayer();
-        try {
-            player.setDataSource(src.getFileDescriptor(), src.getStartOffset(), src.getLength());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        player.setLooping(true);*//*
-    }*/
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -36,16 +28,21 @@ public class MusicThread extends Service implements MediaPlayer.OnCompletionList
 
     @Override
     public void onCreate() {
-        player = MediaPlayer.create(this, musicSrc);// raw/s.mp3
-        player.setOnCompletionListener(this);
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        musicSrc = intent.getIntExtra("src",getResources().getIdentifier("tetrismusic.mp3", "raw", getPackageName()));
-        if (!player.isPlaying()) {
-            player.start();
+        if(intent.getIntExtra("src",0) != 0){
+            player = MediaPlayer.create(this, R.raw.tetrismusic);
+        }else {
+            musicSrc = intent.getStringExtra("src1");
+            File song = new File(musicSrc);
+            player = MediaPlayer.create(this, Uri.fromFile(song));
         }
+        player.setLooping(true);
+        player.setOnCompletionListener(this);
+        player.start();
         return START_STICKY;
     }
 

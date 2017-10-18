@@ -1,8 +1,16 @@
 package com.tetris.saar.tetris;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
@@ -10,11 +18,21 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class MainMenu extends AppCompatActivity implements View.OnClickListener{
     TextView tvHeader;
@@ -22,22 +40,50 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener{
     Button btnScoreboard;
     Button btnHowTo;
     Intent intent;
-
+    //Music handle
     MusicThread musicThread;
-
     Intent musicService;
+    ImageButton ibPickMusic;
+    int myPremmision;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+        context = this;
+        // Request handler
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        myPremmision);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
         //Music handle
-        int resID=getResources().getIdentifier("tetrismusic.mp3", "raw", getPackageName());
-
-
+        int resID=getResources().getIdentifier("tetrismusic", "raw", getPackageName());
         musicService = new Intent(this,MusicThread.class);
         musicService.putExtra("src",resID);
-        //bindService(musicService);
         startService(musicService);
+        ibPickMusic = (ImageButton) findViewById(R.id.ibPickMusic);
+        ibPickMusic.setOnClickListener(this);
         //Syncing GUI with code
         tvHeader = (TextView)findViewById(R.id.tvHeader);
         btnGame = (Button) findViewById(R.id.btnGame);
@@ -66,5 +112,67 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener{
             intent = new Intent(this,HowToPlay.class);
             startActivity(intent);
         }
+        if(v.getId() == ibPickMusic.getId()){
+           // ArrayList<HashMap<String,String>> songList=getPlayList(Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music");
+            ArrayList<File> songList = getPlayList(Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music");
+            ArrayList<String> songName= new ArrayList<>();
+             ArrayList<String> songPath = new ArrayList<>();
+            final ArrayList<String> copySongPath = new ArrayList<>();
+            if(songList!=null){
+                for(int i=0;i<songList.size();i++){
+                    String fileName=songList.get(i).getName();
+                    String filePath=songList.get(i).getAbsolutePath();
+                    songName.add(fileName);
+                    songPath.add(filePath);
+                }
+            }
+            copySongPath.addAll(songPath);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                ListView lv = new ListView(this);
+                LinearLayout main = new LinearLayout(this);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                main.setLayoutParams(lp);
+                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songName);
+                lv.setAdapter(arrayAdapter);
+                main.addView(lv);
+                builder.setView(main);
+
+                final AlertDialog alert = builder.create();
+                alert.show();
+                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> list, View v, int pos, long id) {
+                        stopService(musicService);
+                        musicService = new Intent(context, MusicThread.class);
+                        musicService.putExtra("src",0);
+                        musicService.putExtra("src1", Uri.parse(copySongPath.get(pos)).toString());
+                        startService(musicService);
+                        alert.dismiss();
+                    }
+
+                });
+
+        }
     }
+    //Get the list of the all the music files
+    ArrayList<File> getPlayList(String rootPath) {
+        ArrayList<File> fileList = new ArrayList<>();
+        File rootFolder = new File(rootPath);
+        File[] files = rootFolder.listFiles(); //here you will get NPE if directory doesn't contains  any file,handle it like this.
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    if (getPlayList(file.getAbsolutePath()) != null) {
+                        fileList.addAll(getPlayList(file.getAbsolutePath()));
+                    } else {
+                        break;
+                    }
+                } else if (file.getName().endsWith(".mp3")) {
+                    /*HashMap<String, String> song = new HashMap<>();
+                    song.put("file_path", file.getAbsolutePath());
+                    song.put("file_name", file.getName());*/
+                    fileList.add(file);
+                }
+            }
+        return fileList;
+    }
+
 }
