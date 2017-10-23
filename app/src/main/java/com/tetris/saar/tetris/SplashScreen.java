@@ -1,6 +1,10 @@
 package com.tetris.saar.tetris;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,10 +17,12 @@ import java.io.InputStream;
 
 public class SplashScreen extends AppCompatActivity {
     GifImageView gifImageView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
+
         gifImageView = (GifImageView) findViewById(R.id.gifImageView);
         Thread timerThread = new Thread(){
             public void run(){
