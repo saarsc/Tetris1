@@ -30,7 +30,6 @@ public class MusicThread extends Service implements MediaPlayer.OnCompletionList
     public void onCreate() {
 
     }
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(intent.getIntExtra("src",0) != 0){
