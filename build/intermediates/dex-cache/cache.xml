@@ -3,21 +3,21 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\user\Documents\Tetris\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.2"
-        sha1="e13393da53ee9242d1e9b438f6c07406297c3f63">
-        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_0dcfb5983a859b4a24478ba61d16037f5120d783\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\user\Documents\Tetris\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="C:\Users\saarsc\Documents\Tetris\Tetris\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_28d73f4bedad403b94dd6a740f40e3d105c27a0d\classes.dex" />
+        <dex dex="C:\Users\saarsc\Documents\Tetris\Tetris\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_8a9643a461af94acab6bfd44f849dc241f48b023\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\saarsc\Documents\Tetris\Tetris\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="f5e1e53d9f5e026d6a1a746a9a7c66c939eae29f">
+        <dex dex="C:\Users\saarsc\Documents\Tetris\Tetris\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_cbca50610f147dec0ec4ccffeb96dab253c8db13\classes.dex" />
     </item>
 
 </items>

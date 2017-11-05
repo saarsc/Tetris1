@@ -50,6 +50,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     Intent intent;
     //Music handle
     Intent musicService;
+    Intent batteryService;
     ImageButton ibPickMusic;
     int myPremmision;
     Context context;
@@ -108,7 +109,11 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             }
         }
         //Music handle
+        musicService = new Intent(this,MusicThread.class);
+        musicService.putExtra("src",0);
         startService(musicService);
+        batteryService = new Intent(this,BatteryService.class);
+        startService(batteryService);
         ibPickMusic = (ImageButton) findViewById(R.id.ibPickMusic);
         ibPickMusic.setOnClickListener(this);
         //Syncing GUI with code
@@ -136,7 +141,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode== KeyEvent.KEYCODE_MENU) {
-            mainMenu.performIdentifierAction(R.id.music, 0);
+            mainMenu.performIdentifierAction(R.id.call, 0);
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -147,8 +152,9 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         super.onOptionsItemSelected(item);
 
         switch(item.getItemId()){
-            case R.id.music:
-                changeMusic();
+            case R.id.call:
+                Intent call= new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + ""));
+                startActivity(call);
                 break;
         }
         return true;
@@ -203,7 +209,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             public void onItemClick(AdapterView<?> list, View v, int pos, long id) {
                 stopService(musicService);
                 musicService = new Intent(context, MusicThread.class);
-                musicService.putExtra("src",0);
+                musicService.putExtra("src",1);
                 musicService.putExtra("src1", Uri.parse(copySongPath.get(pos)).toString());
                 startService(musicService);
                 alert.dismiss();

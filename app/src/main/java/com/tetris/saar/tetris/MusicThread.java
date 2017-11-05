@@ -32,7 +32,7 @@ public class MusicThread extends Service implements MediaPlayer.OnCompletionList
     }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(intent.getIntExtra("src",0) != 0){
+        if(intent.getIntExtra("src",0) == 0){
             player = MediaPlayer.create(this, R.raw.tetrismusic);
         }else {
             musicSrc = intent.getStringExtra("src1");

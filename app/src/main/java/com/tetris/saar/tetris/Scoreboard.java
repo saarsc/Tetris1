@@ -1,9 +1,14 @@
 package com.tetris.saar.tetris;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,6 +29,8 @@ public class Scoreboard extends AppCompatActivity  implements View.OnClickListen
     //Database
     SQLiteDatabase mainDB = null;
     Cursor cursor;
+    //Menu
+    Menu mainMenu = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,5 +99,35 @@ public class Scoreboard extends AppCompatActivity  implements View.OnClickListen
             ArrayAdapter<String> adpater = new ArrayAdapter<String>(this, R.layout.listviewlayout,displayDB);
             lvScore.setAdapter(adpater);
         }
+    }
+    //Action bar handle
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.bulletmenu, menu);
+        mainMenu=menu;
+        return true;
+    }
+    //Menu press should open 3 dot menu
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode== KeyEvent.KEYCODE_MENU) {
+            mainMenu.performIdentifierAction(R.id.call, 0);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    //Click listener
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch(item.getItemId()){
+            case R.id.call:
+                Intent call= new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ""));
+                startActivity(call);
+                break;
+        }
+        return true;
     }
 }

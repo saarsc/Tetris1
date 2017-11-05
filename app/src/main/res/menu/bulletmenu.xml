@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     android:icon="@drawable/dots" >
     <item
-        android:id="@+id/music"
+        android:id="@+id/call"
         android:orderInCategory="101"
         android:showAsAction="always|withText"
-        android:title="Change music"
+        android:title="Call"
         >
     </item>
 </menu>
