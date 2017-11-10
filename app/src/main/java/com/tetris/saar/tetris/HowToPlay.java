@@ -49,13 +49,16 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
     int turn =0;
 
     android.os.Handler uiHandler;
-
+    //Each level enabler
     boolean moveRight = false;
     boolean moveLeft = false;
     boolean tap =false;
+    boolean drop = true;
     Blocks block = new LineAndMiddle(5,6);
-
+    //Main menu handle
     Menu mainMenu = null;
+    //Main second thread
+    Thread t;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,16 +132,26 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         toDisplay();
         update();
     }
+    //Main handle
     public void update(){
         if(turn ==0){
             clear();
             btnPrev.setVisibility(View.INVISIBLE);
             tvDesc.setText(text.get(turn));
             moveRight = false;
+            drop =true;
             drop();
         }
         if(turn == 1){
-            clear();
+            drop = false;
+         /*   try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }*/
+            //clear();
+            block = new LineAndMiddle(5,6);
+            insertBlock(block);
             btnPrev.setVisibility(View.VISIBLE);
             tvDesc.setText(text.get(turn));
             moveRight = true;
@@ -172,7 +185,9 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
             clear();
             tvDesc.setText(text.get(turn));
         }
+        toDisplay();
     }
+    //Showing the completing line part
     public void completeLine(){
         Line l1 = new Line(8,23);
         Line l2 = new Line(5,23);
@@ -183,7 +198,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         insertBlock(l2);
         insertBlock(l3);
         toDisplay();
-        Thread t = new Thread(new Runnable() {
+         t = new Thread(new Runnable() {
             @Override
             public void run() {
                 while(l4.getPlace()[1] != 22) {
@@ -213,6 +228,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         });
         t.start();
     }
+    //Push down handle
     private void pushDown(){
         for(int i=0;i< board.length; i++){
             for(int h=board[i].length-1;1<=h;h--){
@@ -221,6 +237,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         }
         toDisplay();
     }
+    //Displaying the next block
     public void putNextBlock(){
        /* nextBlockView[2][2].setBackgroundColor(Color.rgb(135,206,250));
         nextBlockView[3][2].setBackgroundColor(Color.rgb(135,206,250));
@@ -229,14 +246,14 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         nextBlockView[3][2].setBackgroundResource(blue);
         nextBlockView[1][2].setBackgroundResource(blue);
     }
+    //Drop the block
     public void drop(){
-     Thread t  =new Thread(new Runnable() {
+      t  =new Thread(new Runnable() {
             @Override
             public void run() {
-                Blocks block = new LineAndMiddle(5,1);
+                final Blocks block = new LineAndMiddle(5,1);
                 insertBlock(block);
-                while(block.getPlace()[1] != 23){
-
+                while(block.getPlace()[1] != 23 &&drop){
                     try {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
@@ -252,9 +269,16 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
                        }
                    });
                 }
+                uiHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        clear();
+                    }
+                });
             }
         });
         t.start();
+
     }
     //Removing a given block from the board
     private void removeBlock(Blocks block) {
@@ -334,8 +358,9 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
             startActivity(intent);
         }
     }
+    //Moving right
     public void moveRight(){
-        Thread t = new Thread(new Runnable() {
+         t = new Thread(new Runnable() {
             @Override
             public void run() {
                 if(block.getPlace()[0]!= 8){
@@ -353,8 +378,9 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         });
         t.start();
     }
+    //Moving left
     public void moveLeft(){
-        Thread t = new Thread(new Runnable() {
+         t = new Thread(new Runnable() {
             @Override
             public void run() {
                 if(block.getPlace()[0]!=1){
@@ -396,7 +422,6 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
                                 moveRight();
                             }
                         }
-
                         // Right to left swipe action
                         else
                         {
@@ -425,8 +450,9 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
             return super.onTouchEvent(event);
         }
     }
+    //Rotating the block
     public void rotate(){
-        Thread t= new Thread(new Runnable() {
+        t= new Thread(new Runnable() {
             @Override
             public void run() {
                 removeBlock(block);
@@ -443,7 +469,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         });
        t.start();
     }
-
+    //Creating the array
     public void init(){
         text.add("The block will drop by it self");
         text.add("Swipe right to move right");
@@ -452,13 +478,11 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         text.add("Under \"Next Block\" you will \nsee the next block");
         text.add("Complete lines to gain score");
         text.add("You can pause by pressing \nthe pause button");
-
     }
     //Display the board ---> convert from int to colored Image View
     public void toDisplay(){
         for(int i=blocks.length-1; i>=0; i--){
             for(int j=blocks[i].length-1; j>=2; j--){
-
                 //Empty block
                 if(board[i][j]==0){
                     blocks[i][j].setBackgroundColor(Color.argb(1000,0,0,0));
@@ -508,6 +532,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         }
 
     }
+    //Clearing the board
     public void clear(){
         for(int i=0; i< board.length;i++){
             for(int j=0; j< board[i].length;j++){
@@ -537,7 +562,6 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-
         switch(item.getItemId()){
             case R.id.call:
                 Intent call= new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ""));

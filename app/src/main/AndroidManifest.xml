@@ -10,6 +10,7 @@
         android:supportsRtl="false"
         android:theme="@style/CustomBar">
         <service android:name=".MusicThread" android:stopWithTask="true"/>
+        <service android:name=".BatteryService" android:stopWithTask="true" />
         <activity android:name=".GameActivity" />
         <activity android:name=".MainMenu">
             <intent-filter>
