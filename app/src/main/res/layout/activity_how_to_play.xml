@@ -128,7 +128,7 @@
             android:id="@+id/btnBack"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
+            android:layout_marginLeft="-70dp"
             android:layout_marginTop="450dp"
             android:layout_weight="0"
             android:background="@drawable/roundedbutton"
