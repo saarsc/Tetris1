@@ -21,13 +21,12 @@ public class Scoreboard extends AppCompatActivity  implements View.OnClickListen
     //Buttons
     Button btnScore;
     Button btnName;
-    int nameState =0;
-    int scoreState =0;
+   int order=0;
     //ListView
     ListView lvScore;
     ArrayList<String> displayDB = new ArrayList<>();
     //Database
-    SQLiteDatabase mainDB = null;
+    Databasehelper mainDB;
     Cursor cursor;
     //Menu
     Menu mainMenu = null;
@@ -42,59 +41,40 @@ public class Scoreboard extends AppCompatActivity  implements View.OnClickListen
 
         lvScore = (ListView) findViewById(R.id.lvScoreboard);
 
-
-        //Getting the Database
-        mainDB = this.openOrCreateDatabase("Scoreboard",MODE_PRIVATE,null);
-        mainDB.execSQL("CREATE TABLE IF NOT EXISTS scoreboard1" + "(id integer primary key , name VARCHAR,score integer);");
-        cursor = mainDB.rawQuery("SELECT * FROM scoreboard1 ORDER BY cast(score as REAL) DESC",null);
+        mainDB = new Databasehelper(this);
         displayList();
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == btnScore.getId()){
-            if(scoreState ==0){
+            if(order !=0){
                 btnScore.setText("Score ▼");
-                scoreState++;
-                cursor = mainDB.rawQuery("SELECT * FROM scoreboard1 ORDER BY cast(score as REAL) DESC",null);
+                order =0;
             }else {
                     btnScore.setText("Score ▲");
-                    scoreState--;
-                cursor = mainDB.rawQuery("SELECT * FROM scoreboard1 ORDER BY cast(score as REAL) ASC",null);
+                    order = 1;
             }
             btnName.setText("Name");
-            displayList();
         }
         if(v.getId() == btnName.getId()){
-            if(nameState ==0){
+            if(order !=2){
                 btnName.setText("Name ▼");
-                nameState++;
-                cursor = mainDB.rawQuery("SELECT * FROM scoreboard1 ORDER BY name DESC",null);
+                order = 2;
+
             }else {
                 btnName.setText("Name ▲");
-                nameState--;
-                cursor = mainDB.rawQuery("SELECT * FROM scoreboard1 ORDER BY name ASC",null);
+                order = 3;
+
             }
             btnScore.setText("Score");
-            displayList();
         }
+        displayList();
     }
     public void displayList(){
         displayDB.clear();
         //Getting the data from the database
-        int i=1;
-        int nameColumn = cursor.getColumnIndex("name");
-        int scoreColumn = cursor.getColumnIndex("score");
-        //Displaying the DB
-        cursor.moveToFirst();
-        if(cursor != null && (cursor.getCount() > 0)){
-            do{
-                String name = cursor.getString(nameColumn);
-                String score = cursor.getString(scoreColumn);
-                displayDB.add(i +".  " + name + "          " + score);
-                i++;
-            }while(cursor.moveToNext());
-        }
+        displayDB.addAll(mainDB.displayList(order));
         if(!displayDB.isEmpty()){
             ArrayAdapter<String> adpater = new ArrayAdapter<String>(this, R.layout.listviewlayout,displayDB);
             lvScore.setAdapter(adpater);
