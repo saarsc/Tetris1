@@ -238,5 +238,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             }
         return fileList;
     }
-
+    @Override
+    public void onBackPressed(){
+    }
 }

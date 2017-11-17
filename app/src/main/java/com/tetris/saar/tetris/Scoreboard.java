@@ -110,4 +110,9 @@ public class Scoreboard extends AppCompatActivity  implements View.OnClickListen
         }
         return true;
     }
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(this,MainMenu.class);
+        startActivity(intent);
+    }
 }

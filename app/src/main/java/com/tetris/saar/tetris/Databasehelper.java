@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by user on 13/11/2017.
  */
-
+//This class control all the database stuff
 public class Databasehelper extends SQLiteOpenHelper
 {
     private static final String DATABASE_NAME = "Scoreboard.db";
