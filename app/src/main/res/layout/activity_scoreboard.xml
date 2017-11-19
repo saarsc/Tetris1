@@ -39,34 +39,29 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="20dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Sort by:"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+               />
 
-            <Button
-                android:id="@+id/btnName"
-                android:layout_width="50dp"
-                android:layout_height="40dp"
+            <Spinner
+                android:id="@+id/nameSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/roundedbutton"
-                android:text="Name "
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:spinnerMode="dropdown"
+                android:background="@drawable/backgroundforspinner"/>
 
-            <Button
-                android:id="@+id/btnScore"
-                android:layout_width="50dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="5dp"
+            <Spinner
+                android:id="@+id/scoreSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/roundedbutton"
-                android:text="Score ▼"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:spinnerMode="dropdown"
+                android:background="@drawable/backgroundforspinner"/>
 
 
         </LinearLayout>

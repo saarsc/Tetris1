@@ -10,17 +10,19 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class Scoreboard extends AppCompatActivity  implements View.OnClickListener{
+public class Scoreboard extends AppCompatActivity{
     //Buttons
-    Button btnScore;
-    Button btnName;
+    Spinner nameSpinner;
+    Spinner scoreSpinner;
    int order=0;
     //ListView
     ListView lvScore;
@@ -30,45 +32,58 @@ public class Scoreboard extends AppCompatActivity  implements View.OnClickListen
     Cursor cursor;
     //Menu
     Menu mainMenu = null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scoreboard);
-        btnScore = (Button) findViewById(R.id.btnScore);
-        btnName = (Button) findViewById(R.id.btnName);
-        btnScore.setOnClickListener(this);
-        btnName.setOnClickListener(this);
+        //Spinners
+        nameSpinner = (Spinner) findViewById(R.id.nameSpinner);
+        scoreSpinner = (Spinner) findViewById(R.id.scoreSpinner);
+        String[] nameOptions = {"Name","Descending  ▼","Ascending \u0020\u0020\u0020▲"};
+        String[] scoreOptions = {"Score","Descending ▼","Ascending \u0020\u0020▲"};
+        ArrayAdapter<CharSequence> nameAdapter =new ArrayAdapter(this,R.layout.spinner_text,nameOptions);
+        ArrayAdapter<CharSequence> scoreAdapter =new ArrayAdapter(this,R.layout.spinner_text,scoreOptions);
+        scoreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selcted = scoreSpinner.getSelectedItem().toString();
+                if(selcted.equals("Descending ▼")){
+                    order = 0;
+                }else{
+                    order=1;
+                }
+                displayList();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        nameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selcted = nameSpinner.getSelectedItem().toString();
+                if(selcted.equals("Descending ▼")){
+                    order = 2;
+                }else{
+                    order=3;
+                }
+                displayList();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        nameSpinner.setAdapter(nameAdapter);
+        scoreSpinner.setAdapter(scoreAdapter);
+       //List adapter
         lvScore = (ListView) findViewById(R.id.lvScoreboard);
-
         mainDB = new Databasehelper(this);
-        displayList();
-    }
-
-    @Override
-    public void onClick(View v) {
-        if(v.getId() == btnScore.getId()){
-            if(order !=0){
-                btnScore.setText("Score ▼");
-                order =0;
-            }else {
-                    btnScore.setText("Score ▲");
-                    order = 1;
-            }
-            btnName.setText("Name");
-        }
-        if(v.getId() == btnName.getId()){
-            if(order !=2){
-                btnName.setText("Name ▼");
-                order = 2;
-
-            }else {
-                btnName.setText("Name ▲");
-                order = 3;
-
-            }
-            btnScore.setText("Score");
-        }
         displayList();
     }
     public void displayList(){
