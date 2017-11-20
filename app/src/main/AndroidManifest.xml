@@ -13,19 +13,19 @@
         <service android:name=".BatteryService" android:stopWithTask="true" />
         <activity android:name=".GameActivity" />
         <activity android:name=".MainMenu">
-            <intent-filter>
+   <!--         <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".Scoreboard" />
         <activity android:name=".HowToPlay" />
         <activity android:name=".SplashScreen">
-    <!--          <intent-filter>
+              <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

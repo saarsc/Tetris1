@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -44,7 +43,7 @@ public class Databasehelper extends SQLiteOpenHelper
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
     }
-
+    //Adding new entire
     public void addData(String name,int score)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -54,7 +53,7 @@ public class Databasehelper extends SQLiteOpenHelper
         boolean inserted =  db.insert(TABLE_NAME, null, cv)>0;
     }
 
-
+    //Displaying the list by the order
     public ArrayList<String> displayList(int order){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM scoreboard1 ORDER BY cast(score as REAL) DESC",null);

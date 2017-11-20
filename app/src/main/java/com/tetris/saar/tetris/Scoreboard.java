@@ -2,20 +2,17 @@ package com.tetris.saar.tetris;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -41,15 +38,15 @@ public class Scoreboard extends AppCompatActivity{
         //Spinners
         nameSpinner = (Spinner) findViewById(R.id.nameSpinner);
         scoreSpinner = (Spinner) findViewById(R.id.scoreSpinner);
-        String[] nameOptions = {"Name","Descending  ▼","Ascending \u0020\u0020\u0020▲"};
-        String[] scoreOptions = {"Score","Descending ▼","Ascending \u0020\u0020▲"};
+        String[] nameOptions = {"Name","Descending","Ascending"};
+        String[] scoreOptions = {"Score","Descending","Ascending"};
         ArrayAdapter<CharSequence> nameAdapter =new ArrayAdapter(this,R.layout.spinner_text,nameOptions);
         ArrayAdapter<CharSequence> scoreAdapter =new ArrayAdapter(this,R.layout.spinner_text,scoreOptions);
         scoreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selcted = scoreSpinner.getSelectedItem().toString();
-                if(selcted.equals("Descending ▼")){
+                if(selcted.equals("Descending")){
                     order = 0;
                 }else{
                     order=1;
@@ -66,7 +63,7 @@ public class Scoreboard extends AppCompatActivity{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selcted = nameSpinner.getSelectedItem().toString();
-                if(selcted.equals("Descending ▼")){
+                if(selcted.equals("Descending")){
                     order = 2;
                 }else{
                     order=3;

@@ -14,10 +14,9 @@ public class GameThread extends Thread {
   static   boolean change =false; //For changing the rotation
     static boolean right = false; //For moving right
     static  boolean left =false; //For moving left
-    static boolean pause = false; //
-    int newNextBlock = 0;
+    static boolean pause = false; // Pause and unpause the game
 
-    ArrayList<Blocks> blockList = new ArrayList<>();
+    ArrayList<Blocks> blockList = new ArrayList<>(); // Holds the next 50 blocks
     public GameThread(GameManger gm){
         this.gm = gm;
         uiHandle = new Handler(); //For displaying on screen while being on a different thread
@@ -28,21 +27,19 @@ public class GameThread extends Thread {
     public void run() {
         init();
         Blocks currentBlock = blockList.get(0);
-        //currentBlock.setNextBlock(gm.pickBlock());
-        //gm.moveDown(currentBlock);
         //While the game is not over
         do {
             if(!pause) {
                 gm.landBlockBugFix();
                 currentBlock = blockList.get(0);
                 blockList.remove(0);
-                //Blocks nextBlock= gm.pickBlock();
-                //Creating a new block
-                // nextBlock = gm.pickBlock();
+                //if the list is empty create the next 50 blocks
                 if (blockList.isEmpty()) {
                     init();
                 }
+                //Holds the next block
                 final Blocks finalNextBlock = blockList.get(0);
+                //Displaying the next block
                 uiHandle.post(new Runnable() {
                     @Override
                     public void run() {
@@ -50,9 +47,10 @@ public class GameThread extends Thread {
                     }
                 });
                 gm.insertBlock(currentBlock); //Inserting the new block
-                gm.setEmptySpaceBlockPos(currentBlock.getNextBlock());
-                gm.insertBlock(currentBlock.getNextBlock());
-                gm.moveDown(currentBlock);
+                gm.setEmptySpaceBlockPos(currentBlock.getNextBlock()); //Setting the position of the landing block
+                gm.insertBlock(currentBlock.getNextBlock()); //Inserting the landing block
+                gm.moveDown(currentBlock); //Moving down the block
+                //Loop that control each block
                 while (currentBlock.isMoving()) {
                     //Handle the UI update(can not be done in different Threads)
                     update();
@@ -69,25 +67,23 @@ public class GameThread extends Thread {
                     //Changing the rotations
                     if (currentBlock.isMoving() && change) {
                         gm.change(currentBlock);
-                        //update();;
                         change = false;
                     }
                     //Moving right
                     if (currentBlock.isMoving() && right) {
                         gm.moveRight(currentBlock);
-                        //update();
                         right = false;
                     }
                     //Moving left
                     if (currentBlock.isMoving() && left) {
                         gm.moveLeft(currentBlock);
-                        //update();
                         left = false;
                     }
                 }
+                //Inseting the block at the end to fix disapeering blocks
                 gm.insertBlock(currentBlock);
-                update();
-                GameManger.setDropSpeed(250);
+                update(); //Update to show the new block
+                gm.setDropSpeed(250); //Changing the drop speed
                 gm.addPoistion(currentBlock.getPlace()); //Adding the end position of the block to the list
                 gm.addBlock(currentBlock); //Adding the block to the list
                 gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
@@ -128,10 +124,8 @@ public class GameThread extends Thread {
     public void moveLeft(){
         left=true;
     }
-
+    //Toggle pausing the game
     public void pauseUnPause(){
         pause = !pause;
     }
-
-
 }

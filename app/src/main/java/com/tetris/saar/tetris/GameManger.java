@@ -604,16 +604,4 @@ public class GameManger {
     }
 }
 
-/*TODO
-NEED TO DO
---------------------------
-Game -- need to design this bullshit + recreate the alert dialog
-How to play - everything
-
-onBackPressed for EVERYTHING
-
-Fix all the design I did
-
-Add everything I need to get 100
-* */
 

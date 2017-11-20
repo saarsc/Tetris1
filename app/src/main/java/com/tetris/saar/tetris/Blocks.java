@@ -3,7 +3,7 @@ package com.tetris.saar.tetris;
 /**
  * Created by user on 14/08/2017.
  */
-
+//Main class for all the blocks to extend
 public class Blocks {
     //Main block class all the blocks extend this class
     //Boolean vars that define the blocks around the main block + built for all directions
@@ -49,6 +49,7 @@ public class Blocks {
     protected void setNextBlock(Blocks nextBlock){
         this.nextBlock= nextBlock;
     }
+    //Copying the given block
     public Blocks(Blocks block,int i, int j){
         this.left = block.isLeft();
         this.up=block.isUp();
@@ -66,36 +67,36 @@ public class Blocks {
         this.rotation = block.getRotation();
     }
     //Getters and Setters
+    //Changes the rotations
     public int getRotation() {
         return rotation;
     }
-
-    public void setRotation(int rotation) {
-        this.rotation = rotation;
-    }
+    //Return the id
     public int getId() {
         return id;
     }
-
+    //Setting the id
     public void setId(int id) {
         this.id = id;
     }
-
+    //Getting the position of the block
     public int[] getPlace() {
         return place;
     }
-
+    //Setting the position of the block
     public void setPlace(int i, int j) {
         this.place[0] =i;
         this.place[1] =j;
     }
+    //If the block is moving
     public boolean isMoving() {
         return isMoving;
     }
-
+    //Change if the block is moving or not
     public void setMoving(boolean moving) {
         isMoving = moving;
     }
+    //Getting and setting all the direction of the block
     public boolean isLeft() {
         return left;
     }
