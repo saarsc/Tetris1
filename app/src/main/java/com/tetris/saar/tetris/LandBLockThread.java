@@ -3,10 +3,9 @@ package com.tetris.saar.tetris;
 /**
  * Created by user on 08/10/2017.
  */
-
+//Thread that control the LandBlock
 public class LandBLockThread extends Thread {
     GameManger gm;
-
     public LandBLockThread( GameManger gm) {
         this.gm = gm;
     }
@@ -14,18 +13,21 @@ public class LandBLockThread extends Thread {
     public void run() {
 
     }
+    //Moving right
     public Blocks moveRight(Blocks block,int[][] board){
         Blocks temp = block.getNextBlock();
         temp.setPlace(block.getPlace()[0],block.getPlace()[1]);
         setEmptySpaceBlockPos(temp,board);
         return temp;
     }
+    //Moving left
     public Blocks moveLeft(Blocks block,int[][] board){
         Blocks temp = block.getNextBlock();
         temp.setPlace(block.getPlace()[0],block.getPlace()[1]);
         setEmptySpaceBlockPos(temp,board);
         return temp;
     }
+    //Changing the rotation
     public Blocks change(Blocks block,int[][] board){
         Blocks temp = block.getNextBlock();
         temp.setPlace(block.getPlace()[0],block.getPlace()[1]);
@@ -33,6 +35,7 @@ public class LandBLockThread extends Thread {
         setEmptySpaceBlockPos(temp,board);
         return temp;
     }
+    //Finding the block empty position
     public Blocks setEmptySpaceBlockPos(Blocks block,int[][] board) {
        while(isEmptyDown(block,board))
     {
@@ -40,6 +43,7 @@ public class LandBLockThread extends Thread {
     }
     return  block;
 }
+    //If there is place underneath
     public boolean isEmptyDown(Blocks currentBlock,int[][] board) {
         int[] place = currentBlock.getPlace();
         boolean empty = true;

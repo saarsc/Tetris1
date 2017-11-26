@@ -29,13 +29,13 @@ import static com.tetris.saar.tetris.R.mipmap.purple;
 import static com.tetris.saar.tetris.R.mipmap.red;
 import static com.tetris.saar.tetris.R.mipmap.yellow;
 
-public class HowToPlay extends AppCompatActivity implements View.OnClickListener,View.OnTouchListener{
+public class HowToPlay extends AppCompatActivity implements View.OnClickListener{
     public ImageView[][] blocks = new ImageView[10][24]; //Displayed board
-    public int[][] board = new int[10][24];
-    TextView tvDesc;
-    TextView tvScore;
+    public int[][] board = new int[10][24]; //Backdoor board
+    TextView tvDesc; //Description text view
+    TextView tvScore; // Score textviw
     ArrayList<String> text = new ArrayList<>();
-
+    //Control Buttons
     Button btnNext;
     Button btnPrev;
     Button btnBack;
@@ -529,45 +529,37 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
                 //Empty block
                 if(board[i][j]==0){
                     blocks[i][j].setBackgroundColor(Color.rgb(0,0,0));
-                    //blocks[i][j].setBackgroundResource(black);
                 }
                 //Square
                 if(board[i][j] == 1){
-                    //blocks[i][j].setBackgroundColor(Color.YELLOW);
                     blocks[i][j].setBackgroundResource(yellow);
                 }
                 //Line and up right
                 if(board[i][j] == 2){
-                    //blocks[i][j].setBackgroundColor(Color.rgb(255,140,0));
                     blocks[i][j].setBackgroundResource(orange);
                 }
                 //Line and up left
                 if(board[i][j]==3){
-                    //blocks[i][j].setBackgroundColor(Color.rgb(0,0,205));
                     blocks[i][j].setBackgroundResource(darkblue);
                 }
                 //Line
                 if(board[i][j]==4){
-                    //blocks[i][j].setBackgroundColor(Color.rgb(135,206,250));
                     blocks[i][j].setBackgroundResource(blue);
                 }
                 //Z shaperd
                 if(board[i][j]==5){
-                    //blocks[i][j].setBackgroundColor(Color.RED);
                     blocks[i][j].setBackgroundResource(red);
                 }
                 //T shaped
                 if(board[i][j]==6){
-                    //blocks[i][j].setBackgroundColor(Color.rgb(138,43,226));
                     blocks[i][j].setBackgroundResource(purple);
                 }
                 //S shaped
                 if(board[i][j]==7){
-                    //blocks[i][j].setBackgroundColor(Color.GREEN);
                     blocks[i][j].setBackgroundResource(green);
                 }
+                //Land Block
                 if(board[i][j] ==8){
-                    //blocks[i][j].setBackgroundColor(Color.GRAY);
                     blocks[i][j].setBackgroundResource(grey);
                 }
             }
@@ -613,10 +605,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         }
         return true;
     }
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        return false;
-    }
+
     @Override
     public void onBackPressed(){
      Intent intent = new Intent(this,MainMenu.class);

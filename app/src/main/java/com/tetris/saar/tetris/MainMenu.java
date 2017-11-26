@@ -4,25 +4,18 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
-import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,95 +26,75 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.zip.Inflater;
-
+//Main menu activity
 public class MainMenu extends AppCompatActivity implements View.OnClickListener,Serializable{
-    TextView tvHeader;
-    Button btnGame;
-    Button btnScoreboard;
-    Button btnHowTo;
-    Intent intent;
+    TextView tvHeader; // The header
+    Button btnGame; // Go to the game
+    Button btnScoreboard; // Go to scoreboard
+    Button btnHowTo; // Go to how to play
+    Intent intent; // Main intent
     //Music handle
     Intent musicService;
+    //Battery service
     Intent batteryService;
-    ImageButton ibPickMusic;
+
+    ImageButton ibPickMusic;//Pick music
+    //For the premmision
     int myPremmision;
-    Context context;
+    Context context;// This screen
     //Action Bar
     Menu mainMenu = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-        context = this;
-        // Request handler
+        context = this; // This screen
+        // Request handler for external storage
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
+            //Should the request be displayed
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
             } else {
-
-                // No explanation needed, we can request the permission.
-
+                //request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         myPremmision);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
-        // Request handler
+        // Request handler for phone calls
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CALL_PHONE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
+            //Should the request be displayed
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.CALL_PHONE)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
             } else {
-                // No explanation needed, we can request the permission.
+                //request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CALL_PHONE},
                         myPremmision);
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
         //Music handle
         musicService = new Intent(this,MusicThread.class);
         musicService.putExtra("src",0);
         startService(musicService);
+        //Battery handle
         batteryService = new Intent(this,BatteryService.class);
         startService(batteryService);
-        ibPickMusic = (ImageButton) findViewById(R.id.ibPickMusic);
-        ibPickMusic.setOnClickListener(this);
         //Syncing GUI with code
+        ibPickMusic = (ImageButton) findViewById(R.id.ibPickMusic);
         tvHeader = (TextView)findViewById(R.id.tvHeader);
         btnGame = (Button) findViewById(R.id.btnGame);
         btnScoreboard = (Button) findViewById(R.id.btnScoreboard);
         btnHowTo = (Button) findViewById(R.id.btnHowTo);
         //Click listeners
+        ibPickMusic.setOnClickListener(this);
         btnGame.setOnClickListener(this);
         btnScoreboard.setOnClickListener(this);
         btnHowTo.setOnClickListener(this);
@@ -159,6 +132,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         }
         return true;
     }
+    //Click listener for all the buttons
     @Override
     public void onClick(View v) {
         if(v.getId() == btnGame.getId()){
@@ -175,16 +149,18 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             startActivity(intent);
         }
         if(v.getId() == ibPickMusic.getId()){
-           // ArrayList<HashMap<String,String>> songList=getPlayList(Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music");
             changeMusic();
         }
     }
+    //Changing the song
     public void changeMusic(){
-        ArrayList<File> songList = getPlayList(Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music");
-        ArrayList<String> songName= new ArrayList<>();
-        ArrayList<String> songPath = new ArrayList<>();
-        final ArrayList<String> copySongPath = new ArrayList<>();
+        ArrayList<File> songList = getPlayList(Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music"); //Hold all the song on the phone
+        ArrayList<String> songName= new ArrayList<>(); // List of song names
+        ArrayList<String> songPath = new ArrayList<>(); // List of song paths
+        final ArrayList<String> copySongPath = new ArrayList<>(); //Backup of the songPath as a final
+        //If there are songs
         if(songList!=null){
+            //Split song list to song name and path lists
             for(int i=0;i<songList.size();i++){
                 String fileName=songList.get(i).getName();
                 String filePath=songList.get(i).getAbsolutePath();
@@ -192,12 +168,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 songPath.add(filePath);
             }
         }
-        copySongPath.addAll(songPath);
+        copySongPath.addAll(songPath); // adding all the paths to the backup
+        //Creating the dialog that display all the songs
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        ListView lv = new ListView(this);
+        ListView lv = new ListView(this); //List view to hold the songs
         LinearLayout main = new LinearLayout(this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         main.setLayoutParams(lp);
+        //Inserting the list to the thread
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songName);
         lv.setAdapter(arrayAdapter);
         main.addView(lv);
@@ -205,8 +183,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
         final AlertDialog alert = builder.create();
         alert.show();
+        //Click listener for all the songs in the list view
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> list, View v, int pos, long id) {
+                //Changing which song is playing
                 stopService(musicService);
                 musicService = new Intent(context, MusicThread.class);
                 musicService.putExtra("src",1);
@@ -219,9 +199,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     }
     //Get the list of the all the music files
     ArrayList<File> getPlayList(String rootPath) {
-        ArrayList<File> fileList = new ArrayList<>();
-        File rootFolder = new File(rootPath);
-        File[] files = rootFolder.listFiles(); //here you will get NPE if directory doesn't contains  any file,handle it like this.
+        ArrayList<File> fileList = new ArrayList<>(); // Holds the list of the songs
+        File rootFolder = new File(rootPath); //The main folder
+        File[] files = rootFolder.listFiles(); //All the files in the folder
+        //If song add to the list if a directory go in side and add all the song there
             for (File file : files) {
                 if (file.isDirectory()) {
                     if (getPlayList(file.getAbsolutePath()) != null) {
@@ -229,10 +210,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                     } else {
                         break;
                     }
+                    //Add only mp3 files
                 } else if (file.getName().endsWith(".mp3")) {
-                    /*HashMap<String, String> song = new HashMap<>();
-                    song.put("file_path", file.getAbsolutePath());
-                    song.put("file_name", file.getName());*/
                     fileList.add(file);
                 }
             }

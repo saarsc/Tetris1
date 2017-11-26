@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by user on 27/08/2017.
  */
-
+//Special thread to control each block
 public class GameThread extends Thread {
     GameManger gm;
     Handler uiHandle;
@@ -84,7 +84,6 @@ public class GameThread extends Thread {
                 gm.insertBlock(currentBlock);
                 update(); //Update to show the new block
                 gm.setDropSpeed(250); //Changing the drop speed
-                gm.addPoistion(currentBlock.getPlace()); //Adding the end position of the block to the list
                 gm.addBlock(currentBlock); //Adding the block to the list
                 gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
                 gm.checkBoard(); //Checking for full rows

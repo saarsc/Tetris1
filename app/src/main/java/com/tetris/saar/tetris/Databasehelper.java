@@ -57,7 +57,6 @@ public class Databasehelper extends SQLiteOpenHelper
     public ArrayList<String> displayList(int order){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM scoreboard1 ORDER BY cast(score as REAL) DESC",null);
-
         ArrayList<String> displayDB = new ArrayList<>();
         switch (order){
             case 0:

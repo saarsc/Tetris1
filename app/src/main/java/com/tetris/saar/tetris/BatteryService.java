@@ -14,7 +14,7 @@ import android.support.v4.app.NotificationCompat;
 /**
  * Created by saarsc on 23/10/2017.
  */
-
+//Low battery notification control
 public class BatteryService extends Service {
     boolean run = true;
     Context context = this;
