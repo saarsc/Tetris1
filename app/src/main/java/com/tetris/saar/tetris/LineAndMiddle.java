@@ -1,8 +1,5 @@
 package com.tetris.saar.tetris;
 
-/**
- * Created by user on 29/08/2017.
- */
 //Class for t shaped block
 public class LineAndMiddle extends Blocks {
     public LineAndMiddle(int i , int j){

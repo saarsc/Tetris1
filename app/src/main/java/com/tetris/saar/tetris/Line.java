@@ -1,8 +1,5 @@
 package com.tetris.saar.tetris;
 
-/**
- * Created by user on 29/08/2017.
- */
 //Class for straight line
 public class Line extends Blocks{
     public Line(int i, int j){

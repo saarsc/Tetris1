@@ -1,11 +1,8 @@
 package com.tetris.saar.tetris;
 
-/**
- * Created by user on 08/10/2017.
- */
 //Thread that control the LandBlock
 public class LandBLockThread extends Thread {
-    GameManger gm;
+  private GameManger gm;
     public LandBLockThread( GameManger gm) {
         this.gm = gm;
     }

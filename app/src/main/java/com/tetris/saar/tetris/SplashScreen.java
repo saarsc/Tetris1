@@ -1,12 +1,8 @@
 package com.tetris.saar.tetris;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.felipecsl.gifimageview.library.GifImageView;
 
@@ -14,10 +10,9 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-
+//Splash screen activity
 public class SplashScreen extends AppCompatActivity {
-    GifImageView gifImageView;
-
+    GifImageView gifImageView; //The gif to the display
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +22,7 @@ public class SplashScreen extends AppCompatActivity {
         Thread timerThread = new Thread(){
             public void run(){
                 try{
+                    //Put the gif file into the layout
                     InputStream inputStream = getAssets().open("splashscreen.gif");
                     byte[] bytes = IOUtils.toByteArray(inputStream);
                     gifImageView.setBytes(bytes);

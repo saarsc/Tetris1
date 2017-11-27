@@ -1,7 +1,6 @@
 package com.tetris.saar.tetris;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,22 +14,19 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
-
+//Scoreboard activity
 public class Scoreboard extends AppCompatActivity{
     //Buttons
     Spinner nameSpinner;
     Spinner scoreSpinner;
-   int order=0;
+   int order=0; //In which order to show the database
     //ListView
     ListView lvScore;
-    ArrayList<String> displayDB = new ArrayList<>();
+    ArrayList<String> displayDB = new ArrayList<>(); //Hold the list to display
     //Database
     Databasehelper mainDB;
-    Cursor cursor;
     //Menu
     Menu mainMenu = null;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +34,13 @@ public class Scoreboard extends AppCompatActivity{
         //Spinners
         nameSpinner = (Spinner) findViewById(R.id.nameSpinner);
         scoreSpinner = (Spinner) findViewById(R.id.scoreSpinner);
+        //Spinners text
         String[] nameOptions = {"Name","Descending","Ascending"};
         String[] scoreOptions = {"Score","Descending","Ascending"};
+        //Spinners adapters
         ArrayAdapter<CharSequence> nameAdapter =new ArrayAdapter(this,R.layout.spinner_text,nameOptions);
         ArrayAdapter<CharSequence> scoreAdapter =new ArrayAdapter(this,R.layout.spinner_text,scoreOptions);
+        //Selected item code
         scoreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -76,6 +75,7 @@ public class Scoreboard extends AppCompatActivity{
 
             }
         });
+        //Setting the adapters
         nameSpinner.setAdapter(nameAdapter);
         scoreSpinner.setAdapter(scoreAdapter);
        //List adapter
@@ -83,12 +83,14 @@ public class Scoreboard extends AppCompatActivity{
         mainDB = new Databasehelper(this);
         displayList();
     }
+    //Displaying the list
     public void displayList(){
-        displayDB.clear();
-        //Getting the data from the database
+        displayDB.clear(); // Clearing the old list
+        //Getting the data from the database by the order
         displayDB.addAll(mainDB.displayList(order));
+        //Displaying the list
         if(!displayDB.isEmpty()){
-            ArrayAdapter<String> adpater = new ArrayAdapter<String>(this, R.layout.listviewlayout,displayDB);
+            ArrayAdapter<String> adpater = new ArrayAdapter<>(this, R.layout.listviewlayout,displayDB);
             lvScore.setAdapter(adpater);
         }
     }

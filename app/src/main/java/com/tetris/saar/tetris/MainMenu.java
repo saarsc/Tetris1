@@ -56,9 +56,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 Manifest.permission.READ_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             //Should the request be displayed
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            } else {
                 //request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -71,9 +70,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 != PackageManager.PERMISSION_GRANTED) {
 
             //Should the request be displayed
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.CALL_PHONE)) {
-            } else {
                 //request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.CALL_PHONE},
@@ -176,7 +174,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         main.setLayoutParams(lp);
         //Inserting the list to the thread
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songName);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, songName);
         lv.setAdapter(arrayAdapter);
         main.addView(lv);
         builder.setView(main);

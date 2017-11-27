@@ -1,8 +1,5 @@
 package com.tetris.saar.tetris;
 
-/**
- * Created by user on 27/08/2017.
- */
 //For the J shape
 public class LineAndUpLeft extends Blocks{
     public LineAndUpLeft(int i, int j){
