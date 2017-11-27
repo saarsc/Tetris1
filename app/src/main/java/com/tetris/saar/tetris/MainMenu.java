@@ -34,6 +34,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     Button btnGame; // Go to the game
     Button btnScoreboard; // Go to scoreboard
     Button btnHowTo; // Go to how to play
+    Button btnExit;
     Intent intent; // Main intent
     //Music handle
     Intent musicService;
@@ -91,11 +92,13 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         btnGame = (Button) findViewById(R.id.btnGame);
         btnScoreboard = (Button) findViewById(R.id.btnScoreboard);
         btnHowTo = (Button) findViewById(R.id.btnHowTo);
+        btnExit = (Button) findViewById(R.id.btnExit);
         //Click listeners
         ibPickMusic.setOnClickListener(this);
         btnGame.setOnClickListener(this);
         btnScoreboard.setOnClickListener(this);
         btnHowTo.setOnClickListener(this);
+        btnExit.setOnClickListener(this);
         //Creating the header
         String header ="<font color= '#ff0000'>T</font><font color='#ff8c00'>e</font><font color='#ffff00'>t</font><font color='#008000'>r</font><font color='#0000ff'>i</font><font color='#800080'>s</font>";
         tvHeader.setText(Html.fromHtml(header));
@@ -148,6 +151,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         }
         if(v.getId() == ibPickMusic.getId()){
             changeMusic();
+        }
+        if(v.getId() == btnExit.getId()){
+            System.gc();
+            System.exit(0);
         }
     }
     //Changing the song

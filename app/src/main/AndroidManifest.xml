@@ -13,11 +13,7 @@
         <service android:name=".BatteryService" android:stopWithTask="true" />
         <activity android:name=".GameActivity" />
         <activity android:name=".MainMenu">
-   <!--         <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
         <activity android:name=".Scoreboard" />
         <activity android:name=".HowToPlay" />

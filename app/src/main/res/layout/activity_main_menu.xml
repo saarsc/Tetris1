@@ -89,10 +89,21 @@
             android:id="@+id/ibPickMusic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
+            android:layout_marginLeft="105dp"
             android:layout_marginTop="-25dp"
             android:background="@null"
             app:srcCompat="@drawable/pickmusicicon" />
+
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-155dp"
+            android:layout_marginTop="-50dp"
+            android:background="@drawable/roundedbutton"
+            android:text="Exit"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
