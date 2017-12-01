@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Tetris</string>
+    <string name="short_launch_game">Game</string>
+    <string name="long_launch_game">Launch The Game</string>
+    <string name="short_launch_HowToPlay">How</string>
+    <string name="long_launch_HowToPlay">How To Play</string>
+    <string name="short_launch_Menu">Menu</string>
+    <string name="long_launch_Menu">Launch The Menu</string>
+    <string name="short_launch_Scoreboard">Scoreboard</string>
+    <string name="long_launch_Scoreboard">Scoreboard</string>
+    <string name="disabled">Nope</string>
 </resources>
