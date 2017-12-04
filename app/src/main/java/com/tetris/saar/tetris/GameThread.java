@@ -98,7 +98,6 @@ public class GameThread extends Thread {
             blockList.add(temp);
         }
     }
-    //Updating the screen
     public void update(){
         uiHandle.post(new Runnable() {
             @Override

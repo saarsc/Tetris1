@@ -1,13 +1,18 @@
 package com.tetris.saar.tetris;
 
 import android.Manifest;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -34,13 +39,12 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     Button btnGame; // Go to the game
     Button btnScoreboard; // Go to scoreboard
     Button btnHowTo; // Go to how to play
-    Button btnExit;
+    Button btnExit; //Exit button
     Intent intent; // Main intent
     //Music handle
     Intent musicService;
     //Battery service
-    Intent batteryService;
-
+    static BatteryService batteryService = new BatteryService();
     ImageButton ibPickMusic;//Pick music
     //For the premmision
     int myPremmision;
@@ -65,27 +69,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                         myPremmision);
             }
         }
-        // Request handler for phone calls
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            //Should the request be displayed
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.CALL_PHONE)) {
-                //request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.CALL_PHONE},
-                        myPremmision);
-            }
-        }
         //Music handle
         musicService = new Intent(this,MusicThread.class);
         musicService.putExtra("src",0);
         startService(musicService);
         //Battery handle
-        batteryService = new Intent(this,BatteryService.class);
-        startService(batteryService);
+        /*batteryService = new Intent(this,BatteryService.class);
+        startService(batteryService);*/
+        intent = this.getApplicationContext().registerReceiver(batteryService,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         //Syncing GUI with code
         ibPickMusic = (ImageButton) findViewById(R.id.ibPickMusic);
         tvHeader = (TextView)findViewById(R.id.tvHeader);
@@ -153,8 +144,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             changeMusic();
         }
         if(v.getId() == btnExit.getId()){
-            System.gc();
-            System.exit(0);
+           finish(); //Close the app
         }
     }
     //Changing the song

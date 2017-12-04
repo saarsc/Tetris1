@@ -3,6 +3,7 @@ package com.tetris.saar.tetris;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
@@ -15,17 +16,13 @@ import android.support.v4.app.NotificationCompat;
  * Created by saarsc on 23/10/2017.
  */
 //Low battery notification control
-public class BatteryService extends Service {
-    boolean run = true;
-    Context context = this;
-    private final Handler handler = new Handler();
-    BatteryManager bm;
-    int batLevel;
-    private final Runnable refresher = new Runnable() {
-        public void run() {
-            bm = (BatteryManager) getSystemService(BATTERY_SERVICE);
-            batLevel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
-            if (batLevel <= 90) {
+public class BatteryService extends BroadcastReceiver{
+    boolean ran = false; // Don't spam the notification
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if(!ran){
+            int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL,0); // Getting the level
+            if(level < 92) {
                 NotificationCompat.Builder builder =
                         new NotificationCompat.Builder(context)
                                 .setSmallIcon(R.mipmap.yellow)
@@ -35,26 +32,11 @@ public class BatteryService extends Service {
                 Intent targetIntent = new Intent(context, MainMenu.class);
                 PendingIntent contentIntent = PendingIntent.getActivity(context, 0, targetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.setContentIntent(contentIntent);
-                NotificationManager nManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 nManager.notify(NOTIFICATION_ID, builder.build());
-                run = false;
+                ran = true;
             }
         }
-    };
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-
-    @Override
-    public void onCreate() {
-        context = this;
-        handler.postDelayed(refresher,9000);
-    }
-    @Override
-    public void onDestroy(){
-        handler.removeCallbacks(refresher);
     }
 }
 
