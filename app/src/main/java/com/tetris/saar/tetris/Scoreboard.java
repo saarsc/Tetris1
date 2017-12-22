@@ -1,5 +1,6 @@
 package com.tetris.saar.tetris;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,15 +23,22 @@ public class Scoreboard extends AppCompatActivity{
    int order=0; //In which order to show the database
     //ListView
     ListView lvScore;
-    ArrayList<String> displayDB = new ArrayList<>(); //Hold the list to display
+    ListView lvName;
+    //Data holders
+    ArrayList<ArrayList<String>> displayDB = new ArrayList<>(); //Hold the list to display
+    ArrayList<String> displayName = new ArrayList<>();
+    ArrayList<String> displayScore = new ArrayList<>();
     //Database
     Databasehelper mainDB;
     //Menu
     Menu mainMenu = null;
+    //Context
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scoreboard);
+        context = this;
         //Spinners
         nameSpinner = (Spinner) findViewById(R.id.nameSpinner);
         scoreSpinner = (Spinner) findViewById(R.id.scoreSpinner);
@@ -75,23 +83,49 @@ public class Scoreboard extends AppCompatActivity{
 
             }
         });
+
+
         //Setting the adapters
         nameSpinner.setAdapter(nameAdapter);
         scoreSpinner.setAdapter(scoreAdapter);
-       //List adapter
-        lvScore = (ListView) findViewById(R.id.lvScoreboard);
+       //List Views
+        lvScore = (ListView) findViewById(R.id.lvScore);
+        lvName = (ListView) findViewById(R.id.lvName);
         mainDB = new Databasehelper(this);
         displayList();
+        //Remove Entry
+
     }
     //Displaying the list
-    public void displayList(){
+    public void displayList() {
         displayDB.clear(); // Clearing the old list
         //Getting the data from the database by the order
         displayDB.addAll(mainDB.displayList(order));
         //Displaying the list
-        if(!displayDB.isEmpty()){
-            ArrayAdapter<String> adpater = new ArrayAdapter<>(this, R.layout.listviewlayout,displayDB);
-            lvScore.setAdapter(adpater);
+        if (!displayDB.isEmpty()) {
+            final ArrayAdapter nameAdpater = new ArrayAdapter<>(this, R.layout.listviewlayout, displayDB.get(0));
+            lvName.setAdapter(nameAdpater);
+            final ArrayAdapter  scoreAdpater = new ArrayAdapter<>(this, R.layout.listviewlayout, displayDB.get(1));
+            lvScore.setAdapter(scoreAdpater);
+            //Removing items
+            lvName.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+            {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                    Databasehelper.callRemove(displayDB.get(2).get(pos),context);
+                    displayList();
+                    return true;
+                }
+            });
+            lvScore.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+            {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int pos, long id) {
+                    Databasehelper.callRemove(displayDB.get(2).get(pos),context);
+                    displayList();
+                    return true;
+                }
+            });
         }
     }
     //Action bar handle

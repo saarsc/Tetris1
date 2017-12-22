@@ -52,12 +52,22 @@ public class Databasehelper extends SQLiteOpenHelper
         cv.put(SCORE, score);
         boolean inserted =  db.insert(TABLE_NAME, null, cv)>0;
     }
-
+    public  void remove(String uid){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String sql = "DELETE FROM " + TABLE_NAME +" WHERE id="+uid;
+        db.execSQL(sql);
+    }
+    public static void callRemove(String uid,Context context){
+        Databasehelper temp = new Databasehelper(context);
+        temp.remove(uid);
+    }
     //Displaying the list by the order
-    public ArrayList<String> displayList(int order){
+    public ArrayList<ArrayList<String>> displayList(int order){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM scoreboard1 ORDER BY cast(score as REAL) DESC",null);
-        ArrayList<String> displayDB = new ArrayList<>();
+        ArrayList<String> displayName = new ArrayList<>();
+        ArrayList<String> displayScore = new ArrayList<>();
+        ArrayList<String> uidList= new ArrayList<>();
         switch (order){
             case 0:
                cursor =db.rawQuery("SELECT * FROM scoreboard1 ORDER BY cast(score as REAL) DESC",null);
@@ -75,16 +85,24 @@ public class Databasehelper extends SQLiteOpenHelper
         int i=1;
         int nameColumn = cursor.getColumnIndex("name");
         int scoreColumn = cursor.getColumnIndex("score");
+        int uidColumn = cursor.getColumnIndex("id");
         //Displaying the DB
         cursor.moveToFirst();
         if(cursor != null && (cursor.getCount() > 0)){
             do{
                 String name = cursor.getString(nameColumn);
                 String score = cursor.getString(scoreColumn);
-                displayDB.add(i +".  " + name + "          " + score);
+                String uid = cursor.getString(uidColumn);
+                displayName.add(i +"." + name);
+                displayScore.add(score);
+                uidList.add(uid);
                 i++;
             }while(cursor.moveToNext());
         }
+        ArrayList<ArrayList<String>> displayDB = new ArrayList<>();
+        displayDB.add(0,displayName);
+        displayDB.add(1,displayScore);
+        displayDB.add(2,uidList);
         return displayDB;
     }
 }

@@ -72,17 +72,19 @@ public class GameThread extends Thread {
                     //Moving right
                     if (currentBlock.isMoving() && right) {
                         gm.moveRight(currentBlock);
+                        update();
                         right = false;
                     }
                     //Moving left
                     if (currentBlock.isMoving() && left) {
                         gm.moveLeft(currentBlock);
+                        update();
                         left = false;
                     }
                 }
                 //Inseting the block at the end to fix disapeering blocks
                 gm.insertBlock(currentBlock);
-                update(); //Update to show the new block
+                vUpdate(); //Update to show the new block
                 gm.setDropSpeed(250); //Changing the drop speed
                 gm.addBlock(currentBlock); //Adding the block to the list
                 gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
@@ -97,6 +99,14 @@ public class GameThread extends Thread {
             //temp.setNextBlock(new Blocks(temp,gm.startI,gm.startJ));
             blockList.add(temp);
         }
+    }
+    public void vUpdate(){
+        uiHandle.post(new Runnable() {
+            @Override
+            public void run() {
+                gm.gameActivity.vSync();
+            }
+        });
     }
     public void update(){
         uiHandle.post(new Runnable() {
