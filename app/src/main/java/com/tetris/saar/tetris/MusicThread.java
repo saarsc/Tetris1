@@ -11,6 +11,7 @@ import java.io.File;
 public class MusicThread extends Service implements MediaPlayer.OnCompletionListener {
     String musicSrc; // Which file to use
     MediaPlayer player; //The mediaplayer
+    static boolean isPlaying = false;
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -23,19 +24,21 @@ public class MusicThread extends Service implements MediaPlayer.OnCompletionList
     //Control the music
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        //Should you use the default song
-        if(intent.getIntExtra("src",0) == 0){
-            player = MediaPlayer.create(this, R.raw.tetrismusic);
-            //Change the song to the picked one
-        }else {
-            musicSrc = intent.getStringExtra("src1");
-            File song = new File(musicSrc);
-            player = MediaPlayer.create(this, Uri.fromFile(song));
+        if(!isPlaying) {
+            //Should you use the default song
+            if (intent.getIntExtra("src", 0) == 0) {
+                player = MediaPlayer.create(this, R.raw.tetrismusic);
+                //Change the song to the picked one
+            } else {
+                musicSrc = intent.getStringExtra("src1");
+                File song = new File(musicSrc);
+                player = MediaPlayer.create(this, Uri.fromFile(song));
+            }
+            //Setting the media player
+            player.setLooping(true);
+            player.setOnCompletionListener(this);
+            player.start();
         }
-        //Setting the media player
-        player.setLooping(true);
-        player.setOnCompletionListener(this);
-        player.start();
         return START_STICKY;
     }
     //Kill the service

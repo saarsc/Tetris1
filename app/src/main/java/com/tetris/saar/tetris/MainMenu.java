@@ -121,6 +121,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 Intent call= new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + ""));
                 startActivity(call);
                 break;
+            case R.id.exit:
+                int pid = android.os.Process.myPid();
+                android.os.Process.killProcess(pid); //Close the app
+                break;
         }
         return true;
     }
@@ -144,7 +148,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             changeMusic();
         }
         if(v.getId() == btnExit.getId()){
-           finish(); //Close the app
+            int pid = android.os.Process.myPid();
+            android.os.Process.killProcess(pid); //Close the app
         }
     }
     //Changing the song

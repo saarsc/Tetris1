@@ -8,4 +8,11 @@
         android:title="Call"
         >
     </item>
+    <item
+        android:id="@+id/exit"
+        android:orderInCategory="101"
+        android:showAsAction="always|withText"
+        android:title="Exit"
+        >
+    </item>
 </menu>
