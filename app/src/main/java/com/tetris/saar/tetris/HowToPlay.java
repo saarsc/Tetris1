@@ -1,10 +1,14 @@
 package com.tetris.saar.tetris;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -62,10 +66,31 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
     Menu mainMenu = null;
     //Main second thread
     Thread t;
+    //Music Service
+    Context context;
+    Intent musicService;
+    private boolean mIsBound = false;
+    private MusicThread mServ;
+    private ServiceConnection Scon  =new ServiceConnection(){
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            mServ = ((MusicThread.ServiceBinder)binder).getService();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            mServ = null;
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_how_to_play);
+        //Music handle
+        context = this;
+        musicService= new Intent();
+        mServ = new MusicThread();
+        doBindService();
+        musicService.setClass(this,MusicThread.class);
+        startService(musicService);
         //Syncing the java and the GUI
         LinearLayout layout = (LinearLayout)findViewById(R.id.mainLayout);
         LinearLayout nextBlockLayout = (LinearLayout) findViewById(R.id.nextBlockLayout);
@@ -597,18 +622,44 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
+
         switch(item.getItemId()){
             case R.id.call:
-                Intent call= new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ""));
+                Intent call= new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + ""));
                 startActivity(call);
                 break;
+            case R.id.exit:
+                int pid = android.os.Process.myPid();
+                android.os.Process.killProcess(pid); //Close the app
+                break;
+            case R.id.toggleMusic:
+                mServ.toogleMusic();
         }
         return true;
     }
+    //Music bind and Unbind
+    private void doBindService(){
+        bindService(new Intent(context,MusicThread.class),
+                Scon, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
 
+    private void doUnbindService()
+    {
+        if(mIsBound)
+        {
+            unbindService(Scon);
+            mIsBound = false;
+        }
+    }
     @Override
     public void onBackPressed(){
      Intent intent = new Intent(this,MainMenu.class);
         startActivity(intent);
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        doUnbindService();
     }
 }

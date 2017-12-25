@@ -4,13 +4,16 @@ import android.Manifest;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
@@ -41,8 +44,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     Button btnHowTo; // Go to how to play
     Button btnExit; //Exit button
     Intent intent; // Main intent
-    //Music handle
-    Intent musicService;
     //Battery service
     static BatteryService batteryService = new BatteryService();
     ImageButton ibPickMusic;//Pick music
@@ -51,6 +52,19 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     Context context;// This screen
     //Action Bar
     Menu mainMenu = null;
+    //Music Service
+    Intent musicService;
+    private boolean mIsBound = false;
+    private MusicThread mServ;
+    private ServiceConnection Scon  =new ServiceConnection(){
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            mServ = ((MusicThread.ServiceBinder)binder).getService();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            mServ = null;
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,13 +84,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             }
         }
         //Music handle
-        musicService = new Intent(this,MusicThread.class);
-        musicService.putExtra("src",0);
+        musicService= new Intent();
+        mServ = new MusicThread();
+        doBindService();
+        musicService.setClass(this,MusicThread.class);
         startService(musicService);
         //Battery handle
-        /*batteryService = new Intent(this,BatteryService.class);
-        startService(batteryService);*/
         intent = this.getApplicationContext().registerReceiver(batteryService,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
         //Syncing GUI with code
         ibPickMusic = (ImageButton) findViewById(R.id.ibPickMusic);
         tvHeader = (TextView)findViewById(R.id.tvHeader);
@@ -84,6 +99,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         btnScoreboard = (Button) findViewById(R.id.btnScoreboard);
         btnHowTo = (Button) findViewById(R.id.btnHowTo);
         btnExit = (Button) findViewById(R.id.btnExit);
+
         //Click listeners
         ibPickMusic.setOnClickListener(this);
         btnGame.setOnClickListener(this);
@@ -125,6 +141,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 int pid = android.os.Process.myPid();
                 android.os.Process.killProcess(pid); //Close the app
                 break;
+            case R.id.toggleMusic:
+                mServ.toogleMusic();
         }
         return true;
     }
@@ -133,7 +151,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     public void onClick(View v) {
         if(v.getId() == btnGame.getId()){
             intent = new Intent(this,GameActivity.class);
-            intent.putExtra("service",musicService);
+            //intent.putExtra("service",musicService);
             startActivity(intent);
         }
         if(v.getId() == btnScoreboard.getId()){
@@ -188,9 +206,8 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             public void onItemClick(AdapterView<?> list, View v, int pos, long id) {
                 //Changing which song is playing
                 stopService(musicService);
-                musicService = new Intent(context, MusicThread.class);
-                musicService.putExtra("src",1);
-                musicService.putExtra("src1", Uri.parse(copySongPath.get(pos)).toString());
+                mServ.changeSong(Uri.parse(copySongPath.get(pos)).toString());
+                musicService.setClass(context,MusicThread.class);
                 startService(musicService);
                 alert.dismiss();
             }
@@ -217,7 +234,27 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             }
         return fileList;
     }
+    //Music bind and Unbind
+    private void doBindService(){
+        bindService(new Intent(context,MusicThread.class),
+                Scon,Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
+
+   private void doUnbindService()
+    {
+        if(mIsBound)
+        {
+            unbindService(Scon);
+            mIsBound = false;
+        }
+    }
     @Override
     public void onBackPressed(){
+    }
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        doUnbindService();
     }
 }
