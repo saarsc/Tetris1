@@ -131,15 +131,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-
         switch(item.getItemId()){
             case R.id.call:
                 Intent call= new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + ""));
                 startActivity(call);
                 break;
             case R.id.exit:
-                int pid = android.os.Process.myPid();
-                android.os.Process.killProcess(pid); //Close the app
+                 //Close the app
+                finish();
                 break;
             case R.id.toggleMusic:
                 mServ.toogleMusic();
@@ -151,23 +150,26 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     public void onClick(View v) {
         if(v.getId() == btnGame.getId()){
             intent = new Intent(this,GameActivity.class);
-            //intent.putExtra("service",musicService);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
             startActivity(intent);
         }
         if(v.getId() == btnScoreboard.getId()){
             intent = new Intent(this,Scoreboard.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
         if(v.getId() == btnHowTo.getId()){
             intent = new Intent(this,HowToPlay.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
         if(v.getId() == ibPickMusic.getId()){
             changeMusic();
         }
         if(v.getId() == btnExit.getId()){
-            int pid = android.os.Process.myPid();
-            android.os.Process.killProcess(pid); //Close the app
+            //Close app
+            finish();
         }
     }
     //Changing the song

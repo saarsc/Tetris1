@@ -178,8 +178,7 @@ public class Scoreboard extends AppCompatActivity{
                 startActivity(call);
                 break;
             case R.id.exit:
-                int pid = android.os.Process.myPid();
-                android.os.Process.killProcess(pid); //Close the app
+                finish();//Close the app
                 break;
             case R.id.toggleMusic:
                 mServ.toogleMusic();
@@ -204,6 +203,7 @@ public class Scoreboard extends AppCompatActivity{
     @Override
     public void onBackPressed(){
         Intent intent = new Intent(this,MainMenu.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
     @Override
