@@ -568,18 +568,17 @@ public class GameManger {
     }
     //Fixing a bug where the land block stays
     public void landBlockBugFix(){
-      for(int i=0; i< this.board.length;i++){
-          for(int j=0; j< this.board[i].length; j++){
-              if(this.board[i][j] ==8){
-                  this.board[i][j] =0;
-              }
-          }
-      }
+        for(int i=0; i< this.board.length;i++){
+            for(int j=0; j< this.board[i].length; j++){
+                if(this.board[i][j] ==8){
+                    this.board[i][j] =0;
+                }
+            }
+        }
     }
     //Return the board so you can display it
     public int[][] getDisplay(){
         return this.board;
     }
 }
-
 

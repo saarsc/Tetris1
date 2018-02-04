@@ -137,7 +137,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 startActivity(call);
                 break;
             case R.id.exit:
-                 //Close the app
+                //Close the app
                 finish();
                 break;
             case R.id.toggleMusic:
@@ -222,18 +222,18 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         File rootFolder = new File(rootPath); //The main folder
         File[] files = rootFolder.listFiles(); //All the files in the folder
         //If song add to the list if a directory go in side and add all the song there
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    if (getPlayList(file.getAbsolutePath()) != null) {
-                        fileList.addAll(getPlayList(file.getAbsolutePath()));
-                    } else {
-                        break;
-                    }
-                    //Add only mp3 files
-                } else if (file.getName().endsWith(".mp3")) {
-                    fileList.add(file);
+        for (File file : files) {
+            if (file.isDirectory()) {
+                if (getPlayList(file.getAbsolutePath()) != null) {
+                    fileList.addAll(getPlayList(file.getAbsolutePath()));
+                } else {
+                    break;
                 }
+                //Add only mp3 files
+            } else if (file.getName().endsWith(".mp3")) {
+                fileList.add(file);
             }
+        }
         return fileList;
     }
     //Music bind and Unbind
@@ -243,7 +243,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         mIsBound = true;
     }
 
-   private void doUnbindService()
+    private void doUnbindService()
     {
         if(mIsBound)
         {

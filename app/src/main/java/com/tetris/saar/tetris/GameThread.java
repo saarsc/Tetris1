@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class GameThread extends Thread {
     GameManger gm;
     Handler uiHandle;
-  static   boolean change =false; //For changing the rotation
+    static   boolean change =false; //For changing the rotation
     static boolean right = false; //For moving right
     static  boolean left =false; //For moving left
     static boolean pause = false; // Pause and unpause the game
@@ -84,7 +84,7 @@ public class GameThread extends Thread {
                 }
                 //Inseting the block at the end to fix disapeering blocks
                 gm.insertBlock(currentBlock);
-                vUpdate(); //Update to show the new block
+//                vUpdate(); //Update to show the new block
                 gm.setDropSpeed(250); //Changing the drop speed
                 gm.addBlock(currentBlock); //Adding the block to the list
                 gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened

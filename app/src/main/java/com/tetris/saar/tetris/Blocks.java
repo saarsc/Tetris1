@@ -37,8 +37,8 @@ public class Blocks {
         this.place[0] = i;
         this.place[1]=j;
         this.rotation=0;
-
     }
+    //Empty constructor for the random block
     public Blocks getNextBlock(){
         return this.nextBlock;
     }
