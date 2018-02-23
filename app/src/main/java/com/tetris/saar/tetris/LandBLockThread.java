@@ -1,8 +1,17 @@
 package com.tetris.saar.tetris;
 
+/**
+ * The type Land b lock thread.
+ */
 //Thread that control the LandBlock
 public class LandBLockThread extends Thread {
   private GameManger gm;
+
+    /**
+     * Instantiates a new Land block thread.
+     *
+     * @param gm the gm
+     */
     public LandBLockThread( GameManger gm) {
         this.gm = gm;
     }
@@ -10,21 +19,42 @@ public class LandBLockThread extends Thread {
     public void run() {
 
     }
-    //Moving right
+
+    /**
+     * Moving right.
+     *
+     * @param block the block
+     * @param board the board
+     * @return the blocks
+     */
     public Blocks moveRight(Blocks block,int[][] board){
         Blocks temp = block.getNextBlock();
         temp.setPlace(block.getPlace()[0],block.getPlace()[1]);
         setEmptySpaceBlockPos(temp,board);
         return temp;
     }
-    //Moving left
+
+    /**
+     * Moving left.
+     *
+     * @param block the block
+     * @param board the board
+     * @return the blocks
+     */
     public Blocks moveLeft(Blocks block,int[][] board){
         Blocks temp = block.getNextBlock();
         temp.setPlace(block.getPlace()[0],block.getPlace()[1]);
         setEmptySpaceBlockPos(temp,board);
         return temp;
     }
-    //Changing the rotation
+
+    /**
+     * Changing the rotation.
+     *
+     * @param block the block
+     * @param board the board
+     * @return the blocks
+     */
     public Blocks change(Blocks block,int[][] board){
         Blocks temp = block.getNextBlock();
         temp.setPlace(block.getPlace()[0],block.getPlace()[1]);
@@ -32,7 +62,15 @@ public class LandBLockThread extends Thread {
         setEmptySpaceBlockPos(temp,board);
         return temp;
     }
-    //Finding the block empty position
+
+    /**
+     * Finding the block empty position.
+     *
+     * @param block the block
+     * @param board the board
+     * @return the empty space block pos
+     */
+
     public Blocks setEmptySpaceBlockPos(Blocks block,int[][] board) {
        while(isEmptyDown(block,board))
     {
@@ -40,7 +78,13 @@ public class LandBLockThread extends Thread {
     }
     return  block;
 }
-    //If there is place underneath
+    /**
+     * If there is place underneath.
+     *
+     * @param currentBlock the current block
+     * @param board        the board
+     * @return the boolean
+     */
     public boolean isEmptyDown(Blocks currentBlock,int[][] board) {
         int[] place = currentBlock.getPlace();
         boolean empty = true;

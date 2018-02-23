@@ -1,13 +1,31 @@
 package com.tetris.saar.tetris;
 
+/**
+ * The type Line and up left.
+ */
 //For the J shape
 public class LineAndUpLeft extends Blocks{
+    /**
+     * Instantiates a new Line and up left.
+     *
+     * @param i the
+     * @param j the j
+     */
     public LineAndUpLeft(int i, int j){
         super(true, false,true, true,false,false, false, false,3,i,j);
     }
+
+    /**
+     * Instantiates a new Line and up left.
+     *
+     * @param line the line
+     * @param i    the
+     * @param j    the j
+     */
     public LineAndUpLeft(LineAndUpLeft line , int i, int j){
         super(line,i,j);
     }
+    //Rotation
     @Override
     public void changeRot() {
         if(this.id==8 && this.getPlace()[1] ==23){

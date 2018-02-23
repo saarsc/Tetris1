@@ -46,7 +46,10 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
     //Next Block place
     ImageView[][] nextBlockView = new ImageView[4][4];
     //Swipe checker
-    float x1,x2,downY,upY;
+    float x1,
+    x2,
+    downY,
+    upY;
     static final int MIN_DISTANCE = 100;
 
     int turn =0;
@@ -160,6 +163,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         toDisplay();
         update();
     }
+
     //Main handle
     public void update(){
         if(turn ==0){
@@ -231,6 +235,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         }
         toDisplay();
     }
+
     //Showing the completing line part
     public void completeLine(){
         Line l1 = new Line(8,23);
@@ -281,12 +286,14 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         }
         toDisplay();
     }
+
     //Displaying the next block
     public void putNextBlock(){
        nextBlockView[2][2].setBackgroundResource(blue);
         nextBlockView[3][2].setBackgroundResource(blue);
         nextBlockView[1][2].setBackgroundResource(blue);
     }
+
     //Drop the block
     public void drop(){
       t  =new Thread(new Runnable() {
@@ -353,6 +360,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
             board[place[0]][place[1] + 1] = 0;
         }
     }
+
     //Insert the block in the right place and place all the blocks around the center block
     public void insertBlock(Blocks newBlock) {
         int id = newBlock.getId();
@@ -397,6 +405,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         }
         update();
     }
+
     //Moving right
     public void moveRight(){
          t = new Thread(new Runnable() {
@@ -417,6 +426,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         });
         t.start();
     }
+
     //Moving left
     public void moveLeft(){
          t = new Thread(new Runnable() {
@@ -537,6 +547,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         });
        t.start();
     }
+
     //Creating the array
     public void init(){
         text.add("The block will drop by it self");
@@ -547,6 +558,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         text.add("Complete lines to gain score");
         text.add("Swipe down to place the\nblock ");
     }
+
     //Display the board ---> convert from int to colored Image View
     public void toDisplay(){
         for(int i=blocks.length-1; i>=0; i--){
@@ -592,6 +604,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         }
 
     }
+
     //Clearing the board
     public void clear(){
         for(int i=0; i< board.length;i++){

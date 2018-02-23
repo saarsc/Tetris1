@@ -9,14 +9,41 @@ import java.util.ArrayList;
  */
 //Special thread to control each block
 public class GameThread extends Thread {
+    /**
+     * The gameManger.
+     */
     GameManger gm;
+    /**
+     * The Ui handle.
+     */
     Handler uiHandle;
-    static   boolean change =false; //For changing the rotation
-    static boolean right = false; //For moving right
-    static  boolean left =false; //For moving left
-    static boolean pause = false; // Pause and unpause the game
+    /**
+     * For changing the rotation.
+     */
+    static boolean change =false;
+    /**
+     * For moving right.
+     */
+    static boolean right = false;
+    /**
+     * For moving left.
+     */
+    static  boolean left =false;
+    /**
+     * Pause and unpause the game.
+     */
+    static boolean pause = false;
 
+    /**
+     * The Block list.
+     */
     ArrayList<Blocks> blockList = new ArrayList<>(); // Holds the next 50 blocks
+
+    /**
+     * Instantiates a new Game thread.
+     *
+     * @param gm the gm
+     */
     public GameThread(GameManger gm){
         this.gm = gm;
         uiHandle = new Handler(); //For displaying on screen while being on a different thread
@@ -92,7 +119,10 @@ public class GameThread extends Thread {
             }
         } while (!pause &&(!gm.endOfGame(currentBlock)));
     }
-    //Creating a list of blocks to use
+
+    /**
+     * Creating a list of blocks to use.
+     */
     public void init(){
         for(int i=0; i< 50; i++){
             Blocks temp = gm.pickBlock();
@@ -100,14 +130,9 @@ public class GameThread extends Thread {
             blockList.add(temp);
         }
     }
-    public void vUpdate(){
-        uiHandle.post(new Runnable() {
-            @Override
-            public void run() {
-                gm.gameActivity.vSync();
-            }
-        });
-    }
+    /**
+     * Update the screen.
+     */
     public void update(){
         uiHandle.post(new Runnable() {
             @Override
@@ -116,23 +141,40 @@ public class GameThread extends Thread {
             }
         });
     }
-    //Change Block drop speed
+
+    /**
+     * Change speed.
+     */
     public void changeSpeed(){
         GameManger.setDropSpeed(10);
     }
-    //Rotation button was pressed
+
+    /**
+     * Rotation need to happen.
+     */
+
     public void needToChange(){
         change = true;
     }
-    //Move right was pressed
+
+    /**
+     * Move right.
+     */
     public void moveRight(){
         right = true;
     }
-    //Moving left was pressed
+
+    /**
+     * Move left.
+     */
     public void moveLeft(){
         left=true;
     }
-    //Toggle pausing the game
+
+    /**
+     * Toggle pausing the game.
+     */
+
     public void pauseUnPause(){
         pause = !pause;
     }

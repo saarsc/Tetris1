@@ -10,16 +10,33 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 import java.io.File;
+
+/**
+ * The type Music thread.
+ */
 //Class that control the music
 public class MusicThread extends Service implements MediaPlayer.OnErrorListener {
     private final IBinder mBinder = new ServiceBinder(); // Used to binned the service to the activity
-    MediaPlayer mPlayer = new MediaPlayer(); //Main MediaPlayer
+    /**
+     * Main MediaPlayer.
+     */
+    MediaPlayer mPlayer = new MediaPlayer();
     private int length = 0; // Where the song was paused to resume it later
 
+    /**
+     * Instantiates a new Music thread.
+     */
     public MusicThread(){}
 
-    //Enable to bind the service the activity
+    /**
+     * Enable to bind the service the activity
+     */
      public class ServiceBinder extends Binder {
+        /**
+         * Gets service.
+         *
+         * @return the service
+         */
         MusicThread getService() {
              return MusicThread.this;
         }
@@ -61,7 +78,11 @@ public class MusicThread extends Service implements MediaPlayer.OnErrorListener 
 
         return START_STICKY;
     }
-    //Toggle Pause and UnPause the music
+
+    /**
+     * Toggle Pause and UnPause the music.
+     */
+
     public void toogleMusic()
     {
         if(mPlayer.isPlaying())
@@ -73,7 +94,13 @@ public class MusicThread extends Service implements MediaPlayer.OnErrorListener 
             mPlayer.start();
         }
     }
-    //Change the song based on a given string
+
+    /**
+     * Change the song based on a given string.
+     *
+     * @param src the src
+     */
+
     public void changeSong(String src){
         onDestroy();
         File song= new File(src);
@@ -92,13 +119,6 @@ public class MusicThread extends Service implements MediaPlayer.OnErrorListener 
                 return true;
             }
         });
-    }
-    //Stop the music
-    public void stopMusic()
-    {
-        mPlayer.stop();
-        mPlayer.release();
-        mPlayer = null;
     }
     //Kill the player
     @Override

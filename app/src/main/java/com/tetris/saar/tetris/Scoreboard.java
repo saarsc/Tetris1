@@ -18,25 +18,53 @@ import android.widget.ListView;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+
+/**
+ * The type Scoreboard.
+ */
 //Scoreboard activity
 public class Scoreboard extends AppCompatActivity{
-    //Buttons
+    /**
+     * The Name spinner.
+     */
     Spinner nameSpinner;
+    /**
+     * The Score spinner.
+     */
     Spinner scoreSpinner;
-   int order=0; //In which order to show the database
-    //ListView
+    /**
+     * The Order in which  to show the database.
+     */
+    int order=0;
+    /**
+     * ListView for score.
+     */
     ListView lvScore;
+    /**
+     * ListView for name.
+     */
     ListView lvName;
     //Data holders
-    ArrayList<ArrayList<String>> displayDB = new ArrayList<>(); //Hold the list to display
-    ArrayList<String> displayName = new ArrayList<>();
-    ArrayList<String> displayScore = new ArrayList<>();
-    //Database
+    /**
+     * Hold the list to display.
+     */
+    ArrayList<ArrayList<String>> displayDB = new ArrayList<>();
+    /**
+     * The Main db.
+     */
     Databasehelper mainDB;
-    //Menu
+    /**
+     * The action bar
+     */
     Menu mainMenu = null;
+    /**
+     * The Context.
+     */
     //Context
     Context context;
+    /**
+     * The Music service.
+     */
     //Music Service
     Intent musicService;
     private boolean mIsBound = false;
@@ -118,6 +146,10 @@ public class Scoreboard extends AppCompatActivity{
         //Remove Entry
 
     }
+
+    /**
+     * Display list.
+     */
     //Displaying the list
     public void displayList() {
         displayDB.clear(); // Clearing the old list

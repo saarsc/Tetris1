@@ -1,14 +1,31 @@
 package com.tetris.saar.tetris;
 
+/**
+ * The type Line.
+ */
 //Class for straight line
 public class Line extends Blocks{
+    /**
+     * Instantiates a new Line.
+     *
+     * @param i the
+     * @param j the j
+     */
     public Line(int i, int j){
         super(true,false,true,false,false,false,false,false,4,i,j);
     }
+
+    /**
+     * Instantiates a new Line.
+     *
+     * @param line the line
+     * @param i    the
+     * @param j    the j
+     */
     public Line(Line line , int i, int j){
         super(line,i,j);
     }
-
+    //Rotation
     @Override
     public void changeRot(){
         if(this.id==8 && this.getPlace()[1] ==23){

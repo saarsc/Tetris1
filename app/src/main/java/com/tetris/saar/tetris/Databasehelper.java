@@ -17,9 +17,21 @@ public class Databasehelper extends SQLiteOpenHelper
     private static final String DATABASE_NAME = "Scoreboard.db";
     private static final int DATABASE_VERSION = 1;
 
+    /**
+     * The constant TABLE_NAME.
+     */
     public static final String TABLE_NAME = "scoreboard1";
+    /**
+     * The constant UID.
+     */
     public static final String UID = "id";                 // primary Key, automatic ID
+    /**
+     * The constant NAME.
+     */
     public static final String NAME = "name";           // name of the player
+    /**
+     * The constant SCORE.
+     */
     public static final String SCORE = "score";               // number of wins
 
 
@@ -28,6 +40,11 @@ public class Databasehelper extends SQLiteOpenHelper
 
     private static final String SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS "+ TABLE_NAME;
 
+    /**
+     * Instantiates a new Databasehelper.
+     *
+     * @param context the context
+     */
     public Databasehelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -43,6 +60,13 @@ public class Databasehelper extends SQLiteOpenHelper
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
     }
+
+    /**
+     * Add data.
+     *
+     * @param name  the name
+     * @param score the score
+     */
     //Adding new entire
     public void addData(String name,int score)
     {
@@ -52,15 +76,34 @@ public class Databasehelper extends SQLiteOpenHelper
         cv.put(SCORE, score);
         boolean inserted =  db.insert(TABLE_NAME, null, cv)>0;
     }
-    public  void remove(String uid){
+
+    /**
+     * Remove person.
+     *
+     * @param uid the uid
+     */
+    public void remove(String uid){
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "DELETE FROM " + TABLE_NAME +" WHERE id="+uid;
         db.execSQL(sql);
     }
+
+    /**
+     * Call the remove function.
+     *
+     * @param uid     the uid
+     * @param context the context
+     */
     public static void callRemove(String uid,Context context){
         Databasehelper temp = new Databasehelper(context);
         temp.remove(uid);
     }
+    /**
+     * Display list array list.
+     *
+     * @param order the order
+     * @return the array list
+     */
     //Displaying the list by the order
     public ArrayList<ArrayList<String>> displayList(int order){
         SQLiteDatabase db = this.getReadableDatabase();
@@ -68,6 +111,7 @@ public class Databasehelper extends SQLiteOpenHelper
         ArrayList<String> displayName = new ArrayList<>();
         ArrayList<String> displayScore = new ArrayList<>();
         ArrayList<String> uidList= new ArrayList<>();
+        //Order by the given order
         switch (order){
             case 0:
                cursor =db.rawQuery("SELECT * FROM scoreboard1 ORDER BY cast(score as REAL) DESC",null);
@@ -82,6 +126,7 @@ public class Databasehelper extends SQLiteOpenHelper
                 cursor = db.rawQuery("SELECT * FROM scoreboard1 ORDER BY name ASC",null);
                 break;
         }
+        //Splitting the columns
         int i=1;
         int nameColumn = cursor.getColumnIndex("name");
         int scoreColumn = cursor.getColumnIndex("score");

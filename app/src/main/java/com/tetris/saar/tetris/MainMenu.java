@@ -36,23 +36,59 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+
+/**
+ * The type Main menu.
+ */
 //Main menu activity
 public class MainMenu extends AppCompatActivity implements View.OnClickListener,Serializable{
-    TextView tvHeader; // The header
-    Button btnGame; // Go to the game
-    Button btnScoreboard; // Go to scoreboard
-    Button btnHowTo; // Go to how to play
-    Button btnExit; //Exit button
-    Intent intent; // Main intent
-    //Battery service
+    /**
+     * The  header.
+     */
+    TextView tvHeader;
+    /**
+     * Go to the game.
+     */
+    Button btnGame;
+    /**
+     * Go to scoreboard.
+     */
+    Button btnScoreboard;
+    /**
+     * Go to how to play.
+     */
+    Button btnHowTo;
+    /**
+     * Exit button.
+     */
+    Button btnExit;
+    /**
+     * Main intent.
+     */
+    Intent intent;
+    /**
+     * Battery service.
+     */
     static BatteryService batteryService = new BatteryService();
-    ImageButton ibPickMusic;//Pick music
-    //For the premmision
+    /**
+     * Pick music
+     */
+    ImageButton ibPickMusic;
+    /**
+     * For the premmision.
+     */
     int myPremmision;
-    Context context;// This screen
-    //Action Bar
+    /**
+     * The Context.
+     */
+    Context context;
+    /**
+     * The Action bar.
+     */
     Menu mainMenu = null;
-    //Music Service
+    /**
+     * The Music service binding.
+     */
     Intent musicService;
     private boolean mIsBound = false;
     private MusicThread mServ;
@@ -172,7 +208,10 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             finish();
         }
     }
-    //Changing the song
+
+    /**
+     * Change music.
+     */
     public void changeMusic(){
         ArrayList<File> songList = getPlayList(Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music"); //Hold all the song on the phone
         ArrayList<String> songName= new ArrayList<>(); // List of song names
@@ -216,7 +255,14 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
 
         });
     }
-    //Get the list of the all the music files
+
+    /**
+     * Get the list of the all the music files
+     *
+     * @param rootPath the root path
+     * @return the play list
+     */
+
     ArrayList<File> getPlayList(String rootPath) {
         ArrayList<File> fileList = new ArrayList<>(); // Holds the list of the songs
         File rootFolder = new File(rootPath); //The main folder

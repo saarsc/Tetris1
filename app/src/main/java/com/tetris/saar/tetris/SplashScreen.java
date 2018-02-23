@@ -10,9 +10,16 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+/**
+ * The type Splash screen.
+ */
 //Splash screen activity
 public class SplashScreen extends AppCompatActivity {
-    GifImageView gifImageView; //The gif to the display
+    /**
+     * The gif to the display.
+     */
+    GifImageView gifImageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

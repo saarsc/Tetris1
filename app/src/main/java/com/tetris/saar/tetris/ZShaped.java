@@ -1,13 +1,31 @@
 package com.tetris.saar.tetris;
 
+/**
+ * The type Z shaped.
+ */
 // Z Shape
 public class ZShaped extends Blocks{
+    /**
+     * Instantiates a new Z shaped.
+     *
+     * @param i the
+     * @param j the j
+     */
     public ZShaped(int i, int j){
         super(false,true,true,true,false,false,false,false,5,i,j);
     }
+
+    /**
+     * Instantiates a new Z shaped.
+     *
+     * @param line the line
+     * @param i    the
+     * @param j    the j
+     */
     public ZShaped(ZShaped line , int i, int j){
         super(line,i,j);
     }
+    //Rotation
     @Override
     public void changeRot() {
         if(this.id==8 && this.getPlace()[1] ==23){

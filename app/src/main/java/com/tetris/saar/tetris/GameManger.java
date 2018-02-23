@@ -4,22 +4,63 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
+/**
+ * The Game manger.
+ */
 public class GameManger {
     //Blocks starting position
+    /**
+     * The constant startI.
+     */
     public static final int startI = 5;
+    /**
+     * The constant startJ.
+     */
     public static final int startJ = 1;
-    static int dropSpeed = 250; //Control's the dop speed of the block / Game ticks
-    int[][] board; //Main game board
-    int score; //The game score
-    GameActivity gameActivity; // Game activity control
-    android.os.Handler uiHandler; //Handler to update the screen from the thread
+    /**
+     * Control's the dop speed of the block / Game ticks
+     */
+    static int dropSpeed = 250;
+    /**
+     * Main game board.
+     */
+    int[][] board;
+    /**
+     * The game score.
+     */
+    int score;
+    /**
+     * Game activity control.
+     */
+    GameActivity gameActivity;
+    /**
+     * The Ui handler.
+     */
+    android.os.Handler uiHandler;
 
-    ArrayList<Blocks> blocksHistory; //Hold all the blocks which was spawned at the current game
-    //Thread for the land block
+    /**
+     * The Blocks history.Hold all the blocks which was spawned at the current game.
+     */
+    ArrayList<Blocks> blocksHistory;
+    /**
+     * Thread for the land block.
+     */
     Runnable run;
+    /**
+     * The Thread for the landblock.
+     */
     Thread thread;
+    /**
+     * The Lb class.
+     */
     LandBLockThread lb;
-    //Constructor
+
+    /**
+     * Instantiates a new Game manger.
+     *
+     * @param contex the contex
+     */
+//Constructor
     public GameManger(GameActivity contex) {
         this.board = new int[10][24];
         this.gameActivity = contex;
@@ -33,12 +74,19 @@ public class GameManger {
         lb = new LandBLockThread(this);
     }
 
-    //Returning the drop speed
+    /**
+     * Gets drop speed.
+     * @return the drop speed
+     */
     public static int getDropSpeed() {
         return dropSpeed;
     }
 
-    //Setting the drop speed/ game tick
+    /**
+     * Sets drop speed.
+     *
+     * @param dropSpeed the drop speed
+     */
     public static void setDropSpeed(int dropSpeed) {
         GameManger.dropSpeed = dropSpeed;
     }
@@ -121,11 +169,21 @@ public class GameManger {
         }
         return true;
     }
-    //Adding new block
+
+    /**
+     * Add block to the block history.
+     *
+     * @param block the block
+     */
     public void addBlock(Blocks block) {
         this.blocksHistory.add(block);
     }
-    //Move down the block
+
+    /**
+     * Move down.
+     *
+     * @param currentBlock the current block
+     */
     public void moveDown(Blocks currentBlock) {
         int[] place = currentBlock.getPlace();
         if (isEmptyDown(currentBlock)) {
@@ -135,7 +193,12 @@ public class GameManger {
             insertBlock(currentBlock); //Inserting the block
         }
     }
-    //Generate a new block based on a random number
+
+    /**
+     * Generate a new block based on a random number.
+     *
+     * @return the blocks
+     */
     public Blocks pickBlock() {
         Random rnd = new Random();
         int pick = rnd.nextInt(7) + 1;
@@ -171,7 +234,11 @@ public class GameManger {
         return newBlock;
 
     }
-    //Insert the block in the right place and place all the blocks around the center block
+    /**
+     * Insert the block in the right place and place all the blocks around the center block.
+     *
+     * @param newBlock the new block
+     */
     public void insertBlock(Blocks newBlock) {
         int id = newBlock.getId();
         int[] currentPlace = newBlock.getPlace();
@@ -245,7 +312,12 @@ public class GameManger {
             this.board[place[0]][place[1] + 1] = 0;
         }
     }
-    //Changing the rotation of the block
+
+    /**
+     * Changing the rotation of the block
+     *
+     * @param currentBlock the current block
+     */
     public void change(Blocks currentBlock) {
         int[] oldPlace = currentBlock.getNextBlock().getPlace();
         //Checking if you can rotate
@@ -260,7 +332,12 @@ public class GameManger {
             insertBlock(lb.change(currentBlock,this.board)); //Inserting the land block
         }
     }
-    //Moving right
+
+    /**
+     * Move right.
+     *
+     * @param currentBlock the current block
+     */
     public void moveRight(Blocks currentBlock) {
         int[] place = currentBlock.getPlace();
         int[] oldPlace = currentBlock.getNextBlock().getPlace();
@@ -277,6 +354,7 @@ public class GameManger {
             insertBlock(lb.moveRight(currentBlock,this.board));
         }
     }
+
     //Checking the block can move right
     private boolean emptyRight(Blocks currentBlock) {
         int[] place = currentBlock.getPlace();
@@ -318,7 +396,12 @@ public class GameManger {
             return !(currentBlock.isDown() && this.board[place[0] + 1][place[1] + 1] > 0 && currentBlock.isDown() && this.board[place[0] + 1][place[1] + 1] < 8 && !currentBlock.isDownRight());
         }
     }
-    //Fixing a bug where a block just stops mid air and won't go down
+
+    /**
+     * Fixing a bug where a block just stops mid air and won't go down.
+     *
+     * @param currentBlock the current block
+     */
     public void bugFixEmptyRow(Blocks currentBlock) {
         int[] place = currentBlock.getPlace();
         boolean check = true;
@@ -420,6 +503,7 @@ public class GameManger {
         }
         return rot;
     }
+
     //Checking if can move left
     private boolean emptyLeft(Blocks currentBlock) {
         int[] place = currentBlock.getPlace();
@@ -464,7 +548,11 @@ public class GameManger {
         return true;
     }
 
-    //Move left
+    /**
+     * Move left.
+     *
+     * @param currentBlock the current block
+     */
     public void moveLeft(Blocks currentBlock) {
         //final int[][] finalBoard = this.board;
         int[] place = currentBlock.getPlace();
@@ -481,7 +569,13 @@ public class GameManger {
             insertBlock(lb.moveLeft(currentBlock,board));
         }
     }
-    //If the game has ended
+
+    /**
+     * If the game has ended.
+     *
+     * @param curenntBlock the curennt block
+     * @return the boolean
+     */
     public boolean endOfGame(Blocks curenntBlock) {
         int[] lastPos = blocksHistory.get(blocksHistory.size() - 1).getPlace();
         //if has top row
@@ -509,7 +603,10 @@ public class GameManger {
         }
         return false;
     }
-    //Checking if there are any full rows
+
+    /**
+     * Checking if there are any full rows.
+     */
     public void checkBoard() {
         boolean moveDown = true;
         boolean checkAgain = false; //If pushed down check again
@@ -562,11 +659,19 @@ public class GameManger {
             }
         }
     }
-    //Handle the land block position
+
+    /**
+     * Handle the land block position.
+     *
+     * @param emptySpot the empty spot
+     */
     public void setEmptySpaceBlockPos(final Blocks emptySpot){
         lb.setEmptySpaceBlockPos(emptySpot,board);
     }
-    //Fixing a bug where the land block stays
+
+    /**
+     * Fixing a bug where the land block stays.
+     */
     public void landBlockBugFix(){
         for(int i=0; i< this.board.length;i++){
             for(int j=0; j< this.board[i].length; j++){
@@ -576,7 +681,12 @@ public class GameManger {
             }
         }
     }
-    //Return the board so you can display it
+
+    /**
+     * Return the board so you can display it.
+     *
+     * @return the int [ ] [ ]
+     */
     public int[][] getDisplay(){
         return this.board;
     }
