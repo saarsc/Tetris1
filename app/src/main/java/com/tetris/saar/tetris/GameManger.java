@@ -92,7 +92,7 @@ public class GameManger {
     }
 
     //Creating all the slots in the array
-    private void init() {
+    public void init() {
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
                 this.board[i][j] = 0;

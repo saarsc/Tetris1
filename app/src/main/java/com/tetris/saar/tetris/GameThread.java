@@ -99,19 +99,19 @@ public class GameThread extends Thread {
                     //Moving right
                     if (currentBlock.isMoving() && right) {
                         gm.moveRight(currentBlock);
-                        update();
+//                        update();
                         right = false;
                     }
                     //Moving left
                     if (currentBlock.isMoving() && left) {
                         gm.moveLeft(currentBlock);
-                        update();
+//                        update();
                         left = false;
                     }
                 }
                 //Inseting the block at the end to fix disapeering blocks
                 gm.insertBlock(currentBlock);
-//                vUpdate(); //Update to show the new block
+                update(); //Update to show the new block
                 gm.setDropSpeed(250); //Changing the drop speed
                 gm.addBlock(currentBlock); //Adding the block to the list
                 gm.bugFixEmptyRow(currentBlock); //Checking if the empty row bug happened
@@ -124,11 +124,20 @@ public class GameThread extends Thread {
      * Creating a list of blocks to use.
      */
     public void init(){
+
         for(int i=0; i< 50; i++){
             Blocks temp = gm.pickBlock();
             //temp.setNextBlock(new Blocks(temp,gm.startI,gm.startJ));
             blockList.add(temp);
         }
+    }
+    public void vUpdate(){
+        uiHandle.post(new Runnable() {
+            @Override
+            public void run() {
+                gm.gameActivity.vSync();
+            }
+        });
     }
     /**
      * Update the screen.
@@ -175,7 +184,10 @@ public class GameThread extends Thread {
      * Toggle pausing the game.
      */
 
-    public void pauseUnPause(){
-        pause = !pause;
+    public void pause(){
+        pause = true;
+    }
+    public  void unPause(){
+        pause = false;
     }
 }

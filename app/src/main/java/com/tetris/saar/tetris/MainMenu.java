@@ -187,7 +187,6 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         if(v.getId() == btnGame.getId()){
             intent = new Intent(this,GameActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
             startActivity(intent);
         }
         if(v.getId() == btnScoreboard.getId()){
