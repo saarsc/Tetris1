@@ -1,9 +1,6 @@
 package com.tetris.saar.tetris;
 
 import android.Manifest;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +12,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -41,7 +37,7 @@ import java.util.ArrayList;
  * The type Main menu.
  */
 //Main menu activity
-public class MainMenu extends AppCompatActivity implements View.OnClickListener,Serializable{
+public class MainMenu extends AppCompatActivity implements View.OnClickListener,Serializable {
     /**
      * The  header.
      */
@@ -89,18 +85,20 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     /**
      * The Music service binding.
      */
+    boolean pauseMusic = true;
     Intent musicService;
     private boolean mIsBound = false;
     private MusicThread mServ;
-    private ServiceConnection Scon  =new ServiceConnection(){
+    private ServiceConnection Scon = new ServiceConnection() {
         public void onServiceConnected(ComponentName name, IBinder binder) {
-            mServ = ((MusicThread.ServiceBinder)binder).getService();
+            mServ = ((MusicThread.ServiceBinder) binder).getService();
         }
 
         public void onServiceDisconnected(ComponentName name) {
             mServ = null;
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,17 +118,18 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
             }
         }
         //Music handle
-        musicService= new Intent();
+        musicService = new Intent();
         mServ = new MusicThread();
         doBindService();
-        musicService.setClass(this,MusicThread.class);
+        musicService.setClass(this, MusicThread.class);
+
         startService(musicService);
         //Battery handle
-        intent = this.getApplicationContext().registerReceiver(batteryService,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        intent = this.getApplicationContext().registerReceiver(batteryService, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
         //Syncing GUI with code
         ibPickMusic = (ImageButton) findViewById(R.id.ibPickMusic);
-        tvHeader = (TextView)findViewById(R.id.tvHeader);
+        tvHeader = (TextView) findViewById(R.id.tvHeader);
         btnGame = (Button) findViewById(R.id.btnGame);
         btnScoreboard = (Button) findViewById(R.id.btnScoreboard);
         btnHowTo = (Button) findViewById(R.id.btnHowTo);
@@ -143,33 +142,36 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         btnHowTo.setOnClickListener(this);
         btnExit.setOnClickListener(this);
         //Creating the header
-        String header ="<font color= '#ff0000'>T</font><font color='#ff8c00'>e</font><font color='#ffff00'>t</font><font color='#008000'>r</font><font color='#0000ff'>i</font><font color='#800080'>s</font>";
+        String header = "<font color= '#ff0000'>T</font><font color='#ff8c00'>e</font><font color='#ffff00'>t</font><font color='#008000'>r</font><font color='#0000ff'>i</font><font color='#800080'>s</font>";
         tvHeader.setText(Html.fromHtml(header));
     }
+
     //Action bar handle
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.bulletmenu, menu);
-        mainMenu=menu;
+        mainMenu = menu;
         return true;
     }
+
     //Menu press should open 3 dot menu
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode== KeyEvent.KEYCODE_MENU) {
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
             mainMenu.performIdentifierAction(R.id.call, 0);
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
+
     //Click listener
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.call:
-                Intent call= new Intent(Intent.ACTION_DIAL,Uri.parse("tel:" + ""));
+                Intent call = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + ""));
                 startActivity(call);
                 break;
             case R.id.exit:
@@ -181,28 +183,32 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         }
         return true;
     }
+
     //Click listener for all the buttons
     @Override
     public void onClick(View v) {
-        if(v.getId() == btnGame.getId()){
-            intent = new Intent(this,GameActivity.class);
+        if (v.getId() == btnGame.getId()) {
+            intent = new Intent(this, GameActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            pauseMusic = false;
             startActivity(intent);
         }
-        if(v.getId() == btnScoreboard.getId()){
-            intent = new Intent(this,Scoreboard.class);
+        if (v.getId() == btnScoreboard.getId()) {
+            intent = new Intent(this, Scoreboard.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            pauseMusic = false;
             startActivity(intent);
         }
-        if(v.getId() == btnHowTo.getId()){
-            intent = new Intent(this,HowToPlay.class);
+        if (v.getId() == btnHowTo.getId()) {
+            intent = new Intent(this, HowToPlay.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            pauseMusic = false;
             startActivity(intent);
         }
-        if(v.getId() == ibPickMusic.getId()){
+        if (v.getId() == ibPickMusic.getId()) {
             changeMusic();
         }
-        if(v.getId() == btnExit.getId()){
+        if (v.getId() == btnExit.getId()) {
             //Close app
             finish();
         }
@@ -211,17 +217,17 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
     /**
      * Change music.
      */
-    public void changeMusic(){
-        ArrayList<File> songList = getPlayList(Environment.getExternalStorageDirectory().getAbsolutePath() +"/Music"); //Hold all the song on the phone
-        ArrayList<String> songName= new ArrayList<>(); // List of song names
+    public void changeMusic() {
+        ArrayList<File> songList = getPlayList(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Music"); //Hold all the song on the phone
+        ArrayList<String> songName = new ArrayList<>(); // List of song names
         ArrayList<String> songPath = new ArrayList<>(); // List of song paths
         final ArrayList<String> copySongPath = new ArrayList<>(); //Backup of the songPath as a final
         //If there are songs
-        if(songList!=null){
+        if (songList != null) {
             //Split song list to song name and path lists
-            for(int i=0;i<songList.size();i++){
-                String fileName=songList.get(i).getName();
-                String filePath=songList.get(i).getAbsolutePath();
+            for (int i = 0; i < songList.size(); i++) {
+                String fileName = songList.get(i).getName();
+                String filePath = songList.get(i).getAbsolutePath();
                 songName.add(fileName);
                 songPath.add(filePath);
             }
@@ -247,7 +253,7 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
                 //Changing which song is playing
                 stopService(musicService);
                 mServ.changeSong(Uri.parse(copySongPath.get(pos)).toString());
-                musicService.setClass(context,MusicThread.class);
+                musicService.setClass(context, MusicThread.class);
                 startService(musicService);
                 alert.dismiss();
             }
@@ -281,27 +287,42 @@ public class MainMenu extends AppCompatActivity implements View.OnClickListener,
         }
         return fileList;
     }
+
     //Music bind and Unbind
-    private void doBindService(){
-        bindService(new Intent(context,MusicThread.class),
-                Scon,Context.BIND_AUTO_CREATE);
+    private void doBindService() {
+        bindService(new Intent(context, MusicThread.class),
+                Scon, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
-    private void doUnbindService()
-    {
-        if(mIsBound)
-        {
+    private void doUnbindService() {
+        if (mIsBound) {
             unbindService(Scon);
             mIsBound = false;
         }
     }
+
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
     }
+
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         doUnbindService();
+
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(pauseMusic){
+            mServ.pause();
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mServ.resume();
+        doBindService();
     }
 }

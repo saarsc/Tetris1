@@ -66,6 +66,7 @@ public class Scoreboard extends AppCompatActivity{
      * The Music service.
      */
     //Music Service
+    boolean pauseMusic = true;
     Intent musicService;
     private boolean mIsBound = false;
     private MusicThread mServ;
@@ -236,11 +237,25 @@ public class Scoreboard extends AppCompatActivity{
     public void onBackPressed(){
         Intent intent = new Intent(this,MainMenu.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        pauseMusic = false;
         startActivity(intent);
     }
     @Override
     public void onDestroy(){
         super.onDestroy();
         doUnbindService();
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(pauseMusic){
+            mServ.pause();
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mServ.resume();
+        doBindService();
     }
 }

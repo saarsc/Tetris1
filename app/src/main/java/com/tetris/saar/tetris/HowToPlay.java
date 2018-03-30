@@ -70,6 +70,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
     //Main second thread
     Thread t;
     //Music Service
+    boolean pauseMusic = true;
     Context context;
     Intent musicService;
     private boolean mIsBound = false;
@@ -402,6 +403,7 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
         if(v.getId() == btnBack.getId()){
             Intent intent = new Intent(HowToPlay.this,MainMenu.class);
             startActivity(intent);
+            pauseMusic = false;
         }
         update();
     }
@@ -668,11 +670,25 @@ public class HowToPlay extends AppCompatActivity implements View.OnClickListener
     public void onBackPressed(){
      Intent intent = new Intent(this,MainMenu.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        pauseMusic = false;
         startActivity(intent);
     }
     @Override
     public void onDestroy(){
         super.onDestroy();
         doUnbindService();
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(pauseMusic){
+            mServ.pause();
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mServ.resume();
+        doBindService();
     }
 }

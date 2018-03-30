@@ -94,7 +94,17 @@ public class MusicThread extends Service implements MediaPlayer.OnErrorListener 
             mPlayer.start();
         }
     }
-
+    public void pause(){
+        if(mPlayer.isPlaying())
+        {
+            mPlayer.pause();
+            length=mPlayer.getCurrentPosition();
+        }
+    }
+    public void resume(){
+        mPlayer.seekTo(length);
+        mPlayer.start();
+    }
     /**
      * Change the song based on a given string.
      *
@@ -119,6 +129,7 @@ public class MusicThread extends Service implements MediaPlayer.OnErrorListener 
                 return true;
             }
         });
+        mPlayer.start();
     }
     //Kill the player
     @Override
