@@ -3,21 +3,111 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\saarsc\Documents\Tetris\Tetris\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jar="C:\Users\user\Documents\Tetris\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
         sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="C:\Users\saarsc\Documents\Tetris\Tetris\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_8a9643a461af94acab6bfd44f849dc241f48b023\classes.dex" />
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_28d73f4bedad403b94dd6a740f40e3d105c27a0d\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\ee627621c4bb2a028d62fa3bb67f7d819bcfa6a9\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3e04ac8ca644ea7baddf6fdcf72e15c79e9df94a">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\pre-dexed\debug\classes_52997142994fb18c60b7b4ecc3a5cff091f97896.jar" />
     </item>
     <item
         is-multidex="true"
-        jar="C:\Users\saarsc\Documents\Tetris\Tetris\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jar="C:\Users\user\Documents\Tetris\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="f5e1e53d9f5e026d6a1a746a9a7c66c939eae29f">
-        <dex dex="C:\Users\saarsc\Documents\Tetris\Tetris\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_cbca50610f147dec0ec4ccffeb96dab253c8db13\classes.dex" />
+        sha1="84cdb8e630ea8ceb65dae92a4c0bcd37cb519bfe">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_0dcfb5983a859b4a24478ba61d16037f5120d783\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\4b55e8f13714a1f6c449d5d3be4649317c305d43\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c03bf57f358aa10d253f21989e93bcf6014b3b17">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\pre-dexed\debug\classes_8406d96d6b9ef82538b2956b595af2b4c5c42c9e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\user\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.1.1\support-annotations-25.1.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b59b6ee8d6ecc03e672d253800430343493a6ed8">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\pre-dexed\debug\support-annotations-25.1.1_26b4a1c054469f7efd7e8d632cf7cbd7cf33eccb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\0f453d0a1035cfad80bb7da801dbc85bbf5b9308\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0d191c1a09e4892d059e5ce749e4ad4e08129e35">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\pre-dexed\debug\classes_a173bca002f52baa5b121259606e67d7d55dc7b9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\1cad8d280d5858fd7e6fd638a4456629e19f19bb\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="7bde4c34162092e0a77e7f12dc85ed77c484cf5c">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\pre-dexed\debug\classes_756fb76f77dbb5b56fa0476e8b2b3b0c14eba8f8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\74c3b821e1de4e9aa269e731f869bf3d41902d1f\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e2719c102dca3a7a5b02ce07f769362da6ddb4ab">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\pre-dexed\debug\classes_9c3b9526de9e8910b22eb24d4c0300f7092eb53c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\139f0c008f8623c90e47430a0b9c0354c908fef6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ecb496cc08dd52551fc5ec6db3bc0632e95a89bb">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\pre-dexed\debug\classes_169eacb24ea9c0a022bc151fa6aaf7a391ad3612.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\118d42f39e6b0f7b2e399a086b553d40fae252c6\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="02741d05d4b697fba5e279e9881aaa1da0ca7c7f">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\pre-dexed\debug\classes_816ad5118275d6b4fa5abcc7c397fe044d68d502.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\c2780a99be088e50fa8f726446c015e8546fbf49\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0fb891e8f0cfba0513043a7bb357513d229ca2cd">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\pre-dexed\debug\classes_b13743e2aaf91c8e6143c472021f0efde81f01d7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Android\.android\build-cache\b6955d0090921d5df1704d5620cc0c36b05d2da3\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\user\Documents\Tetris\app\build\intermediates\pre-dexed\debug\classes_b87ce5d12e12cd4de5399ac2e2c92dd7fd8cdacd.jar" />
     </item>
 
 </items>
